@@ -132,10 +132,59 @@ export default function Hero() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
         >
-          {/* Spline scene */}
-          <div
-            className="absolute inset-0 overflow-hidden bg-transparent"
+          {/* ── Blue-indigo backlight glow (matches reference) ── */}
+          {/* Outer soft halo */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ zIndex: 0 }}>
+            <div
+              style={{
+                width: "500px",
+                height: "500px",
+                borderRadius: "50%",
+                background: "radial-gradient(circle, rgba(79,70,229,0.55) 0%, rgba(67,56,202,0.35) 35%, rgba(30,27,75,0.15) 65%, transparent 80%)",
+                filter: "blur(30px)",
+              }}
+            />
+          </div>
+
+          {/* Bright blue centre core */}
+          <motion.div
+            className="absolute inset-0 flex items-center justify-center pointer-events-none"
+            animate={{ opacity: [0.75, 1, 0.75] }}
+            transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut" }}
+            style={{ zIndex: 0 }}
           >
+            <div
+              style={{
+                width: "280px",
+                height: "280px",
+                borderRadius: "50%",
+                background: "radial-gradient(circle, rgba(99,102,241,0.75) 0%, rgba(79,70,229,0.48) 45%, transparent 72%)",
+                filter: "blur(14px)",
+                boxShadow: "0 0 60px 20px rgba(99,102,241,0.20)",
+              }}
+            />
+          </motion.div>
+
+          {/* Inner white-blue hotspot */}
+          <motion.div
+            className="absolute inset-0 flex items-center justify-center pointer-events-none"
+            animate={{ opacity: [0.6, 0.9, 0.6] }}
+            transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut", delay: 0.6 }}
+            style={{ zIndex: 0 }}
+          >
+            <div
+              style={{
+                width: "130px",
+                height: "130px",
+                borderRadius: "50%",
+                background: "radial-gradient(circle, rgba(165,180,252,0.85) 0%, rgba(129,140,248,0.45) 55%, transparent 75%)",
+                filter: "blur(10px)",
+              }}
+            />
+          </motion.div>
+
+          {/* Spline scene — renders on top of glow */}
+          <div className="absolute inset-0 overflow-hidden bg-transparent" style={{ zIndex: 1 }}>
             <div className="w-full h-full min-h-[280px] md:min-h-[400px]">
               <SplineRobot />
             </div>

@@ -120,7 +120,7 @@ export default function About() {
             {/* Photo */}
             <div className="relative w-full h-full rounded-2xl overflow-hidden bg-[var(--card-bg)] border border-[var(--border-color)]">
               <img
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                src="/venuja.png"
                 alt={personalInfo.name}
                 className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
               />
