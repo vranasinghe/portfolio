@@ -65,9 +65,9 @@ Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
 Feel free to reach out if you're looking for an intern, have a question, or just want to connect!
 
 - **Email:** [venujaranasinghe26@gmail.com](mailto:venujaranasinghe26@gmail.com)
-- **LinkedIn:** [linkedin.com/in/kavishaliyanage](https://linkedin.com/in/kavishaliyanage)
-- **GitHub:** [github.com/kavishaliyanage](https://github.com/kavishaliyanage)
-- **Instagram:** [@kavishaliyanage](https://instagram.com/kavishaliyanage)
+- **LinkedIn:** [linkedin.com/in/venujaranasinghe]()
+- **GitHub:** [github.com/venujaranasinghe](https://github.com/vranasinghe)
+
 
 ---
 
