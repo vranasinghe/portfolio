@@ -184,8 +184,8 @@ export const skills: SkillCategory[] = [
     icon: "🖌️",
     items: [
       { name: "Figma", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg", brandColor: "#A259FF", bgColor: "rgba(162, 89, 255, 0.12)", hoverGlow: "rgba(162, 89, 255, 0.25)" },
-      { name: "Premiere Pro", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/premierepro/premierepro-original.svg", brandColor: "#001489", bgColor: "rgba(0, 20, 137, 0.10)", hoverGlow: "rgba(0, 20, 137, 0.22)" },
-      { name: "After Effects", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/aftereffects/aftereffects-original.svg", brandColor: "#001489", bgColor: "rgba(0, 20, 137, 0.10)", hoverGlow: "rgba(0, 20, 137, 0.22)" },
+      { name: "Premiere Pro", iconUrl: "/Adobe_Premiere_Pro_CC_icon.svg", brandColor: "#001489", bgColor: "rgba(0, 20, 137, 0.10)", hoverGlow: "rgba(0, 20, 137, 0.22)" },
+      { name: "After Effects", iconUrl: "/Adobe_After_Effects_CC_icon.svg", brandColor: "#9999FF", bgColor: "rgba(153, 153, 255, 0.10)", hoverGlow: "rgba(153, 153, 255, 0.22)" },
       { name: "DaVinci Resolve", iconUrl: "https://upload.wikimedia.org/wikipedia/commons/9/90/DaVinci_Resolve_17_logo.svg", brandColor: "#46B3B3", bgColor: "rgba(70, 179, 179, 0.12)", hoverGlow: "rgba(70, 179, 179, 0.25)" },
       { name: "Canva", iconUrl: "/canva.svg", brandColor: "#00C4CC", bgColor: "rgba(0, 196, 204, 0.12)", hoverGlow: "rgba(0, 196, 204, 0.25)" },
       { name: "Photoshop", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/photoshop/photoshop-original.svg", brandColor: "#31A8FF", bgColor: "rgba(49, 168, 255, 0.12)", hoverGlow: "rgba(49, 168, 255, 0.25)" },
