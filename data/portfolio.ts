@@ -83,9 +83,9 @@ export interface SkillCategory {
   category: string;
   color: string;
   icon: string;
-  items: { 
-    name: string; 
-    Icon?: IconType; 
+  items: {
+    name: string;
+    Icon?: IconType;
     iconUrl?: string;
     brandColor: string;
     darkBrandColor?: string;
