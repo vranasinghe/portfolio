@@ -11,9 +11,9 @@ export const personalInfo = {
   specialization: "Data Science",
   location: "Sri Lanka",
   email: "venujaranasinghe26@gmail.com",
-  github: "https://github.com/kavishaliyanage",
-  linkedin: "https://linkedin.com/in/kavishaliyanage",
-  instagram: "https://instagram.com/kavishaliyanage",
+  github: "https://github.com/vranasinghe",
+  linkedin: "https://linkedin.com/in/venujaranasinghe",
+  instagram: "https://instagram.com/venujaranasinghe",
   resumeLink: "/Resume.pdf",
   bio: "Hello! My name is Venuja. I'm pursuing a B.Sc. (Hons) in Information Technology at SLIIT, specializing in Data Science. I enjoy building things that live on the web and training predictive models that turn raw data into something useful. I bridge complex machine learning architectures with user-centric design.",
   heroBio:
@@ -69,7 +69,9 @@ import {
   SiVercel,
   SiDavinciresolve,
   SiCanva,
-  SiExpo
+  SiExpo,
+  SiKotlin,
+  SiGradle
 } from "react-icons/si";
 import { FaJava, FaRProject, FaDatabase, FaNetworkWired } from "react-icons/fa";
 import { BiLineChart } from "react-icons/bi";
@@ -113,12 +115,21 @@ export const skills: SkillCategory[] = [
     items: [
       { name: "React", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg", brandColor: "#61DAFB", bgColor: "rgba(97, 218, 251, 0.12)", hoverGlow: "rgba(97, 218, 251, 0.25)" },
       { name: "Next.js", Icon: SiNextdotjs, brandColor: "#111827", darkBrandColor: "#ffffff", bgColor: "rgba(17, 24, 39, 0.08)", hoverGlow: "rgba(17, 24, 39, 0.2)" },
-      { name: "React Native", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg", brandColor: "#61DAFB", bgColor: "rgba(97, 218, 251, 0.12)", hoverGlow: "rgba(97, 218, 251, 0.25)" },
-      { name: "Expo", Icon: SiExpo, brandColor: "#374151", darkBrandColor: "#ffffff", bgColor: "rgba(55, 65, 81, 0.09)", hoverGlow: "rgba(55, 65, 81, 0.2)" },
       { name: "Vite", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vite/vite-original.svg", brandColor: "#646CFF", bgColor: "rgba(100, 108, 255, 0.12)", hoverGlow: "rgba(100, 108, 255, 0.25)" },
       { name: "Tailwind CSS", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg", brandColor: "#06B6D4", bgColor: "rgba(6, 182, 212, 0.12)", hoverGlow: "rgba(6, 182, 212, 0.25)" },
       { name: "HTML", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg", brandColor: "#E44D26", bgColor: "rgba(228, 77, 38, 0.12)", hoverGlow: "rgba(228, 77, 38, 0.25)" },
       { name: "CSS", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg", brandColor: "#1572B6", bgColor: "rgba(21, 114, 182, 0.12)", hoverGlow: "rgba(21, 114, 182, 0.25)" },
+    ],
+  },
+  {
+    category: "MOBILE DEV",
+    color: "bg-teal-50 border-teal-200",
+    icon: "📱",
+    items: [
+      { name: "React Native", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg", brandColor: "#61DAFB", bgColor: "rgba(97, 218, 251, 0.12)", hoverGlow: "rgba(97, 218, 251, 0.25)" },
+      { name: "Expo", Icon: SiExpo, brandColor: "#374151", darkBrandColor: "#ffffff", bgColor: "rgba(55, 65, 81, 0.09)", hoverGlow: "rgba(55, 65, 81, 0.2)" },
+      { name: "Kotlin", Icon: SiKotlin, brandColor: "#7F52FF", bgColor: "rgba(127, 82, 255, 0.12)", hoverGlow: "rgba(127, 82, 255, 0.25)" },
+      { name: "Gradle", Icon: SiGradle, brandColor: "#02303A", darkBrandColor: "#02A58F", bgColor: "rgba(2, 48, 58, 0.12)", hoverGlow: "rgba(2, 48, 58, 0.25)" },
     ],
   },
   {
@@ -131,7 +142,7 @@ export const skills: SkillCategory[] = [
       { name: "Flask", Icon: SiFlask, brandColor: "#2d3748", darkBrandColor: "#ffffff", bgColor: "rgba(45, 55, 72, 0.09)", hoverGlow: "rgba(45, 55, 72, 0.2)" },
       { name: "Spring Boot", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg", brandColor: "#6DB33F", bgColor: "rgba(109, 179, 63, 0.12)", hoverGlow: "rgba(109, 179, 63, 0.25)" },
       { name: "REST APIs", Icon: FaNetworkWired, brandColor: "#007BFF", bgColor: "rgba(0, 123, 255, 0.12)", hoverGlow: "rgba(0, 123, 255, 0.25)" },
-      { name: "JWT", Icon: SiJsonwebtokens, brandColor: "#FBB829", bgColor: "rgba(251, 184, 41, 0.12)", hoverGlow: "rgba(251, 184, 41, 0.25)" },
+      { name: "JWT", iconUrl: "/Jwt-Icon--Streamline-Svg-Logos.svg", brandColor: "#FBB829", bgColor: "rgba(251, 184, 41, 0.12)", hoverGlow: "rgba(251, 184, 41, 0.25)" },
     ],
   },
   {
@@ -216,55 +227,68 @@ export const featuredProjects: FeaturedProject[] = [
       "Deep learning models trained on 100K+ medical X-ray images to detect pulmonary abnormalities including pneumonia, cardiomegaly, and pleural effusion. Implements ResNet-50 and DenseNet-121 architectures.",
     longDescription:
       "Built with PyTorch and optimized for GPU training using mixed-precision (FP16) and gradient checkpointing, reducing training time by 40% and memory usage by 55%. Achieved 94.7% validation accuracy on the NIH Chest X-ray Dataset.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=900&q=80",
+    imageUrl: "/Chest X ray Diagnosis system.png",
     tags: ["PyTorch", "ResNet-50", "DenseNet-121", "Python", "OpenCV", "Medical AI"],
-    github: "https://github.com",
+    github: "https://github.com/vranasinghe/ChestAI_Diagnostics.git",
+    live: "https://chest-ai-diagnostics-qjwog73l9-teams-01.vercel.app",
     role: "Lead ML Engineer",
     reversed: false,
   },
   {
     id: 2,
-    title: "APT Detection Model",
+    title: "Casa Mare — Modern Real Estate Platform",
     description:
-      "Machine learning pipeline for Advanced Persistent Threat detection using network honeypot data. Achieves 94% precision with extremely low false-positive rates using a SMOTE-balanced Random Forest ensemble.",
+      "A premium, modern real estate marketplace platform built with React, Vite, Tailwind CSS, and a Supabase (PostgreSQL) backend.",
     longDescription:
-      "Implemented in R with caret and randomForest. The challenge was extreme class imbalance (< 2% malicious traffic). Applied SMOTE oversampling, feature engineering on temporal attack patterns, and a weighted voting ensemble.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=900&q=80",
-    tags: ["R", "Random Forest", "SMOTE", "Cybersecurity", "ML"],
-    github: "https://github.com",
-    role: "Security Data Scientist",
+      "Features dynamic property browsing with multi-parameter filtering, interactive property listings, user sessions, role-based controls, row-level security (RLS) policies, and database persistence.",
+    imageUrl: "/Modern Real state platform.png",
+    tags: ["React", "Vite", "Tailwind CSS", "Supabase", "PostgreSQL", "RLS Security"],
+    github: "https://github.com/vranasinghe/Real-state-project.git",
+    live: "https://real-state-project-9bb29bow0-teams-01.vercel.app",
+    role: "Full-Stack Developer",
     reversed: true,
   },
   {
     id: 3,
-    title: "Legal AI Chat Assistant",
+    title: "CarTrader — Premium Car Marketplace",
     description:
-      "AI-powered chat interface for legal queries, mapping unstructured legal text into a structured schema for retrieval-augmented generation. Built with Material Design 3 principles for maximum accessibility.",
+      "A modern car buying & selling marketplace platform utilizing a glassmorphic interface, client-side localStorage database simulation, and a full-stack Java Servlet backend.",
     longDescription:
-      "Integrates Google Generative AI with a custom NLP preprocessing pipeline that normalizes legal document formats — clause types, entity references, citations — before vector indexing for high-accuracy context retrieval.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=900&q=80",
-    tags: ["NLP", "React", "Node.js", "Material Design 3", "GenAI"],
-    github: "https://github.com",
-    live: "https://demo.example.com",
-    role: "Full-Stack AI Developer",
+      "Features dynamic vehicle browsing with multi-parameter filtering, a persistent heart-based wishlist, direct seller inquiry forms, active seller inventory management, and an admin control center for user accounts and global inventory monitoring.",
+    imageUrl: "/Car Trader.png",
+    tags: ["Java Servlets", "JavaServer Pages (JSP)", "Vanilla CSS", "ES6 JavaScript", "HTML5", "Apache Tomcat"],
+    github: "https://github.com/vranasinghe/Second-Hand-Car-Sales-and-Purchase-Platform-",
+    live: "https://vranasinghe.github.io/Second-Hand-Car-Sales-and-Purchase-Platform-/",
+    role: "Full-Stack Developer",
     reversed: false,
   },
   {
     id: 4,
-    title: "Poth — Library App",
+    title: "Bright Future — Secure Student Awards Voting Platform",
     description:
-      "Full-stack mobile app providing real-time book availability alerts across libraries in Sri Lanka. WebSocket-powered with MongoDB aggregation pipelines serving queries consistently under 100ms.",
+      "A full-stack student awards voting platform with events, nominees, dashboards, notifications, and results reports.",
     longDescription:
-      "Built with React Native (Expo), Node.js, Socket.IO, and Redis pub/sub for cross-node real-time messaging. Covers 10+ library nodes across Sri Lankan university campuses.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1544716278-e513176f20b5?auto=format&fit=crop&w=900&q=80",
-    tags: ["React Native", "Node.js", "MongoDB", "WebSockets", "Expo"],
-    github: "https://github.com",
+      "Built with Spring Boot backend API and React/Vite UI frontend. Implements role-based dashboard access, automated notification triggers, student registration, and secure award voting mechanism.",
+    imageUrl: "/Bright Vote.png",
+    tags: ["Spring Boot", "React", "Vite", "Java", "H2 Database", "REST APIs", "Docker"],
+    github: "https://github.com/vranasinghe/web-voting-system",
+    live: "https://web-voting-system-pz0d5hbpv-teams-01.vercel.app",
     role: "Full-Stack Developer",
     reversed: true,
+  },
+  {
+    id: 5,
+    title: "DengueRisk — Outbreak Prediction Model",
+    description:
+      "Predictive model for dengue outbreak risk using geospatial data, weather patterns, and historical case records to identify high-risk transmission zones.",
+    longDescription:
+      "Developed using Python and Scikit-learn with spatial modeling in GeoPandas. Features a Web-based interactive risk map utilizing Folium, achieving an 89.2% precision rate in forecasting next-month outbreak alerts across local regions.",
+    imageUrl: "/Dengu Risk.png",
+    tags: ["Python", "Scikit-learn", "GeoPandas", "Folium", "Machine Learning", "Spatial Data Science"],
+    github: "https://github.com/vranasinghe/Dengue-Outbreak-Prediction-Model",
+    live: "https://macromaster101.github.io/DengueRisk/dashboard/",
+    role: "Machine Learning Engineer",
+    reversed: false,
   },
 ];
 
@@ -285,24 +309,33 @@ export const minorProjects: MinorProject[] = [
       "AI-powered travel planning platform with personalized destination recommendations, itinerary generation, and budget management.",
     tags: ["Next.js", "Supabase", "OpenAI", "Tailwind"],
     category: "Fullstack",
-    github: "https://github.com",
+    github: "https://github.com/vranasinghe",
     live: "https://demo.example.com",
   },
   {
-    title: "E-Voting System",
+    title: "APT Detection Model",
     description:
-      "Secure campus E-Voting platform with end-to-end encryption, audit trails, and real-time result visualization.",
-    tags: ["React", "Node.js", "PostgreSQL", "Cryptography"],
-    category: "Fullstack",
-    github: "https://github.com",
+      "Machine learning pipeline for Advanced Persistent Threat detection using network honeypot data. Achieves 94% precision using SMOTE-balanced Random Forest ensemble.",
+    tags: ["R", "Random Forest", "SMOTE", "Cybersecurity", "ML"],
+    category: "AI / ML",
+    github: "https://github.com/vranasinghe",
   },
   {
-    title: "DengueRisk ML",
+    title: "Legal AI Chat Assistant",
     description:
-      "Predictive model for dengue outbreak risk using geospatial data, weather patterns, and historical case records.",
-    tags: ["Python", "Scikit-learn", "GeoPandas", "Folium"],
-    category: "AI / ML",
-    github: "https://github.com",
+      "AI-powered chat interface for legal queries, mapping unstructured legal text into a structured schema for retrieval-augmented generation.",
+    tags: ["NLP", "React", "Node.js", "Material Design 3", "GenAI"],
+    category: "Fullstack",
+    github: "https://github.com/vranasinghe",
+    live: "https://demo.example.com",
+  },
+  {
+    title: "Poth — Library App",
+    description:
+      "Full-stack mobile app providing real-time book availability alerts across libraries in Sri Lanka using WebSockets and MongoDB.",
+    tags: ["React Native", "Node.js", "MongoDB", "WebSockets", "Expo"],
+    category: "Mobile App",
+    github: "https://github.com/vranasinghe",
   },
   {
     title: "Portfolio V1",
@@ -310,8 +343,8 @@ export const minorProjects: MinorProject[] = [
       "Previous personal portfolio built with vanilla HTML, CSS, and JS featuring Three.js particle animation.",
     tags: ["HTML", "CSS", "JavaScript", "Three.js"],
     category: "Web Development",
-    github: "https://github.com",
-    live: "https://demo.example.com",
+    github: "https://github.com/vranasinghe",
+    live: "https://vranasinghe.github.io/portfolio/",
   },
   {
     title: "Discord AI Bot",
@@ -319,7 +352,7 @@ export const minorProjects: MinorProject[] = [
       "Feature-rich Discord bot with AI responses, moderation commands, music playback, and custom slash commands.",
     tags: ["Python", "discord.py", "OpenAI", "Redis"],
     category: "AI / ML",
-    github: "https://github.com",
+    github: "https://github.com/vranasinghe",
   },
   {
     title: "Expense Tracker",
@@ -327,7 +360,7 @@ export const minorProjects: MinorProject[] = [
       "Full-stack expense tracking app with budgeting categories, data visualization, and monthly financial reports.",
     tags: ["React", "Express", "MongoDB", "Chart.js"],
     category: "Fullstack",
-    github: "https://github.com",
+    github: "https://github.com/vranasinghe",
   },
   {
     title: "Poth Mobile Reader",
@@ -335,7 +368,7 @@ export const minorProjects: MinorProject[] = [
       "Lightweight companion app for the Poth Library ecosystem, allowing offline reading and quick barcode scanning.",
     tags: ["React Native", "Expo", "SQLite"],
     category: "Mobile App",
-    github: "https://github.com",
+    github: "https://github.com/vranasinghe",
   },
   {
     title: "Fintech Dashboard Design",
@@ -343,7 +376,23 @@ export const minorProjects: MinorProject[] = [
       "High-fidelity Figma UI/UX designs and design system for a modern financial analytics and portfolio dashboard.",
     tags: ["Figma", "UI/UX", "Design System"],
     category: "Design",
-    github: "https://github.com",
+    github: "https://github.com/vranasinghe",
+  },
+  {
+    title: "QuickBite — Food Delivery App",
+    description:
+      "A full-stack food delivery application featuring real-time GPS courier tracking, interactive customer orders, and custom administration panel.",
+    tags: ["Next.js", "Prisma", "Socket.io", "React", "PostgreSQL"],
+    category: "Fullstack",
+    github: "https://github.com/vranasinghe",
+  },
+  {
+    title: "FlexiWallet — Digital Wallet App",
+    description:
+      "A mobile digital wallet application built with React Native (Expo) and a custom Express backend for user peer-to-peer transfers, transaction history, and balance management.",
+    tags: ["React Native", "Expo", "Express", "Node.js", "MongoDB"],
+    category: "Mobile App",
+    github: "https://github.com/vranasinghe",
   },
 ];
 
@@ -421,12 +470,12 @@ export const certifications: Certification[] = [
   {
     title: "Generative AI for Everyone",
     link: "https://coursera.org/verify/FNBNBNCG0SL8",
-    image: "/frontend-certificate.jpg.jpg",
+    image: "/genai-certificate.jpg.jpg",
   },
   {
     title: "Introduction to Front-End Development",
     link: "https://coursera.org/verify/GV4S2WMWT1BU",
-    image: "/genai-certificate.jpg.jpg",
+    image: "/frontend-certificate.jpg.jpg",
   },
   {
     title: "Supervised Machine Learning: Regression and Classification",

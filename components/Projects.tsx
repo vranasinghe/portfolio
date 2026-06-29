@@ -69,9 +69,8 @@ export default function Projects() {
                 <img
                   src={project.imageUrl}
                   alt={project.title}
-                  className="w-full h-full object-cover filter grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500"
+                  className="w-full h-full object-cover group-hover:scale-[1.03] transition-all duration-500"
                 />
-                <div className="absolute inset-0 bg-indigo-500/10 group-hover:bg-transparent transition-all duration-500" />
               </motion.div>
             </div>
 

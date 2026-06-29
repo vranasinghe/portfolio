@@ -122,10 +122,8 @@ export default function About() {
               <img
                 src="/venuja.png"
                 alt={personalInfo.name}
-                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                className="w-full h-full object-cover transition-all duration-500"
               />
-              {/* Overlay tint on hover */}
-              <div className="absolute inset-0 bg-indigo-500/10 opacity-0 hover:opacity-100 transition-opacity duration-300" />
             </div>
 
             {/* Floating tech badges */}
