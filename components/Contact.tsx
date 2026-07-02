@@ -43,8 +43,8 @@ export default function Contact() {
           Accept: "application/json",
         },
         body: JSON.stringify({
-          // TODO: Replace with your actual Web3Forms Access Key for venujaranasinghe26@gmail.com
-          access_key: "9ec63079-0af2-4395-8b33-b604a5285c84",
+          // Prioritizes environment variables, falls back to the hardcoded key
+          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "b28ae741-ce6c-4702-89d3-ded18845f665",
           name: formState.name,
           email: formState.email,
           message: formState.message,
@@ -117,7 +117,6 @@ export default function Contact() {
                   value={formState.name}
                   onChange={handleInputChange}
                   required
-                  placeholder="John Doe"
                   className="w-full bg-[var(--bg-tertiary)] border border-[var(--border-color)] focus:border-[#60a5fa] rounded-xl px-4 py-3 text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none transition-all duration-300"
                 />
               </div>
@@ -133,7 +132,6 @@ export default function Contact() {
                   value={formState.email}
                   onChange={handleInputChange}
                   required
-                  placeholder="john@company.com"
                   className="w-full bg-[var(--bg-tertiary)] border border-[var(--border-color)] focus:border-[#60a5fa] rounded-xl px-4 py-3 text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none transition-all duration-300"
                 />
               </div>
@@ -148,7 +146,6 @@ export default function Contact() {
                   value={formState.message}
                   onChange={handleInputChange}
                   required
-                  placeholder="Hi Venuja, we'd love to have you for a Data Science internship..."
                   className="w-full bg-[var(--bg-tertiary)] border border-[var(--border-color)] focus:border-[#60a5fa] rounded-xl px-4 py-3 text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none transition-all duration-300 h-36 resize-none"
                 />
               </div>

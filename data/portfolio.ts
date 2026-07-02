@@ -250,20 +250,6 @@ export const featuredProjects: FeaturedProject[] = [
   },
   {
     id: 3,
-    title: "CarTrader — Premium Car Marketplace",
-    description:
-      "A modern car buying & selling marketplace platform utilizing a glassmorphic interface, client-side localStorage database simulation, and a full-stack Java Servlet backend.",
-    longDescription:
-      "Features dynamic vehicle browsing with multi-parameter filtering, a persistent heart-based wishlist, direct seller inquiry forms, active seller inventory management, and an admin control center for user accounts and global inventory monitoring.",
-    imageUrl: "/Car Trader.png",
-    tags: ["Java Servlets", "JavaServer Pages (JSP)", "Vanilla CSS", "ES6 JavaScript", "HTML5", "Apache Tomcat"],
-    github: "https://github.com/vranasinghe/Second-Hand-Car-Sales-and-Purchase-Platform-",
-    live: "https://vranasinghe.github.io/Second-Hand-Car-Sales-and-Purchase-Platform-/",
-    role: "Full-Stack Developer",
-    reversed: false,
-  },
-  {
-    id: 4,
     title: "Bright Future — Secure Student Awards Voting Platform",
     description:
       "A full-stack student awards voting platform with events, nominees, dashboards, notifications, and results reports.",
@@ -274,21 +260,20 @@ export const featuredProjects: FeaturedProject[] = [
     github: "https://github.com/vranasinghe/web-voting-system",
     live: "https://web-voting-system-pz0d5hbpv-teams-01.vercel.app",
     role: "Full-Stack Developer",
-    reversed: true,
+    reversed: false,
   },
   {
-    id: 5,
-    title: "DengueRisk — Outbreak Prediction Model",
+    id: 4,
+    title: "Poth Library App",
     description:
-      "Predictive model for dengue outbreak risk using geospatial data, weather patterns, and historical case records to identify high-risk transmission zones.",
+      "A mobile reading & book marketplace platform for Sri Lanka, enabling readers to explore curated books and shop owners to manage listings and grow their library business.",
     longDescription:
-      "Developed using Python and Scikit-learn with spatial modeling in GeoPandas. Features a Web-based interactive risk map utilizing Folium, achieving an 89.2% precision rate in forecasting next-month outbreak alerts across local regions.",
-    imageUrl: "/Dengu Risk.png",
-    tags: ["Python", "Scikit-learn", "GeoPandas", "Folium", "Machine Learning", "Spatial Data Science"],
-    github: "https://github.com/vranasinghe/Dengue-Outbreak-Prediction-Model",
-    live: "https://macromaster101.github.io/DengueRisk/dashboard/",
-    role: "Machine Learning Engineer",
-    reversed: false,
+      "Built with React Native and Expo (SDK 54) using Expo Router on the frontend. The backend is powered by Node.js, Express, and MongoDB with Mongoose. Features secure JWT authentication, encrypted passwords, and Cloudinary media storage.",
+    imageUrl: "/Libaray App.png",
+    tags: ["React Native", "Expo SDK 54", "Node.js", "Express.js", "MongoDB", "JWT Auth", "Cloudinary"],
+    github: "https://github.com/vranasinghe",
+    role: "Full-Stack Developer",
+    reversed: true,
   },
 ];
 
@@ -300,99 +285,29 @@ export interface MinorProject {
   category: "AI / ML" | "Web Development" | "Mobile App" | "Fullstack" | "Design";
   github: string;
   live?: string;
+  imageUrl?: string;
 }
 
 export const minorProjects: MinorProject[] = [
   {
-    title: "TravelGenie",
+    title: "DengueRisk — Outbreak Prediction Model",
     description:
-      "AI-powered travel planning platform with personalized destination recommendations, itinerary generation, and budget management.",
-    tags: ["Next.js", "Supabase", "OpenAI", "Tailwind"],
-    category: "Fullstack",
-    github: "https://github.com/vranasinghe",
-    live: "https://demo.example.com",
-  },
-  {
-    title: "APT Detection Model",
-    description:
-      "Machine learning pipeline for Advanced Persistent Threat detection using network honeypot data. Achieves 94% precision using SMOTE-balanced Random Forest ensemble.",
-    tags: ["R", "Random Forest", "SMOTE", "Cybersecurity", "ML"],
+      "Predictive model for dengue outbreak risk using geospatial data, weather patterns, and historical case records to identify high-risk transmission zones.",
+    tags: ["Python", "Scikit-learn", "GeoPandas", "Folium", "Machine Learning", "Spatial Data Science"],
     category: "AI / ML",
-    github: "https://github.com/vranasinghe",
+    github: "https://github.com/vranasinghe/Dengue-Outbreak-Prediction-Model",
+    live: "https://macromaster101.github.io/DengueRisk/dashboard/",
+    imageUrl: "/Dengu Risk.png",
   },
   {
-    title: "Legal AI Chat Assistant",
+    title: "CarTrader — Premium Car Marketplace",
     description:
-      "AI-powered chat interface for legal queries, mapping unstructured legal text into a structured schema for retrieval-augmented generation.",
-    tags: ["NLP", "React", "Node.js", "Material Design 3", "GenAI"],
-    category: "Fullstack",
-    github: "https://github.com/vranasinghe",
-    live: "https://demo.example.com",
-  },
-  {
-    title: "Poth — Library App",
-    description:
-      "Full-stack mobile app providing real-time book availability alerts across libraries in Sri Lanka using WebSockets and MongoDB.",
-    tags: ["React Native", "Node.js", "MongoDB", "WebSockets", "Expo"],
-    category: "Mobile App",
-    github: "https://github.com/vranasinghe",
-  },
-  {
-    title: "Portfolio V1",
-    description:
-      "Previous personal portfolio built with vanilla HTML, CSS, and JS featuring Three.js particle animation.",
-    tags: ["HTML", "CSS", "JavaScript", "Three.js"],
+      "A modern car buying & selling marketplace platform utilizing a glassmorphic interface, client-side localStorage database simulation, and a full-stack Java Servlet backend.",
+    tags: ["Java Servlets", "JavaServer Pages (JSP)", "Vanilla CSS", "ES6 JavaScript", "HTML5", "Apache Tomcat"],
     category: "Web Development",
-    github: "https://github.com/vranasinghe",
-    live: "https://vranasinghe.github.io/portfolio/",
-  },
-  {
-    title: "Discord AI Bot",
-    description:
-      "Feature-rich Discord bot with AI responses, moderation commands, music playback, and custom slash commands.",
-    tags: ["Python", "discord.py", "OpenAI", "Redis"],
-    category: "AI / ML",
-    github: "https://github.com/vranasinghe",
-  },
-  {
-    title: "Expense Tracker",
-    description:
-      "Full-stack expense tracking app with budgeting categories, data visualization, and monthly financial reports.",
-    tags: ["React", "Express", "MongoDB", "Chart.js"],
-    category: "Fullstack",
-    github: "https://github.com/vranasinghe",
-  },
-  {
-    title: "Poth Mobile Reader",
-    description:
-      "Lightweight companion app for the Poth Library ecosystem, allowing offline reading and quick barcode scanning.",
-    tags: ["React Native", "Expo", "SQLite"],
-    category: "Mobile App",
-    github: "https://github.com/vranasinghe",
-  },
-  {
-    title: "Fintech Dashboard Design",
-    description:
-      "High-fidelity Figma UI/UX designs and design system for a modern financial analytics and portfolio dashboard.",
-    tags: ["Figma", "UI/UX", "Design System"],
-    category: "Design",
-    github: "https://github.com/vranasinghe",
-  },
-  {
-    title: "QuickBite — Food Delivery App",
-    description:
-      "A full-stack food delivery application featuring real-time GPS courier tracking, interactive customer orders, and custom administration panel.",
-    tags: ["Next.js", "Prisma", "Socket.io", "React", "PostgreSQL"],
-    category: "Fullstack",
-    github: "https://github.com/vranasinghe",
-  },
-  {
-    title: "FlexiWallet — Digital Wallet App",
-    description:
-      "A mobile digital wallet application built with React Native (Expo) and a custom Express backend for user peer-to-peer transfers, transaction history, and balance management.",
-    tags: ["React Native", "Expo", "Express", "Node.js", "MongoDB"],
-    category: "Mobile App",
-    github: "https://github.com/vranasinghe",
+    github: "https://github.com/vranasinghe/Second-Hand-Car-Sales-and-Purchase-Platform-",
+    live: "https://vranasinghe.github.io/Second-Hand-Car-Sales-and-Purchase-Platform-/",
+    imageUrl: "/Car Trader.png",
   },
 ];
 
@@ -411,7 +326,7 @@ export const experience: ExperienceItem[] = [
   {
     role: "Data Science / AI Intern",
     company: "Open to Opportunities",
-    period: "Seeking · 2025",
+    period: "Seeking · 2026",
     type: "seeking",
     description:
       "Looking for my first internship where I can contribute to a real engineering team. I've shipped 5+ end-to-end projects spanning web, mobile, and ML — ready from day one.",

@@ -41,7 +41,7 @@ export default function Hero() {
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50/90 dark:bg-indigo-950/30 border border-indigo-200/80 dark:border-indigo-900/50 shadow-sm mb-6 w-fit"
           >
             <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-sm font-medium text-indigo-700 dark:text-indigo-200">Available for 2025 Internships</span>
+            <span className="text-sm font-medium text-indigo-700 dark:text-indigo-200">Available for 2026 Internships</span>
           </motion.div>
 
           {/* Greeting */}

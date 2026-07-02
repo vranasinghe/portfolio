@@ -165,6 +165,15 @@ export default function Projects() {
               whileHover={{ y: -6 }}
               className="group flex flex-col p-6 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-sm hover:border-[#60a5fa]/40 hover:shadow-[0_8px_30px_var(--shadow-color)] transition-all duration-250"
             >
+              {project.imageUrl && (
+                <div className="relative -mx-6 -mt-6 mb-5 aspect-video overflow-hidden rounded-t-2xl bg-indigo-950/30 border-b border-[var(--border-color)]">
+                  <img
+                    src={project.imageUrl}
+                    alt={project.title}
+                    className="w-full h-full object-cover group-hover:scale-[1.03] transition-all duration-300"
+                  />
+                </div>
+              )}
               {/* Header */}
               <div className="flex items-start justify-between mb-5">
                 <div className="w-10 h-10 rounded-xl bg-indigo-950/50 flex items-center justify-center text-[#60a5fa]">
