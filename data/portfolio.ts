@@ -309,6 +309,16 @@ export const minorProjects: MinorProject[] = [
     live: "https://vranasinghe.github.io/Second-Hand-Car-Sales-and-Purchase-Platform-/",
     imageUrl: "/Car Trader.png",
   },
+  {
+    title: "Portfolio Design — Premium UI/UX Showcase",
+    description:
+      "A beautifully crafted, modern personal portfolio design. Focuses on premium glassmorphic cards, glowing interactive neon accents, smooth page transitions, and responsive layouts.",
+    tags: ["Figma", "Design System", "Vanilla CSS", "HTML5", "Framer Motion", "UI/UX Design"],
+    category: "Design",
+    github: "https://github.com/vranasinghe/portfolio",
+    live: "http://localhost:3000/",
+    imageUrl: "/portfolio_design.png",
+  },
 ];
 
 // ─── EXPERIENCE ───────────────────────────────────────────
