@@ -216,7 +216,7 @@ export default function Contact() {
                 title="Copy email"
               >
                 {copied ? (
-                  <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-[#60a5fa]" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                 ) : (
@@ -225,7 +225,7 @@ export default function Contact() {
                   </svg>
                 )}
                 {copied && (
-                  <span className="absolute -top-9 left-1/2 -translate-x-1/2 px-2 py-1 bg-green-500 text-white text-xs rounded-md shadow-lg whitespace-nowrap z-50">
+                  <span className="absolute -top-9 left-1/2 -translate-x-1/2 px-2 py-1 bg-[#3b82f6] text-white text-xs rounded-md shadow-lg whitespace-nowrap z-50">
                     Copied!
                   </span>
                 )}
