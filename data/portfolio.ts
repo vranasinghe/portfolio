@@ -167,6 +167,7 @@ export const skills: SkillCategory[] = [
     items: [
       { name: "Docker", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg", brandColor: "#0DB7ED", bgColor: "rgba(13, 183, 237, 0.12)", hoverGlow: "rgba(13, 183, 237, 0.25)" },
       { name: "Vercel", Icon: SiVercel, brandColor: "#000000", darkBrandColor: "#ffffff", bgColor: "rgba(0, 0, 0, 0.07)", hoverGlow: "rgba(0, 0, 0, 0.18)" },
+      { name: "AWS", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg", brandColor: "#FF9900", bgColor: "rgba(255, 153, 0, 0.12)", hoverGlow: "rgba(255, 153, 0, 0.25)" },
       { name: "Maven", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/maven/maven-original.svg", brandColor: "#C23531", bgColor: "rgba(194, 53, 49, 0.12)", hoverGlow: "rgba(194, 53, 49, 0.25)" },
     ],
   },
