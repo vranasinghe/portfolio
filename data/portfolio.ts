@@ -161,6 +161,16 @@ export const skills: SkillCategory[] = [
     ],
   },
   {
+    category: "DEVOPS & CLOUD",
+    color: "bg-cyan-50 border-cyan-200",
+    icon: "☁️",
+    items: [
+      { name: "Docker", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg", brandColor: "#0DB7ED", bgColor: "rgba(13, 183, 237, 0.12)", hoverGlow: "rgba(13, 183, 237, 0.25)" },
+      { name: "Vercel", Icon: SiVercel, brandColor: "#000000", darkBrandColor: "#ffffff", bgColor: "rgba(0, 0, 0, 0.07)", hoverGlow: "rgba(0, 0, 0, 0.18)" },
+      { name: "Maven", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/maven/maven-original.svg", brandColor: "#C23531", bgColor: "rgba(194, 53, 49, 0.12)", hoverGlow: "rgba(194, 53, 49, 0.25)" },
+    ],
+  },
+  {
     category: "AI & DATA",
     color: "bg-purple-50 border-purple-200",
     icon: "🧠",
@@ -181,9 +191,6 @@ export const skills: SkillCategory[] = [
     items: [
       { name: "Git", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg", brandColor: "#F05032", bgColor: "rgba(240, 80, 50, 0.12)", hoverGlow: "rgba(240, 80, 50, 0.25)" },
       { name: "GitHub", Icon: SiGithub, brandColor: "#24292e", darkBrandColor: "#ffffff", bgColor: "rgba(36, 41, 46, 0.09)", hoverGlow: "rgba(36, 41, 46, 0.2)" },
-      { name: "Docker", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg", brandColor: "#0DB7ED", bgColor: "rgba(13, 183, 237, 0.12)", hoverGlow: "rgba(13, 183, 237, 0.25)" },
-      { name: "Vercel", Icon: SiVercel, brandColor: "#000000", darkBrandColor: "#ffffff", bgColor: "rgba(0, 0, 0, 0.07)", hoverGlow: "rgba(0, 0, 0, 0.18)" },
-      { name: "Maven", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/maven/maven-original.svg", brandColor: "#C23531", bgColor: "rgba(194, 53, 49, 0.12)", hoverGlow: "rgba(194, 53, 49, 0.25)" },
       { name: "VS Code", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg", brandColor: "#007ACC", bgColor: "rgba(0, 122, 204, 0.12)", hoverGlow: "rgba(0, 122, 204, 0.25)" },
       { name: "IntelliJ IDEA", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/intellij/intellij-original.svg", brandColor: "#FF0050", bgColor: "rgba(255, 0, 80, 0.10)", hoverGlow: "rgba(255, 0, 80, 0.22)" },
       { name: "PyCharm", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pycharm/pycharm-original.svg", brandColor: "#21D789", bgColor: "rgba(33, 215, 137, 0.10)", hoverGlow: "rgba(33, 215, 137, 0.22)" },
