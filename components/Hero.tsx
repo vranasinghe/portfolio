@@ -21,7 +21,7 @@ export default function Hero() {
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full bg-indigo-950/20 dark:bg-indigo-950/20 blur-3xl" />
-        <div className="absolute bottom-0 -left-32 w-[400px] h-[400px] rounded-full bg-[#60a5fa]/5 blur-3xl" />
+        <div className="absolute bottom-0 -left-32 w-[400px] h-[400px] rounded-full bg-[color-mix(in_srgb,var(--accent-color)_5%,transparent)] blur-3xl" />
       </div>
 
       <div className="relative max-w-7xl w-full mx-auto grid lg:grid-cols-2 gap-12 items-center">
@@ -57,7 +57,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }}
             >
               {personalInfo.name.split(" ")[0]}{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-[#60a5fa]">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-[var(--accent-color)]">
                 {personalInfo.name.split(" ")[1]}.
               </span>
             </motion.h1>
@@ -73,7 +73,7 @@ export default function Hero() {
               repeat={Infinity}
               speed={60}
               deletionSpeed={70}
-              className="text-[#60a5fa]"
+              className="text-[var(--accent-color)]"
             />
           </motion.div>
 
@@ -103,7 +103,7 @@ export default function Hero() {
             <a
               href={personalInfo.resumeLink}
               download
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-[#60a5fa] text-[#60a5fa] text-sm font-semibold hover:bg-[#60a5fa]/10 active:scale-95 transition-all duration-200"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-[var(--accent-color)] text-[var(--accent-color)] text-sm font-semibold hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] active:scale-95 transition-all duration-200"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>

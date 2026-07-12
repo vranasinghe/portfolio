@@ -35,13 +35,13 @@ export default function Projects() {
         viewport={{ once: true }}
         className="mb-16 text-center"
       >
-        <p className="text-sm font-bold tracking-widest text-[#60a5fa] uppercase mb-3 drop-shadow-sm font-mono">
+        <p className="text-sm font-bold tracking-widest text-[var(--accent-color)] uppercase mb-3 drop-shadow-sm font-mono">
           {/*Portfolio*/}
         </p>
         <h2 className="text-4xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-6 tracking-tight">
           Projects
         </h2>
-        <div className="w-24 h-1.5 bg-gradient-to-r from-[#60a5fa] to-indigo-500 mx-auto rounded-full shadow-sm mb-6" />
+        <div className="w-24 h-1.5 bg-gradient-to-r from-[var(--accent-color)] to-indigo-500 mx-auto rounded-full shadow-sm mb-6" />
         <p className="text-[var(--text-muted)] max-w-xl mx-auto text-sm md:text-base leading-relaxed">
           A curated selection of end-to-end projects spanning AI, data science, and full-stack development.
         </p>
@@ -76,7 +76,7 @@ export default function Projects() {
 
             {/* Content */}
             <div className={`lg:col-span-5 space-y-4 ${project.reversed ? "lg:order-1" : ""}`}>
-              <p className="text-sm font-mono text-[#60a5fa]">{project.role}</p>
+              <p className="text-sm font-mono text-[var(--accent-color)]">{project.role}</p>
               <h3 className="text-2xl font-bold text-[var(--text-primary)]">{project.title}</h3>
 
               <div className="relative z-10 p-5 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-[0_15px_40px_var(--shadow-color)]">
@@ -87,7 +87,7 @@ export default function Projects() {
               {/* Tags */}
               <div className={`flex flex-wrap gap-2 ${project.reversed ? "lg:justify-end" : ""}`}>
                 {project.tags.map((tag) => (
-                  <span key={tag} className="px-2.5 py-1 text-xs font-mono font-medium rounded-full bg-indigo-950/40 text-[#60a5fa] border border-indigo-900/50">
+                  <span key={tag} className="px-2.5 py-1 text-xs font-mono font-medium rounded-full bg-indigo-50 dark:bg-indigo-950/40 text-[var(--accent-color)] border border-indigo-200/70 dark:border-indigo-900/50 transition-all duration-200 hover:scale-105 hover:border-[var(--accent-color)] hover:bg-indigo-100 dark:hover:bg-indigo-950/60">
                     {tag}
                   </span>
                 ))}
@@ -96,12 +96,12 @@ export default function Projects() {
               {/* Links */}
               <div className={`flex gap-3 ${project.reversed ? "lg:justify-end" : ""}`}>
                 <a href={project.github} target="_blank" rel="noopener noreferrer"
-                  className="text-[var(--text-muted)] hover:text-[#60a5fa] transition-colors">
+                  className="text-[var(--text-muted)] hover:text-[var(--accent-color)] transition-colors">
                   <GitHubIcon />
                 </a>
                 {project.live && (
                   <a href={project.live} target="_blank" rel="noopener noreferrer"
-                    className="text-[var(--text-muted)] hover:text-[#60a5fa] transition-colors">
+                    className="text-[var(--text-muted)] hover:text-[var(--accent-color)] transition-colors">
                     <ExternalLinkIcon />
                   </a>
                 )}
@@ -122,7 +122,7 @@ export default function Projects() {
         <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--text-primary)] mb-6 tracking-tight">
           Other Noteworthy Projects
         </h2>
-        <div className="w-16 h-1 bg-gradient-to-r from-[#60a5fa] to-indigo-500 mx-auto rounded-full shadow-sm mb-6" />
+        <div className="w-16 h-1 bg-gradient-to-r from-[var(--accent-color)] to-indigo-500 mx-auto rounded-full shadow-sm mb-6" />
         <p className="text-[var(--text-muted)] max-w-xl mx-auto text-sm md:text-base leading-relaxed">
           Smaller experiments, tools, and side projects.
         </p>
@@ -140,13 +140,20 @@ export default function Projects() {
           <button
             key={cat}
             onClick={() => setActiveCategory(cat)}
-            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 border ${
+            className={`relative px-4 py-2 rounded-xl text-sm font-medium border overflow-hidden transition-colors duration-200 ${
               activeCategory === cat
-                ? "bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-950/50"
-                : "bg-[var(--card-bg)] text-[var(--text-muted)] border-[var(--border-color)] hover:border-[#60a5fa] hover:text-[#60a5fa]"
+                ? "text-white border-indigo-600"
+                : "bg-[var(--card-bg)] text-[var(--text-muted)] border-[var(--border-color)] hover:border-[var(--accent-color)] hover:text-[var(--accent-color)]"
             }`}
           >
-            {cat}
+            {activeCategory === cat && (
+              <motion.span
+                layoutId="projects-tab-pill"
+                className="absolute inset-0 bg-indigo-600 shadow-md shadow-indigo-950/50"
+                transition={{ type: "spring", stiffness: 380, damping: 32 }}
+              />
+            )}
+            <span className="relative z-10">{cat}</span>
           </button>
         ))}
       </motion.div>
@@ -163,8 +170,17 @@ export default function Projects() {
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.3 }}
               whileHover={{ y: -6 }}
-              className="group flex flex-col p-6 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-sm hover:border-[#60a5fa]/40 hover:shadow-[0_8px_30px_var(--shadow-color)] transition-all duration-250"
+              onMouseMove={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                e.currentTarget.style.setProperty("--x", `${e.clientX - rect.left}px`);
+                e.currentTarget.style.setProperty("--y", `${e.clientY - rect.top}px`);
+              }}
+              className="group relative flex flex-col p-6 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-sm hover:border-[color-mix(in_srgb,var(--accent-color)_40%,transparent)] hover:shadow-[0_8px_30px_var(--shadow-color)] transition-all duration-250 overflow-hidden"
             >
+              <div
+                className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                style={{ background: "radial-gradient(400px circle at var(--x) var(--y), rgba(96,165,250,0.12), transparent 70%)" }}
+              />
               {project.imageUrl && (
                 <div className="relative -mx-6 -mt-6 mb-5 aspect-video overflow-hidden rounded-t-2xl bg-indigo-950/30 border-b border-[var(--border-color)]">
                   <img
@@ -176,33 +192,33 @@ export default function Projects() {
               )}
               {/* Header */}
               <div className="flex items-start justify-between mb-5">
-                <div className="w-10 h-10 rounded-xl bg-indigo-950/50 flex items-center justify-center text-[#60a5fa]">
+                <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 flex items-center justify-center text-[var(--accent-color)]">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
                   </svg>
                 </div>
                 <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <a href={project.github} target="_blank" rel="noopener noreferrer"
-                    className="text-[var(--text-muted)] hover:text-[#60a5fa] transition-colors">
+                    className="text-[var(--text-muted)] hover:text-[var(--accent-color)] transition-colors">
                     <GitHubIcon />
                   </a>
                   {project.live && (
                     <a href={project.live} target="_blank" rel="noopener noreferrer"
-                      className="text-[var(--text-muted)] hover:text-[#60a5fa] transition-colors">
+                      className="text-[var(--text-muted)] hover:text-[var(--accent-color)] transition-colors">
                       <ExternalLinkIcon />
                     </a>
                   )}
                 </div>
               </div>
 
-              <h4 className="text-base font-bold text-[var(--text-primary)] mb-2 group-hover:text-[#60a5fa] transition-colors">
+              <h4 className="text-base font-bold text-[var(--text-primary)] mb-2 group-hover:text-[var(--accent-color)] transition-colors">
                 {project.title}
               </h4>
               <p className="text-sm text-[var(--text-muted)] leading-relaxed flex-1">{project.description}</p>
 
               <div className="flex flex-wrap gap-1.5 mt-4">
                 {project.tags.map((tag) => (
-                  <span key={tag} className="text-xs font-mono text-[var(--text-muted)]">{tag}</span>
+                  <span key={tag} className="text-xs font-mono text-[var(--text-muted)] transition-colors duration-200 hover:text-[var(--accent-color)]">{tag}</span>
                 ))}
               </div>
             </motion.div>

@@ -1,9 +1,25 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useTheme } from "next-themes";
+
+interface Star {
+  x: number;
+  y: number;
+  radius: number;
+  opacity: number;
+  twinkleSpeed: number;
+  twinkleOffset: number;
+}
 
 export default function ParticlesBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const isDark = !mounted || resolvedTheme !== "light";
+  const isDarkRef = useRef(isDark);
+  isDarkRef.current = isDark;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -16,69 +32,103 @@ export default function ParticlesBackground() {
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
-    const particles: Array<{
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      radius: number;
-    }> = [];
+    // ── Generate stars ────────────────────────────────────────
+    const starCount = Math.floor((width * height) / 3500);
+    const stars: Star[] = [];
 
-    const particleCount = Math.min(80, Math.floor((width * height) / 18000));
+    for (let i = 0; i < starCount; i++) {
+      // Bias toward smaller stars (realistic distribution)
+      const rand = Math.random();
+      let radius: number;
+      if (rand < 0.70) {
+        radius = Math.random() * 0.5 + 0.2;   // tiny  (70%)
+      } else if (rand < 0.92) {
+        radius = Math.random() * 0.6 + 0.6;   // small (22%)
+      } else {
+        radius = Math.random() * 0.8 + 1.1;   // medium (8%)
+      }
 
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
+      stars.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.25,
-        vy: (Math.random() - 0.5) * 0.25,
-        radius: Math.random() * 1.5 + 0.8,
+        radius,
+        opacity: Math.random() * 0.5 + 0.3,
+        twinkleSpeed: Math.random() * 0.008 + 0.003,
+        twinkleOffset: Math.random() * Math.PI * 2,
       });
     }
 
+    // ── Handle resize ─────────────────────────────────────────
     const handleResize = () => {
       if (!canvas) return;
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
     };
-
     window.addEventListener("resize", handleResize);
 
+    let frame = 0;
+
+    // ── Draw loop ─────────────────────────────────────────────
     const draw = () => {
-      ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = "rgba(96, 165, 250, 0.35)";
-      ctx.strokeStyle = "rgba(96, 165, 250, 0.05)";
+      frame++;
+      const dark = isDarkRef.current;
 
-      particles.forEach((p) => {
-        p.x += p.vx;
-        p.y += p.vy;
+      // ── Background gradient (deep space in dark mode, soft sky in light) ──
+      const grad = ctx.createRadialGradient(
+        width * 0.5, height * 0.4, 0,
+        width * 0.5, height * 0.4, Math.max(width, height) * 0.75
+      );
+      if (dark) {
+        grad.addColorStop(0,   "#061a2e"); // centre — slightly lighter navy
+        grad.addColorStop(0.4, "#04111e"); // mid
+        grad.addColorStop(1,   "#02080f"); // edges — deep black-navy
+      } else {
+        grad.addColorStop(0,   "#f8fafc"); // centre — soft white
+        grad.addColorStop(0.4, "#eef2f7"); // mid
+        grad.addColorStop(1,   "#e5e9f0"); // edges — light slate
+      }
 
-        if (p.x < 0 || p.x > width) p.vx *= -1;
-        if (p.y < 0 || p.y > height) p.vy *= -1;
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, width, height);
+
+      // ── Stars / dots ────────────────────────────────────────
+      stars.forEach((star) => {
+        // Slow sine-wave twinkle
+        const twinkle = Math.sin(frame * star.twinkleSpeed + star.twinkleOffset);
+        const currentOpacity = star.opacity + twinkle * 0.18;
+        const clampedOpacity = Math.max(0.05, Math.min(1, currentOpacity));
+
+        const isBright = star.radius > 1.0;
+        let color: string;
+        if (dark) {
+          // Slight blue-white tint for larger stars
+          color = isBright
+            ? `rgba(210, 230, 255, ${clampedOpacity})`
+            : `rgba(255, 255, 255, ${clampedOpacity})`;
+        } else {
+          // Muted blue-gray dots, lower opacity so they read as a subtle texture on light backgrounds
+          const lightOpacity = clampedOpacity * 0.5;
+          color = isBright
+            ? `rgba(96, 130, 200, ${lightOpacity})`
+            : `rgba(100, 116, 139, ${lightOpacity})`;
+        }
 
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+
+        // Soft glow on brighter/larger stars (dark mode only)
+        if (dark && isBright && clampedOpacity > 0.55) {
+          ctx.shadowBlur = 4;
+          ctx.shadowColor = "rgba(180, 210, 255, 0.6)";
+        } else {
+          ctx.shadowBlur = 0;
+        }
+
         ctx.fill();
       });
 
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < 130) {
-            const alpha = (1 - dist / 130) * 0.07;
-            ctx.strokeStyle = `rgba(96, 165, 250, ${alpha})`;
-            ctx.lineWidth = 0.5;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
-          }
-        }
-      }
-
+      ctx.shadowBlur = 0;
       animationFrameId = requestAnimationFrame(draw);
     };
 
@@ -90,5 +140,10 @@ export default function ParticlesBackground() {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 w-full h-full pointer-events-none z-0" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 w-full h-full pointer-events-none z-0"
+    />
+  );
 }

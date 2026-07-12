@@ -21,13 +21,13 @@ export default function About() {
         viewport={{ once: true }}
         className="mb-16 text-center"
       >
-        <p className="text-sm font-bold tracking-widest text-[#60a5fa] uppercase mb-3 drop-shadow-sm font-mono">
+        <p className="text-sm font-bold tracking-widest text-[var(--accent-color)] uppercase mb-3 drop-shadow-sm font-mono">
 
         </p>
         <h2 className="text-4xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-6 tracking-tight">
           About Me
         </h2>
-        <div className="w-24 h-1.5 bg-gradient-to-r from-[#60a5fa] to-indigo-500 mx-auto rounded-full shadow-sm" />
+        <div className="w-24 h-1.5 bg-gradient-to-r from-[var(--accent-color)] to-indigo-500 mx-auto rounded-full shadow-sm" />
       </motion.div>
 
       <div className="grid lg:grid-cols-5 gap-14 items-start">
@@ -40,7 +40,7 @@ export default function About() {
             viewport={{ once: true }} transition={{ duration: 0.5 }}
           >
             Hello! I&apos;m{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-[#60a5fa]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-[var(--accent-color)]">
               {personalInfo.name.split(" ")[0]}.
             </span>
           </motion.h2>
@@ -68,7 +68,7 @@ export default function About() {
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ delay: 0.35 }}
           >
-            <p className="text-sm font-mono text-[#60a5fa] mb-3">Recently working with:</p>
+            <p className="text-sm font-mono text-[var(--accent-color)] mb-3">Recently working with:</p>
             <div className="grid grid-cols-2 gap-y-2 gap-x-4">
               {[
                 "Python / PyTorch", "React / Next.js",
@@ -76,7 +76,7 @@ export default function About() {
                 "MongoDB / PostgreSQL", "R (Statistical)",
               ].map((item) => (
                 <div key={item} className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
-                  <span className="text-[#60a5fa] font-bold">▸</span>
+                  <span className="text-[var(--accent-color)] font-bold">▸</span>
                   <span className="font-mono">{item}</span>
                 </div>
               ))}
@@ -96,7 +96,7 @@ export default function About() {
                 whileHover={{ y: -4, scale: 1.02 }}
                 className="flex flex-col items-center text-center p-4 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-[0_10px_30px_var(--shadow-color)] transition-all duration-200"
               >
-                <span className="text-xl font-extrabold text-[#60a5fa] leading-none mb-1">
+                <span className="text-xl font-extrabold text-[var(--accent-color)] leading-none mb-1">
                   {stat.value}
                 </span>
                 <span className="text-xs text-[var(--text-muted)] leading-tight">{stat.label}</span>
@@ -113,16 +113,16 @@ export default function About() {
           viewport={{ once: true }}
           transition={{ duration: 0.7, delay: 0.2 }}
         >
-          <div className="relative w-64 h-72 lg:w-72 lg:h-80">
+          <div className="group relative w-64 h-72 lg:w-72 lg:h-80">
             {/* Offset border */}
-            <div className="absolute inset-0 rounded-2xl border-2 border-[#60a5fa]/30 translate-x-3 translate-y-3" />
+            <div className="absolute inset-0 rounded-2xl border-2 border-[color-mix(in_srgb,var(--accent-color)_30%,transparent)] translate-x-3 translate-y-3 transition-transform duration-500 group-hover:translate-x-4 group-hover:translate-y-4" />
 
             {/* Photo */}
             <div className="relative w-full h-full rounded-2xl overflow-hidden bg-[var(--card-bg)] border border-[var(--border-color)]">
               <img
                 src="/venuja.png"
                 alt={personalInfo.name}
-                className="w-full h-full object-cover transition-all duration-500"
+                className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
               />
             </div>
 

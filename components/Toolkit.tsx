@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "next-themes";
 import { skills } from "@/data/portfolio";
@@ -8,7 +8,9 @@ import { skills } from "@/data/portfolio";
 export default function Toolkit() {
   const [activeCategory, setActiveCategory] = useState(0);
   const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const isDark = mounted && resolvedTheme === "dark";
 
   return (
     <section className="max-w-6xl mx-auto px-6 py-24 bg-transparent">
@@ -19,13 +21,13 @@ export default function Toolkit() {
         viewport={{ once: true }}
         className="mb-16 text-center"
       >
-        <p className="text-sm font-bold tracking-widest text-[#60a5fa] uppercase mb-3 drop-shadow-sm font-mono">
+        <p className="text-sm font-bold tracking-widest text-[var(--accent-color)] uppercase mb-3 drop-shadow-sm font-mono">
 
         </p>
         <h2 className="text-4xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-6 tracking-tight">
           Tech Stack
         </h2>
-        <div className="w-24 h-1.5 bg-gradient-to-r from-[#60a5fa] to-indigo-500 mx-auto rounded-full shadow-sm mb-6" />
+        <div className="w-24 h-1.5 bg-gradient-to-r from-[var(--accent-color)] to-indigo-500 mx-auto rounded-full shadow-sm mb-6" />
         <p className="text-[var(--text-muted)] max-w-xl mx-auto text-sm md:text-base leading-relaxed">
           Languages, frameworks, and tools I build with — mapped directly from my skill set.
         </p>
@@ -41,13 +43,22 @@ export default function Toolkit() {
           <button
             key={cat.category}
             onClick={() => setActiveCategory(i)}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 border ${activeCategory === i
-                ? "bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-950/50"
-                : "bg-[var(--card-bg)] text-[var(--text-muted)] border-[var(--border-color)] hover:border-[#60a5fa] hover:text-[#60a5fa]"
+            className={`relative flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium border overflow-hidden transition-colors duration-200 ${activeCategory === i
+                ? "text-white border-indigo-600"
+                : "bg-[var(--card-bg)] text-[var(--text-muted)] border-[var(--border-color)] hover:border-[var(--accent-color)] hover:text-[var(--accent-color)]"
               }`}
           >
-            <span>{cat.icon}</span>
-            {cat.category}
+            {activeCategory === i && (
+              <motion.span
+                layoutId="toolkit-tab-pill"
+                className="absolute inset-0 bg-indigo-600 shadow-md shadow-indigo-950/50"
+                transition={{ type: "spring", stiffness: 380, damping: 32 }}
+              />
+            )}
+            <span className="relative z-10 flex items-center gap-1.5">
+              <span>{cat.icon}</span>
+              {cat.category}
+            </span>
           </button>
         ))}
       </motion.div>

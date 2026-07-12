@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useTheme } from "next-themes";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
@@ -31,37 +32,47 @@ export function ThemeToggle() {
       className="theme-toggle group"
     >
       {/* Animated icon bubble */}
-      <span className="toggle-icon" aria-hidden="true">
-        {isDark ? (
-          /* Sun icon for dark mode (click → go light) */
-          <svg
-            width="13"
-            height="13"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <circle cx="12" cy="12" r="4" />
-            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-          </svg>
-        ) : (
-          /* Moon icon for light mode (click → go dark) */
-          <svg
-            width="13"
-            height="13"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-          </svg>
-        )}
+      <span className="toggle-icon relative" aria-hidden="true">
+        <AnimatePresence mode="wait" initial={false}>
+          {isDark ? (
+            <motion.svg
+              key="sun"
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={{ opacity: 0, rotate: -90, scale: 0.5 }}
+              animate={{ opacity: 1, rotate: 0, scale: 1 }}
+              exit={{ opacity: 0, rotate: 90, scale: 0.5 }}
+              transition={{ duration: 0.25, ease: "easeInOut" }}
+            >
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+            </motion.svg>
+          ) : (
+            <motion.svg
+              key="moon"
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={{ opacity: 0, rotate: 90, scale: 0.5 }}
+              animate={{ opacity: 1, rotate: 0, scale: 1 }}
+              exit={{ opacity: 0, rotate: -90, scale: 0.5 }}
+              transition={{ duration: 0.25, ease: "easeInOut" }}
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </motion.svg>
+          )}
+        </AnimatePresence>
       </span>
 
       {/* Label */}

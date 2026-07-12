@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { personalInfo } from "@/data/portfolio";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
@@ -17,6 +18,9 @@ export default function Nav() {
   const [active,    setActive]    = useState("home");
   const [scrolled,  setScrolled]  = useState(false);
   const [menuOpen,  setMenuOpen]  = useState(false);
+
+  const { scrollYProgress } = useScroll();
+  const scrollProgress = useSpring(scrollYProgress, { stiffness: 200, damping: 30, restDelta: 0.001 });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,14 +60,20 @@ export default function Nav() {
           bg-[var(--nav-bg)]
         `}
       >
+        {/* Scroll progress indicator */}
+        <motion.div
+          className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[var(--accent-color)] to-indigo-500 origin-left"
+          style={{ scaleX: scrollProgress }}
+        />
+
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
 
           {/* Logo */}
           <button
             onClick={() => scrollTo("home")}
-            className="text-2xl font-bold tracking-tighter text-[var(--text-primary)] hover:text-[#60a5fa] transition-colors"
+            className="text-2xl font-bold tracking-tighter text-[var(--text-primary)] hover:text-[var(--accent-color)] transition-colors"
           >
-            &lt;<span className="text-[#60a5fa]">VR</span>/&gt;
+            &lt;<span className="text-[var(--accent-color)]">VR</span>/&gt;
           </button>
 
           {/* Desktop Links */}
@@ -74,13 +84,22 @@ export default function Nav() {
                 <button
                   key={id}
                   onClick={() => scrollTo(id)}
-                  className={`text-sm font-medium transition-all duration-200 ${
+                  className={`relative group py-1 text-sm font-medium transition-colors duration-200 ${
                     isActive
-                      ? "text-[#60a5fa]"
+                      ? "text-[var(--accent-color)]"
                       : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
                   }`}
                 >
                   {label}
+                  {isActive ? (
+                    <motion.span
+                      layoutId="nav-active-underline"
+                      className="absolute left-0 right-0 -bottom-1 h-0.5 rounded-full bg-[var(--accent-color)]"
+                      transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                    />
+                  ) : (
+                    <span className="absolute left-0 right-0 -bottom-1 h-0.5 rounded-full bg-[var(--text-muted)]/40 scale-x-0 group-hover:scale-x-100 transition-transform duration-200" />
+                  )}
                 </button>
               );
             })}
@@ -90,7 +109,7 @@ export default function Nav() {
               href={personalInfo.resumeLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-2 rounded-lg text-sm font-medium border border-[#60a5fa] text-[#60a5fa] hover:bg-[#60a5fa]/10 transition-colors flex items-center gap-2"
+              className="px-4 py-2 rounded-lg text-sm font-medium border border-[var(--accent-color)] text-[var(--accent-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-colors flex items-center gap-2"
             >
               Resume
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -125,31 +144,47 @@ export default function Nav() {
         </div>
 
         {/* Mobile Dropdown Menu */}
-        {menuOpen && (
-          <div className="md:hidden border-t border-[var(--border-color)] bg-[var(--nav-bg)] backdrop-blur-md px-6 py-4 flex flex-col gap-3">
-            {NAV_ITEMS.map(({ id, label }) => (
-              <button
-                key={id}
-                onClick={() => scrollTo(id)}
-                className={`text-sm font-medium text-left py-1 transition-colors ${
-                  active === id
-                    ? "text-[#60a5fa]"
-                    : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-            <a
-              href={personalInfo.resumeLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-1 px-4 py-2 rounded-lg text-sm font-medium border border-[#60a5fa] text-[#60a5fa] hover:bg-[#60a5fa]/10 transition-colors flex items-center gap-2 w-fit"
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.25, ease: "easeInOut" }}
+              className="md:hidden overflow-hidden border-t border-[var(--border-color)] bg-[var(--nav-bg)] backdrop-blur-md"
             >
-              Resume ↗
-            </a>
-          </div>
-        )}
+              <div className="px-6 py-4 flex flex-col gap-3">
+                {NAV_ITEMS.map(({ id, label }, i) => (
+                  <motion.button
+                    key={id}
+                    onClick={() => scrollTo(id)}
+                    initial={{ opacity: 0, x: -12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.04, duration: 0.2 }}
+                    className={`text-sm font-medium text-left py-1 transition-colors ${
+                      active === id
+                        ? "text-[var(--accent-color)]"
+                        : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                    }`}
+                  >
+                    {label}
+                  </motion.button>
+                ))}
+                <motion.a
+                  href={personalInfo.resumeLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: NAV_ITEMS.length * 0.04, duration: 0.2 }}
+                  className="mt-1 px-4 py-2 rounded-lg text-sm font-medium border border-[var(--accent-color)] text-[var(--accent-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-colors flex items-center gap-2 w-fit"
+                >
+                  Resume ↗
+                </motion.a>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
     </>
   );
