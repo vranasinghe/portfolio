@@ -320,14 +320,14 @@ export const minorProjects: MinorProject[] = [
     imageUrl: "/Car Trader.png",
   },
   {
-    title: "Portfolio Design — Premium UI/UX Showcase",
+    title: "Zedian — Responsive UI/UX Portfolio V2",
     description:
-      "A beautifully crafted, modern personal portfolio design. Focuses on premium glassmorphic cards, glowing interactive neon accents, smooth page transitions, and responsive layouts.",
-    tags: ["Figma", "Design System", "Vanilla CSS", "HTML5", "Framer Motion", "UI/UX Design"],
+      "A premium, dark-themed personal portfolio design featuring sleek layout grids, clean typography, interactive components, and smooth scroll transitions.",
+    tags: ["React", "Next.js", "Tailwind CSS", "Framer Motion", "UI/UX Design"],
     category: "Design",
-    github: "https://github.com/vranasinghe/portfolio",
-    live: "http://localhost:3000/",
-    imageUrl: "/portfolio_design.png",
+    github: "https://github.com/vranasinghe/portfolio-v2",
+    live: "https://portfolio-v2-lac-eight.vercel.app/",
+    imageUrl: "/UI UX Portfolio.png",
   },
 ];
 
