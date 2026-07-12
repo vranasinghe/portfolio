@@ -6,6 +6,8 @@ import { useTheme } from "next-themes";
 interface Star {
   x: number;
   y: number;
+  vx: number;
+  vy: number;
   radius: number;
   opacity: number;
   twinkleSpeed: number;
@@ -48,9 +50,15 @@ export default function ParticlesBackground() {
         radius = Math.random() * 0.8 + 1.1;   // medium (8%)
       }
 
+      // Subtle drift — smaller stars move slightly faster for depth effect
+      const speed = (0.02 + Math.random() * 0.13) * (1.4 - radius * 0.3);
+      const angle = Math.random() * Math.PI * 2;
+
       stars.push({
         x: Math.random() * width,
         y: Math.random() * height,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
         radius,
         opacity: Math.random() * 0.5 + 0.3,
         twinkleSpeed: Math.random() * 0.008 + 0.003,
@@ -93,6 +101,14 @@ export default function ParticlesBackground() {
 
       // ── Stars / dots ────────────────────────────────────────
       stars.forEach((star) => {
+        // ── Drift movement with edge wrapping ──
+        star.x += star.vx;
+        star.y += star.vy;
+        if (star.x < -2) star.x = width + 2;
+        if (star.x > width + 2) star.x = -2;
+        if (star.y < -2) star.y = height + 2;
+        if (star.y > height + 2) star.y = -2;
+
         // Slow sine-wave twinkle
         const twinkle = Math.sin(frame * star.twinkleSpeed + star.twinkleOffset);
         const currentOpacity = star.opacity + twinkle * 0.18;

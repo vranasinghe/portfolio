@@ -329,6 +329,15 @@ export const minorProjects: MinorProject[] = [
     live: "https://portfolio-v2-lac-eight.vercel.app/",
     imageUrl: "/UI UX Portfolio.png",
   },
+  {
+    title: "Expense Tracker App",
+    description:
+      "A local-first expense and budget tracking application designed to help users manage their daily finances, monitor spending, set category-based budgets, and understand financial patterns through interactive analytics.",
+    tags: ["React Native", "Expo SDK 54", "TypeScript", "Zustand", "Expo Router", "Async Storage"],
+    category: "Mobile App",
+    github: "https://github.com/vranasinghe/Expense_Tracking_Mobile_App.git",
+    imageUrl: "/Expense Trackin app.png",
+  },
 ];
 
 // ─── EXPERIENCE ───────────────────────────────────────────
