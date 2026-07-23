@@ -70,7 +70,7 @@ export default function Contact() {
   };
 
   return (
-    <section className="relative w-full bg-transparent py-24 overflow-hidden border-t border-[var(--border-color)]">
+    <section className="relative w-full bg-transparent py-24 overflow-hidden">
       {/* Decorative Glow elements */}
       <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-indigo-950/20 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-[color-mix(in_srgb,var(--accent-color)_5%,transparent)] blur-[120px] rounded-full pointer-events-none" />
