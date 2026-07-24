@@ -76,7 +76,6 @@ export default function Projects() {
 
             {/* Content */}
             <div className={`lg:col-span-5 space-y-4 ${project.reversed ? "lg:order-1" : ""}`}>
-              <p className="text-sm font-mono text-[var(--accent-color)]">{project.role}</p>
               <h3 className="text-2xl font-bold text-[var(--text-primary)]">{project.title}</h3>
 
               <div className="relative z-10 p-5 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-[0_15px_40px_var(--shadow-color)]">

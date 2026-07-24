@@ -251,7 +251,7 @@ export const featuredProjects: FeaturedProject[] = [
       "A premium, modern real estate marketplace platform built with React, Vite, Tailwind CSS, and a Supabase (PostgreSQL) backend.",
     longDescription:
       "Features dynamic property browsing with multi-parameter filtering, interactive property listings, user sessions, role-based controls, row-level security (RLS) policies, and database persistence.",
-    imageUrl: "/Modern Real state platform.png",
+    imageUrl: "/Real State Application.png",
     tags: ["React", "Vite", "Tailwind CSS", "Supabase", "PostgreSQL", "RLS Security"],
     github: "https://github.com/vranasinghe/Real-state-project.git",
     live: "https://real-state-project-9bb29bow0-teams-01.vercel.app",
