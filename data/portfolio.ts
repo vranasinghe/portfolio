@@ -246,7 +246,7 @@ export const featuredProjects: FeaturedProject[] = [
   },
   {
     id: 2,
-    title: "Casa Mare — Modern Real Estate Platform",
+    title: "Aura Space — Modern Real Estate Platform",
     description:
       "A premium, modern real estate marketplace platform built with React, Vite, Tailwind CSS, and a Supabase (PostgreSQL) backend.",
     longDescription:
