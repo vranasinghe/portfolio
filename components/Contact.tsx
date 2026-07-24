@@ -83,9 +83,6 @@ export default function Contact() {
           viewport={{ once: true }}
           className="mb-16 text-center animate-fade-in"
         >
-          <p className="text-sm font-bold tracking-widest text-[var(--accent-color)] uppercase mb-3 font-mono">
-            CONTACT
-          </p>
           <h2 className="text-4xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-4 tracking-tight">
             Get In Touch
           </h2>
