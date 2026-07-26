@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import Preloader from "@/components/Preloader";
 
 export const metadata: Metadata = {
   title: "Venuja Ranasinghe | Data Science & AI Portfolio",
@@ -54,6 +55,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange={false}
         >
+          <Preloader />
           {children}
         </ThemeProvider>
       </body>

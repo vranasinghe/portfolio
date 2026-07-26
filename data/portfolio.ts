@@ -268,7 +268,7 @@ export const featuredProjects: FeaturedProject[] = [
     imageUrl: "/Bright Vote.png",
     tags: ["Spring Boot", "React", "Vite", "Java", "H2 Database", "REST APIs", "Docker"],
     github: "https://github.com/vranasinghe/web-voting-system",
-    live: "https://web-voting-system-pz0d5hbpv-teams-01.vercel.app",
+    live: "https://web-voting-system.vercel.app/",
     role: "Full-Stack Developer",
     reversed: false,
   },
