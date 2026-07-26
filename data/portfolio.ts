@@ -12,7 +12,7 @@ export const personalInfo = {
   location: "Sri Lanka",
   email: "venujaranasinghe26@gmail.com",
   github: "https://github.com/vranasinghe",
-  linkedin: "https://linkedin.com/in/venujaranasinghe",
+  linkedin: "https://linkedin.com/in/venuja-ranasinghe-522a63423",
   instagram: "https://instagram.com/venujaranasinghe",
   resumeLink: "/Resume.pdf",
   bio: "Hello! My name is Venuja. I'm pursuing a B.Sc. (Hons) in Information Technology at SLIIT, specializing in Data Science. I enjoy building things that live on the web and training predictive models that turn raw data into something useful. I bridge complex machine learning architectures with user-centric design.",
