@@ -361,7 +361,6 @@ export const experience: ExperienceItem[] = [
       "Project-tested skills across web, mobile, and ML domains",
       "Strong foundation in CNNs, NLP, and statistical modeling",
       "Comfortable with full-stack development (React, Node, Python)",
-      "IEEE Student Member at SLIIT",
     ],
     tags: ["Data Science", "Machine Learning", "Full-Stack", "Remote-friendly"],
   },
@@ -383,7 +382,7 @@ export const education: EducationItem[] = [
     period: "2024 — Present",
     description:
       "Specializing in Artificial Intelligence & Data Science. Relevant coursework: OOP, Data Structures & Algorithms, Database Management, Software Engineering, Machine Learning Fundamentals, and Web Technologies.",
-    tags: ["Data Science Specialization", "IEEE Student Member", "GPA: In Progress"],
+    tags: ["Data Science Specialization", "GPA: In Progress"],
   },
   {
     degree: "G.C.E. Advanced Level (A/L) - Physical Science Stream",
