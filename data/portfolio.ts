@@ -336,6 +336,15 @@ export const minorProjects: MinorProject[] = [
     github: "https://github.com/vranasinghe/Expense_Tracking_Mobile_App.git",
     imageUrl: "/Expense Trackin app.png",
   },
+  {
+    title: "E-Commerce Web System",
+    description:
+      "A full-stack e-commerce web platform featuring dynamic product catalog browsing, cart management, secure user authentication, and responsive shopping experience.",
+    tags: ["React", "Next.js", "Tailwind CSS", "Node.js", "REST API", "Vercel"],
+    category: "Fullstack",
+    github: "https://github.com/vranasinghe",
+    live: "https://e-commerce-web-system-45cuzrk9t-teams-01.vercel.app/",
+  },
 ];
 
 // ─── EXPERIENCE ───────────────────────────────────────────
