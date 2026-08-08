@@ -379,7 +379,7 @@ export default function Reviews() {
                 className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200
                   ${isActive
                     ? "btn-accent"
-                    : "btn-outline bg-transparent hover:bg-[color-mix(in_srgb,var(--accent-color)_8%,transparent)]"
+                    : "btn-outline bg-transparent text-white hover:bg-[color-mix(in_srgb,var(--accent-color)_8%,transparent)]"
                   }`}
               >
                 {cat}
