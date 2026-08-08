@@ -5,6 +5,7 @@ import Toolkit from "@/components/Toolkit";
 import Projects from "@/components/Projects";
 import Experience from "@/components/Experience";
 import Certifications from "@/components/Certifications";
+import Reviews from "@/components/Reviews";
 import Contact from "@/components/Contact";
 import ParticlesBackground from "@/components/ParticlesBackground";
 
@@ -31,6 +32,9 @@ export default function Home() {
         </section>
         <section id="certifications">
           <Certifications />
+        </section>
+        <section id="reviews">
+          <Reviews />
         </section>
         <section id="contact">
           <Contact />
