@@ -34,7 +34,7 @@ The site blends immersive **3D interactive visual elements**, dynamic particle b
 - 💫 **Interactive UI Animations:** Smooth scroll transitions, Framer Motion animations, interactive canvas particles, preloader screen, and typewriter text dynamics.
 - 📬 **Functional Contact Form:** Direct email delivery integrated with the Web3Forms API and social profile hubs.
 - 📂 **Structured Showcase Sections:**
-  - **Hero:** Interactive intro with 3D elements, typewriter text, quick actions, and personal statistics.
+  - **Hero:** Interactive intro with 3D elements, typewriter text, quick actions, and personal statistics (8+ shipped projects).
   - **About:** Bio, academic trajectory at SLIIT, and key specialization milestones.
   - **Projects:** Filterable showcase of Full-Stack, Data Science, AI, and Mobile projects with live demos and GitHub repositories.
   - **Experience & Certifications:** Structured timeline of professional work experience and verified credentials.
