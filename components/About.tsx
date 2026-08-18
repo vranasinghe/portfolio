@@ -21,9 +21,7 @@ export default function About() {
         viewport={{ once: true }}
         className="mb-16 text-center"
       >
-        <p className="text-sm font-bold tracking-widest text-[var(--accent-color)] uppercase mb-3 drop-shadow-sm font-mono">
 
-        </p>
         <h2 className="text-4xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-6 tracking-tight">
           About Me
         </h2>
