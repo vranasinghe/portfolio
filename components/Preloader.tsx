@@ -69,8 +69,8 @@ export default function Preloader() {
       octx.textAlign = "center";
       octx.textBaseline = "middle";
       octx.font = `800 ${fontSize}px Inter, system-ui, sans-serif`;
-      // Position initials slightly above center
-      octx.fillText(INITIALS, W / 2, H * 0.50);
+      // Position initials above center to leave room for name text below
+      octx.fillText(INITIALS, W / 2, H * 0.43);
 
       const data = octx.getImageData(0, 0, W, H).data;
       // Fixed small gap so dot grid is dense — dots fill most of each cell
@@ -166,9 +166,9 @@ export default function Preloader() {
           {/* Particle dot-matrix monogram */}
           <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
-          {/* Name + loading counter — pinned at very bottom like reference image */}
+          {/* Name + loading counter — pinned directly below VR letters (VR center=43%, fontSize=15%vh, so bottom≈50.5%) */}
           <motion.div
-            className="absolute left-1/2 top-[60%] flex -translate-x-1/2 flex-col items-center gap-1.5"
+            className="absolute left-1/2 top-[51%] flex -translate-x-1/2 flex-col items-center gap-1"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35, duration: 0.6 }}
