@@ -86,7 +86,7 @@ export default function Contact() {
           <h2 className="text-4xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-4 tracking-tight">
             Get In Touch
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-[var(--accent-color)] to-indigo-500 mx-auto rounded-full mb-6" />
+          <div className="w-24 h-1.5 bg-gradient-to-r from-[var(--accent-color)] to-indigo-500 mx-auto rounded-full shadow-sm mb-6" />
           <p className="text-[var(--text-muted)] max-w-xl mx-auto text-sm md:text-base leading-relaxed">
             I&apos;m currently looking for internship opportunities. Whether you have a question, a project idea, or just want to say hi — I&apos;ll get back to you.
           </p>
