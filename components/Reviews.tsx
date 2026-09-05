@@ -242,8 +242,6 @@ export default function Reviews() {
           transition={{ duration: 0.55 }}
           className="mb-16 text-center"
         >
-
-
           <h2 className="text-4xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-6 tracking-tight">
             What My{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent-color)] to-indigo-400">
