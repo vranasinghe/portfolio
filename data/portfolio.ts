@@ -17,7 +17,7 @@ export const personalInfo = {
   resumeLink: "/Resume.pdf",
   bio: "Hello! My name is Venuja. I'm pursuing a B.Sc. (Hons) in Information Technology at SLIIT, specializing in Data Science. I enjoy building things that live on the web and training predictive models that turn raw data into something useful. I bridge complex machine learning architectures with user-centric design.",
   heroBio:
-    "Second-year SLIIT undergraduate specializing in Data Science. I build full-stack web, mobile, and machine learning applications using Python, React, Node.js, and Java. Seeking a Data Science Internship.",
+    "Third-year SLIIT undergraduate specializing in Data Science. I build full-stack web, mobile, and machine learning applications using Python, React, Node.js, and Java. Seeking a Data Science Internship.",
   typewriterPhrases: [
     "I build machine learning models.",
     "I build full-stack web apps.",
@@ -28,7 +28,7 @@ export const personalInfo = {
 
 export const heroStats = [
   { value: "8+", label: "Projects Shipped" },
-  { value: "2nd", label: "Year @ SLIIT" },
+  { value: "3rd", label: "Year @ SLIIT" },
   { value: "Data Science", label: "Specialization" },
   { value: "LK", label: "Based in Sri Lanka" },
 ];
