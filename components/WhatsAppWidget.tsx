@@ -76,13 +76,20 @@ export default function WhatsAppWidget() {
     textareaRef.current?.focus();
   };
 
+  const cleanWhatsAppNumber = (raw?: string) => {
+    let num = (raw || "94706827870").replace(/[^0-9]/g, "");
+    if (num.startsWith("0")) {
+      num = "94" + num.slice(1);
+    } else if (!num.startsWith("94") && num.length === 9) {
+      num = "94" + num;
+    }
+    return num;
+  };
+
   const handleSendMessage = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
 
-    const targetNumber = (personalInfo.whatsapp || "94706827870").replace(
-      /[^0-9]/g,
-      ""
-    );
+    const targetNumber = cleanWhatsAppNumber(personalInfo.whatsapp);
     const textToSend =
       message.trim() ||
       "Hi Venuja, I checked out your portfolio and wanted to connect with you!";

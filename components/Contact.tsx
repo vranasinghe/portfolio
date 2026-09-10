@@ -31,8 +31,18 @@ export default function Contact() {
     setFormState({ ...formState, [e.target.name]: e.target.value });
   };
 
+  const cleanWhatsAppNumber = (raw?: string) => {
+    let num = (raw || "94706827870").replace(/[^0-9]/g, "");
+    if (num.startsWith("0")) {
+      num = "94" + num.slice(1);
+    } else if (!num.startsWith("94") && num.length === 9) {
+      num = "94" + num;
+    }
+    return num;
+  };
+
   const handleWhatsAppSend = () => {
-    const targetNumber = (personalInfo.whatsapp || "94706827870").replace(/[^0-9]/g, "");
+    const targetNumber = cleanWhatsAppNumber(personalInfo.whatsapp);
     let text = "Hi Venuja, I saw your portfolio and would like to connect!";
     if (formState.message) {
       text = `Hi Venuja, my name is ${formState.name || "a visitor"}${formState.email ? ` (${formState.email})` : ""}.\n\n${formState.message}`;
@@ -271,7 +281,7 @@ export default function Contact() {
               </div>
 
               <a
-                href={`https://wa.me/${(personalInfo.whatsapp || "94706827870").replace(/[^0-9]/g, "")}?text=${encodeURIComponent("Hi Venuja, I visited your portfolio and wanted to connect!")}`}
+                href={`https://wa.me/${cleanWhatsAppNumber(personalInfo.whatsapp)}?text=${encodeURIComponent("Hi Venuja, I visited your portfolio and wanted to connect!")}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all active:scale-95 shadow-md shadow-emerald-500/25"
@@ -307,7 +317,7 @@ export default function Contact() {
                 <span>LinkedIn</span>
               </a>
               <a
-                href={`https://wa.me/${(personalInfo.whatsapp || "94706827870").replace(/[^0-9]/g, "")}?text=${encodeURIComponent("Hi Venuja, I saw your portfolio and would like to connect!")}`}
+                href={`https://wa.me/${cleanWhatsAppNumber(personalInfo.whatsapp)}?text=${encodeURIComponent("Hi Venuja, I saw your portfolio and would like to connect!")}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group inline-flex items-center gap-2.5 px-5 py-2.5 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-xl text-sm font-semibold text-[var(--text-secondary)] hover:text-emerald-500 hover:border-emerald-500/50 transition-all duration-300 shadow-md hover:shadow-lg"
