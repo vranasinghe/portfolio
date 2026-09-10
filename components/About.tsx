@@ -66,16 +66,16 @@ export default function About() {
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ delay: 0.35 }}
           >
-            <p className="text-sm font-mono text-[var(--accent-color)] mb-3">Recently working with:</p>
-            <div className="grid grid-cols-2 gap-y-2 gap-x-4">
+            <p className="text-sm font-semibold text-[var(--accent-color)] mb-3">Recently working with:</p>
+            <div className="grid grid-cols-2 gap-y-2.5 gap-x-4">
               {[
                 "Python / PyTorch", "React / Next.js",
                 "Node.js / Express", "Scikit-learn",
                 "MongoDB / PostgreSQL", "R (Statistical)",
               ].map((item) => (
-                <div key={item} className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
-                  <span className="text-[var(--accent-color)] font-bold">▸</span>
-                  <span className="font-mono">{item}</span>
+                <div key={item} className="flex items-center gap-2.5 text-sm text-[var(--text-secondary)]">
+                  <span className="text-[var(--accent-color)] font-bold text-xs">▸</span>
+                  <span className="font-medium">{item}</span>
                 </div>
               ))}
             </div>
