@@ -69,7 +69,7 @@ export default function WhatsAppWidget() {
   const handleSendMessage = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
 
-    const targetNumber = (personalInfo.whatsapp || "94770000000").replace(
+    const targetNumber = (personalInfo.whatsapp || "94706827870").replace(
       /[^0-9]/g,
       ""
     );
