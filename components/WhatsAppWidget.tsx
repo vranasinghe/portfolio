@@ -94,11 +94,27 @@ export default function WhatsAppWidget() {
       message.trim() ||
       "Hi Venuja, I checked out your portfolio and wanted to connect with you!";
 
-    const whatsappUrl = `https://wa.me/${targetNumber}?text=${encodeURIComponent(
+    // Universal WhatsApp Web & Mobile API link
+    const whatsappUrl = `https://api.whatsapp.com/send/?phone=${targetNumber}&text=${encodeURIComponent(
       textToSend
-    )}`;
+    )}&type=phone_number&app_absent=0`;
 
-    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+    // Programmatic link click reliably bypasses popup blockers on all mobile and desktop browsers
+    try {
+      const link = document.createElement("a");
+      link.href = whatsappUrl;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      document.body.appendChild(link);
+      link.click();
+      setTimeout(() => {
+        if (document.body.contains(link)) {
+          document.body.removeChild(link);
+        }
+      }, 200);
+    } catch {
+      window.location.href = whatsappUrl;
+    }
   };
 
   return (
@@ -242,8 +258,8 @@ export default function WhatsAppWidget() {
               </div>
 
               <div className="mt-2 flex items-center justify-between text-[10px] text-[var(--text-muted)] px-1">
-                <span>Opens directly in WhatsApp</span>
-                <span className="font-mono">{personalInfo.whatsappNumber}</span>
+                <span>Opens chat with {personalInfo.whatsappNumber}</span>
+                <span className="font-medium text-emerald-500">Tap Send in WhatsApp</span>
               </div>
             </form>
           </motion.div>
