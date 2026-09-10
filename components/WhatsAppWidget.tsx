@@ -48,7 +48,17 @@ export default function WhatsAppWidget() {
       setShowTooltip(true);
     }, 3000);
 
-    return () => clearTimeout(timer);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, []);
 
   const toggleOpen = () => {
