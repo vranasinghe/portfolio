@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { FaWhatsapp } from "react-icons/fa";
 import { personalInfo } from "@/data/portfolio";
 
 export default function Contact() {
@@ -28,6 +29,15 @@ export default function Contact() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
+  };
+
+  const handleWhatsAppSend = () => {
+    const targetNumber = (personalInfo.whatsapp || "94770000000").replace(/[^0-9]/g, "");
+    let text = "Hi Venuja, I saw your portfolio and would like to connect!";
+    if (formState.message) {
+      text = `Hi Venuja, my name is ${formState.name || "a visitor"}${formState.email ? ` (${formState.email})` : ""}.\n\n${formState.message}`;
+    }
+    window.open(`https://wa.me/${targetNumber}?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -171,6 +181,23 @@ export default function Contact() {
                   </>
                 )}
               </button>
+
+              <div className="flex items-center gap-3 pt-1">
+                <div className="h-[1px] flex-1 bg-[var(--border-color)]" />
+                <span className="text-[11px] uppercase tracking-wider text-[var(--text-muted)] font-mono">
+                  or connect instantly
+                </span>
+                <div className="h-[1px] flex-1 bg-[var(--border-color)]" />
+              </div>
+
+              <button
+                type="button"
+                onClick={handleWhatsAppSend}
+                className="w-full py-3.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-500 hover:text-emerald-400 border border-emerald-500/30 hover:border-emerald-500/60 rounded-xl font-bold flex items-center justify-center gap-2 transition-all active:scale-95 shadow-sm"
+              >
+                <FaWhatsapp className="w-5 h-5 text-emerald-500" />
+                <span>Send via WhatsApp</span>
+              </button>
             </form>
           </motion.div>
 
@@ -229,6 +256,33 @@ export default function Contact() {
               </button>
             </div>
 
+            {/* WhatsApp Direct Card */}
+            <div className="bg-[var(--card-bg)] border border-emerald-500/20 p-4 rounded-xl flex items-center justify-between shadow-lg mb-8 max-w-md hover:border-emerald-500/40 transition-colors">
+              <div className="flex items-center gap-3 overflow-hidden">
+                <div className="w-9 h-9 rounded-lg bg-emerald-500/15 flex items-center justify-center flex-shrink-0 text-emerald-500">
+                  <FaWhatsapp className="w-5 h-5" />
+                </div>
+                <div className="flex flex-col overflow-hidden">
+                  <span className="text-[11px] font-mono text-[var(--text-muted)]">WhatsApp Direct</span>
+                  <span className="text-sm font-semibold text-[var(--text-secondary)] truncate">
+                    {personalInfo.whatsappNumber}
+                  </span>
+                </div>
+              </div>
+
+              <a
+                href={`https://wa.me/${(personalInfo.whatsapp || "94770000000").replace(/[^0-9]/g, "")}?text=${encodeURIComponent("Hi Venuja, I visited your portfolio and wanted to connect!")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all active:scale-95 shadow-md shadow-emerald-500/25"
+              >
+                <span>Chat</span>
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                </svg>
+              </a>
+            </div>
+
             <div className="flex flex-wrap gap-4">
               <a
                 href={personalInfo.github}
@@ -251,6 +305,15 @@ export default function Contact() {
                   <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                 </svg>
                 <span>LinkedIn</span>
+              </a>
+              <a
+                href={`https://wa.me/${(personalInfo.whatsapp || "94770000000").replace(/[^0-9]/g, "")}?text=${encodeURIComponent("Hi Venuja, I saw your portfolio and would like to connect!")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2.5 px-5 py-2.5 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-xl text-sm font-semibold text-[var(--text-secondary)] hover:text-emerald-500 hover:border-emerald-500/50 transition-all duration-300 shadow-md hover:shadow-lg"
+              >
+                <FaWhatsapp className="w-4 h-4 text-emerald-500 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:scale-110" />
+                <span>WhatsApp</span>
               </a>
             </div>
           </motion.div>

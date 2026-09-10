@@ -14,6 +14,8 @@ export const personalInfo = {
   github: "https://github.com/vranasinghe",
   linkedin: "https://www.linkedin.com/in/venuja-ranasinghe-522a63423/",
   instagram: "https://instagram.com/venujaranasinghe",
+  whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+94 77 000 0000",
+  whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+94770000000",
   resumeLink: "/Resume.pdf",
   bio: "Hello! My name is Venuja. I'm pursuing a B.Sc. (Hons) in Information Technology at SLIIT, specializing in Data Science. I enjoy building things that live on the web and training predictive models that turn raw data into something useful. I bridge complex machine learning architectures with user-centric design.",
   heroBio:
