@@ -30,10 +30,9 @@ The site blends immersive **3D interactive visual elements**, dynamic particle b
 - 🤖 **Interactive 3D Experiences:** Spline 3D interactive robot integration (`@splinetool/react-spline`) and `@react-three/fiber` dynamic 3D canvas scenes.
 - 🎨 **Glassmorphism & Dynamic Themes:** Seamless dark/light theme switching using `next-themes` with custom glassmorphic UI components.
 - 💬 **Interactive Reviews & Testimonials:** Dedicated client & peer feedback section with star breakdown statistics, slider/grid toggle, and a public review submission page (`/review`) backed by an API route.
-- 📱 **Interactive WhatsApp Messaging Widget:** Floating live WhatsApp chat bubble with online status, real-time timestamps, quick prompt suggestion chips, keyboard controls (Enter to send, Escape to close), and seamless direct contact integration.
 - ⚡ **High Performance & Responsive:** Built on Next.js 15 App Router and React 19 for optimal page load speed and fully responsive layouts across mobile, tablet, and desktop screens.
 - 💫 **Interactive UI Animations:** Smooth scroll transitions, Framer Motion animations, interactive canvas particles, preloader screen, and typewriter text dynamics.
-- 📬 **Functional Contact Form & WhatsApp Direct:** Direct email delivery integrated with Web3Forms API, 1-click WhatsApp instant forwarding, direct WhatsApp card, and social profile hubs.
+- 📬 **Functional Contact Form:** Direct email delivery integrated with Web3Forms API and social profile hubs.
 - 📂 **Structured Showcase Sections:**
   - **Hero:** Interactive intro with 3D elements, typewriter text, quick actions, and personal statistics (8+ shipped projects).
   - **About:** Bio, academic trajectory at SLIIT, and key specialization milestones.
