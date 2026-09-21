@@ -8,7 +8,7 @@ import Certifications from "@/components/Certifications";
 import Reviews from "@/components/Reviews";
 import Contact from "@/components/Contact";
 import ParticlesBackground from "@/components/ParticlesBackground";
-import WhatsAppWidget from "@/components/WhatsAppWidget";
+
 
 export default function Home() {
   return (
@@ -41,7 +41,6 @@ export default function Home() {
           <Contact />
         </section>
       </div>
-      <WhatsAppWidget />
     </main>
   );
 }
