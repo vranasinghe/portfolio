@@ -227,5 +227,5 @@ This project is open-source and available under the [MIT License](LICENSE).
 
 <div align="center">
   <br />
-  ⭐️ <i>If you find this repository helpful or inspiring, feel free to give it a star!</i>
+  ⭐️ *If you find this repository helpful or inspiring, feel free to give it a star!*
 </div>
