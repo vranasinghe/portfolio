@@ -11,6 +11,13 @@
   [![Three.js](https://img.shields.io/badge/Three.js-3D-black?style=for-the-badge&logo=three.js&logoColor=white)](https://threejs.org/)
   [![Framer Motion](https://img.shields.io/badge/Framer_Motion-11-0055FF?style=for-the-badge&logo=framer&logoColor=white)](https://www.framer.com/motion/)
 
+  <br />
+  
+  <a href="https://github.com/vranasinghe">
+    <img src="https://github-readme-stats.vercel.app/api?username=vranasinghe&show_icons=true&theme=transparent&hide_border=true&title_color=38B2AC&icon_color=38B2AC&text_color=ffffff" alt="GitHub Stats" />
+  </a>
+  <br />
+
   [Live Demo](https://venujaranasinghe.com) • [Report Bug](https://github.com/vranasinghe/portfolio/issues) • [Request Feature](https://github.com/vranasinghe/portfolio/issues)
 
 </div>
@@ -22,6 +29,15 @@
 Welcome to the official repository of my personal portfolio website! Designed for modern web browsers, this platform showcases my journey as a **Data Science & AI Undergraduate at SLIIT**, highlighting my work across Full-Stack Web Development, Machine Learning, Mobile Apps, and Data Analytics.
 
 The site blends immersive **3D interactive visual elements**, dynamic particle backgrounds, silky-smooth scroll animations, an interactive **Reviews & Testimonials system**, and clean dark/light glassmorphic aesthetics to deliver an exceptional user experience.
+
+---
+
+## 🚀 Current Status & What I'm Learning
+
+- 🌱 **Currently Learning:** Deepening my knowledge in Advanced Machine Learning, Large Language Models (LLMs), and cutting-edge Data Science techniques.
+- 🎯 **Current Focus:** Building scalable Full-Stack Web Applications and integrating AI/ML models into real-world solutions.
+- 💼 **Looking for:** Opportunities, internships, or collaborations in Data Science, AI, and Full-Stack Development where I can apply my skills and grow.
+- 💬 **Ask me about:** React, Next.js, Python, Machine Learning, and Data Analytics.
 
 ---
 
