@@ -36,7 +36,7 @@ The site blends immersive **3D interactive visual elements**, dynamic particle b
 
 - 🌱 **Currently Learning:** Deepening my knowledge in Advanced Machine Learning, Large Language Models (LLMs), and cutting-edge Data Science techniques.
 - 🎯 **Current Focus:** Building scalable Full-Stack Web Applications and integrating AI/ML models into real-world solutions.
-- 💼 **Looking for:** Opportunities, internships, or collaborations in Data Science, AI, and Full-Stack Development where I can apply my skills and grow.
+- 💼 **Looking for:** 
 - 💬 **Ask me about:** 
 ---
 
