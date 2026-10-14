@@ -34,9 +34,12 @@ export default function Home() {
         <section id="certifications">
           <Certifications />
         </section>
-        <section id="reviews">
-          <Reviews />
-        </section>
+        {/* Reviews section — kept in code but hidden from users */}
+        <div className="hidden">
+          <section id="reviews">
+            <Reviews />
+          </section>
+        </div>
         <section id="contact">
           <Contact />
         </section>
