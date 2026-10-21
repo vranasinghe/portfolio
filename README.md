@@ -36,7 +36,7 @@ This is the source code for my personal portfolio website — a full-stack, prod
 
 The site is built for performance and impact, combining immersive **3D interactive elements** (Spline robot, React Three Fiber scenes), dynamic particle backgrounds, scroll-driven Framer Motion animations, an interactive **Testimonials & Reviews system**, and a clean glassmorphic dark/light aesthetic — all running on the **Next.js 15 App Router**.
 
-> **Live at:** [venujaranasinghe.com](https://venujaranasinghe.com)
+> **Live at:** [venujaranasinghe.com](https://venuja.online)
 
 ---
 
