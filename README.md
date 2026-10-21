@@ -267,5 +267,5 @@ This project is open-source and available under the [MIT License](LICENSE).
   <br />
   If you found this helpful or inspiring, a ⭐ would mean a lot — thank you!
   <br /><br />
-  <sub>Built with ❤️ by <a href="https://github.com/vranasinghe">Venuja Ranasinghe</a></sub>
+
 </div>
