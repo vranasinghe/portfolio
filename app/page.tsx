@@ -9,6 +9,8 @@ import Reviews from "@/components/Reviews";
 import Contact from "@/components/Contact";
 import ParticlesBackground from "@/components/ParticlesBackground";
 
+// Toggle Reviews visibility via .env.local → NEXT_PUBLIC_SHOW_REVIEWS=true/false
+const SHOW_REVIEWS = process.env.NEXT_PUBLIC_SHOW_REVIEWS === "true";
 
 export default function Home() {
   return (
@@ -34,12 +36,14 @@ export default function Home() {
         <section id="certifications">
           <Certifications />
         </section>
-        {/* Reviews section — kept in code but hidden from users */}
-        <div className="hidden">
+
+        {/* Reviews section — toggle via NEXT_PUBLIC_SHOW_REVIEWS in .env.local */}
+        {SHOW_REVIEWS && (
           <section id="reviews">
             <Reviews />
           </section>
-        </div>
+        )}
+
         <section id="contact">
           <Contact />
         </section>

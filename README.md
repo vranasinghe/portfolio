@@ -1,24 +1,30 @@
 <div align="center">
 
-  # 🚀 Venuja Ranasinghe — Personal Portfolio
+<br />
 
-  **An Interactive 3D Portfolio built with Next.js 15, React 19, Three.js, Framer Motion, Tailwind CSS, and Web3Forms.**
+# Venuja Ranasinghe — Personal Portfolio
 
-  [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
-  [![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
-  [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-  [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-  [![Three.js](https://img.shields.io/badge/Three.js-3D-black?style=for-the-badge&logo=three.js&logoColor=white)](https://threejs.org/)
-  [![Framer Motion](https://img.shields.io/badge/Framer_Motion-11-0055FF?style=for-the-badge&logo=framer&logoColor=white)](https://www.framer.com/motion/)
+**A production-grade, interactive 3D portfolio built with Next.js 15, React 19, Three.js, Framer Motion, and Tailwind CSS.**
 
-  <br />
-  
-  <a href="https://github.com/vranasinghe">
-    <img src="https://github-readme-stats.vercel.app/api?username=vranasinghe&show_icons=true&theme=transparent&hide_border=true&title_color=38B2AC&icon_color=38B2AC&text_color=ffffff" alt="GitHub Stats" />
-  </a>
-  <br />
+<br />
 
-  [Live Demo](https://venujaranasinghe.com) • [Report Bug](https://github.com/vranasinghe/portfolio/issues) • [Request Feature](https://github.com/vranasinghe/portfolio/issues)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Three.js](https://img.shields.io/badge/Three.js-r170-black?style=for-the-badge&logo=three.js&logoColor=white)](https://threejs.org/)
+[![Framer Motion](https://img.shields.io/badge/Framer_Motion-11-0055FF?style=for-the-badge&logo=framer&logoColor=white)](https://www.framer.com/motion/)
+[![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
+
+<br />
+
+<a href="https://github.com/vranasinghe">
+  <img src="https://github-readme-stats.vercel.app/api?username=vranasinghe&show_icons=true&theme=transparent&hide_border=true&title_color=38B2AC&icon_color=38B2AC&text_color=ffffff" alt="GitHub Stats" />
+</a>
+
+<br /><br />
+
+[🌐 Live Demo](https://venujaranasinghe.com) &nbsp;·&nbsp; [🐛 Report Bug](https://github.com/vranasinghe/portfolio/issues) &nbsp;·&nbsp; [✨ Request Feature](https://github.com/vranasinghe/portfolio/issues)
 
 </div>
 
@@ -26,213 +32,230 @@
 
 ## 📌 Overview
 
-Welcome to the official repository of my personal portfolio website! Designed for modern web browsers, this platform showcases my journey as a **Data Science & AI Undergraduate at SLIIT**, highlighting my work across Full-Stack Web Development, Machine Learning, Mobile Apps, and Data Analytics.
+This is the source code for my personal portfolio website — a full-stack, production-ready web application designed to showcase my work as a **Data Science & AI undergraduate at SLIIT**. It highlights projects spanning Machine Learning, Full-Stack Web Development, Mobile Applications, and Data Analytics.
 
-The site blends immersive **3D interactive visual elements**, dynamic particle backgrounds, silky-smooth scroll animations, an interactive **Reviews & Testimonials system**, and clean dark/light glassmorphic aesthetics to deliver an exceptional user experience.
+The site is built for performance and impact, combining immersive **3D interactive elements** (Spline robot, React Three Fiber scenes), dynamic particle backgrounds, scroll-driven Framer Motion animations, an interactive **Testimonials & Reviews system**, and a clean glassmorphic dark/light aesthetic — all running on the **Next.js 15 App Router**.
 
----
-
-## 🚀 Current Status & What I'm Learning
-
-- 🌱 **Currently Learning:** Deepening my knowledge in Advanced Machine Learning, Large 
-- 🎯 **Current Focus:** Building scalable Full-Stack 
-- 💼 **Looking for:** 
-- 💬 **Ask me about:** 
----
-
-## ✨ Features
-
-- 🤖 **Interactive 3D Experiences:** Spline 3D interactive robot integration (`@splinetool/react-spline`) and `@react-three/fiber` dynamic 3D canvas scenes.
-- 🎨 **Glassmorphism & Dynamic Themes:** Seamless dark/light theme switching using `next-themes` with custom glassmorphic UI components.
-- 💬 **Interactive Reviews & Testimonials:** Dedicated client & peer feedback section with star breakdown statistics, slider/grid toggle, and a public review submission page (`/review`) backed by an API route.
-- ⚡ **High Performance & Responsive:** Built on Next.js 15 App Router and React 19 for optimal page load speed and fully responsive layouts across mobile, tablet, and desktop screens.
-- 💫 **Interactive UI Animations:** Smooth scroll transitions, Framer Motion animations, interactive canvas particles, preloader screen, and typewriter text dynamics.
-- 📬 **Functional Contact Form:** Direct email delivery integrated with Web3Forms API and social profile hubs.
-- 📂 **Structured Showcase Sections:**
-  - **Hero:** Interactive intro with 3D elements, typewriter text, quick actions, and personal statistics (8+ shipped projects).
-  - **About:** Bio, academic trajectory at SLIIT, and key specialization milestones.
-  - **Projects:** Filterable showcase of Full-Stack, Data Science, AI, and Mobile projects with live demos and GitHub repositories.
-  - **Experience & Certifications:** Structured timeline of professional work experience and verified credentials.
-  - **Toolkit:** Interactive matrix of programming languages, machine learning frameworks, web technologies, and tools.
-  - **Testimonials:** Live user feedback slider/grid and link to the submission form.
-  - **Contact:** Functional contact interface powered by Web3Forms.
-- ⚙️ **Centralized Data Architecture:** Isolated data layer in `data/portfolio.ts` allows modifying portfolio content without editing UI components.
+> **Live at:** [venujaranasinghe.com](https://venujaranasinghe.com)
 
 ---
 
-## 🛠️ Tech Stack & Tools
+## 🙋 About Me
 
-### **Core Technologies**
-| Category | Technology | Description |
+- 🎓 **Studying:** B.Sc. (Hons) in Information Technology @ SLIIT — specializing in **Data Science & AI** (3rd Year)
+- 🌱 **Currently Learning:** Advanced Machine Learning, LLM fine-tuning, and scalable cloud architectures
+- 🔭 **Building:** End-to-end ML pipelines and production-grade full-stack web & mobile applications
+- 💼 **Seeking:** A **Data Science / AI Internship** for 2026
+- 💬 **Ask me about:** Python · React · Machine Learning · Data Analysis · Full-Stack Development
+- 📫 **Contact:** [venujaranasinghe26@gmail.com](mailto:venujaranasinghe26@gmail.com)
+
+---
+
+## ✨ Key Features
+
+| Feature | Description |
+|---|---|
+| 🤖 **Interactive 3D** | Spline 3D robot (`@splinetool/react-spline`) + dynamic WebGL canvas scenes via `@react-three/fiber` |
+| 🎨 **Glassmorphic Theming** | Seamless dark/light mode switching via `next-themes` with fully custom glassmorphic UI |
+| 💬 **Reviews & Testimonials** | Live review submission at `/review`, star-rating breakdown, slider/grid toggle, persisted via API |
+| ⚡ **High Performance** | Next.js 15 App Router + React 19 Server Components for fast TTI and optimal Core Web Vitals |
+| 💫 **Micro-Animations** | Framer Motion scroll transitions, canvas particle background, preloader, and typewriter dynamics |
+| 📬 **Functional Contact Form** | Serverless email delivery via **Web3Forms API** + WhatsApp direct-link integration |
+| 📱 **Fully Responsive** | Mobile-first layouts optimized across all screen sizes |
+| ⚙️ **Centralized Data Layer** | All content (projects, skills, experience) managed from a single `data/portfolio.ts` file |
+
+---
+
+## 🛠️ Tech Stack
+
+### Core
+
+| Layer | Technology | Purpose |
 |---|---|---|
-| **Framework** | [Next.js 15](https://nextjs.org/) | App Router, Server Components & API Routes |
-| **Library** | [React 19](https://react.dev/) | UI component library |
-| **Language** | [TypeScript 5](https://www.typescriptlang.org/) | Type-safe JavaScript |
-| **Styling** | [Tailwind CSS 3](https://tailwindcss.com/) | Utility-first CSS framework |
+| **Framework** | [Next.js 15](https://nextjs.org/) | App Router, Server Components, API Routes |
+| **UI Library** | [React 19](https://react.dev/) | Component model, hooks, concurrent rendering |
+| **Language** | [TypeScript 5](https://www.typescriptlang.org/) | Type safety across the entire codebase |
+| **Styling** | [Tailwind CSS 3](https://tailwindcss.com/) | Utility-first CSS with custom design tokens |
 
-### **3D & Animation**
-| Category | Technology | Description |
-|---|---|---|
-| **3D Rendering** | [Three.js](https://threejs.org/) & [@react-three/fiber](https://docs.pmnd.rs/react-three-fiber) | WebGL 3D scenes & helpers |
-| **3D Design** | [Spline](https://spline.design/) | Interactive 3D Spline robot model |
-| **Animations** | [Framer Motion 11](https://www.framer.com/motion/) | Declarative UI animations & scroll effects |
-| **Icons & Text Effects** | `lucide-react`, `react-icons`, `react-type-animation` | Icons & dynamic hero typewriter text |
+### 3D & Animation
 
-### **Forms & Backend Services**
-| Category | Service / API | Description |
-|---|---|---|
-| **Contact Service** | [Web3Forms](https://web3forms.com/) | Serverless contact form submission API |
-| **Review Storage** | Next.js API Routes | Local JSON storage for user reviews (`data/user_reviews.json`) |
+| Library | Purpose |
+|---|---|
+| [Three.js](https://threejs.org/) + [`@react-three/fiber`](https://docs.pmnd.rs/react-three-fiber) | WebGL 3D scene rendering |
+| [`@react-three/drei`](https://docs.pmnd.rs/drei) | Three.js helpers and abstractions |
+| [Spline](https://spline.design/) (`@splinetool/react-spline`) | Interactive 3D robot model |
+| [Framer Motion 11](https://www.framer.com/motion/) | Declarative animations, scroll effects, layout transitions |
+| `react-type-animation` | Typewriter hero text effect |
+
+### Backend & Services
+
+| Service | Purpose |
+|---|---|
+| Next.js API Routes | Review storage (`GET /api/reviews`, `POST /api/reviews`) |
+| [Web3Forms](https://web3forms.com/) | Serverless contact form email delivery |
+| `next-themes` | SSR-safe dark/light theme management |
 
 ---
 
-## 📁 Directory Structure
+## 🗂️ Project Structure
 
 ```text
 portfolio/
-├── app/                          # Next.js App Router
-│   ├── api/                      # Backend API Endpoints
-│   │   └── reviews/              # Review storage handler (GET/POST)
+├── app/                          # Next.js 15 App Router
+│   ├── api/
+│   │   └── reviews/              # Review API (GET + POST handlers)
 │   │       └── route.ts
 │   ├── review/                   # Public review submission page (/review)
 │   │   └── page.tsx
-│   ├── globals.css               # Global styles & Tailwind CSS directives
-│   ├── layout.tsx                # Root layout with ThemeProvider & metadata
+│   ├── globals.css               # Global styles & Tailwind directives
+│   ├── layout.tsx                # Root layout — ThemeProvider, metadata, fonts
 │   └── page.tsx                  # Main single-page portfolio view
-├── components/                   # Reusable UI & 3D Components
+│
+├── components/                   # Feature UI components
 │   ├── About.tsx                 # Bio & academic overview
 │   ├── Certifications.tsx        # Professional credentials grid
 │   ├── Contact.tsx               # Web3Forms contact form & social links
-│   ├── Experience.tsx            # Work experience timeline
-│   ├── Hero.tsx                  # Hero banner with 3D elements & typewriter
-│   ├── Nav.tsx                   # Navbar with scroll links & theme toggle
+│   ├── Experience.tsx            # Work experience & education timeline
+│   ├── Hero.tsx                  # Hero section — 3D robot, typewriter, stats
+│   ├── Nav.tsx                   # Sticky navbar with scroll links & theme toggle
 │   ├── ParticlesBackground.tsx   # Interactive canvas particle background
-│   ├── Preloader.tsx             # Custom preloader screen
-│   ├── Projects.tsx              # Filterable project showcase gallery
-│   ├── ReviewForm.tsx            # Testimonial & review submission form
-│   ├── Reviews.tsx               # Reviews slider/grid & rating breakdown
-│   ├── SplineRobot.tsx           # 3D Spline scene wrapper
-│   ├── ThemeProvider.tsx         # Next-themes provider wrapper
-│   ├── ThemeToggle.tsx           # Dark/Light theme mode switch
-│   ├── Toolkit.tsx               # Categorized skills matrix
+│   ├── Preloader.tsx             # Custom animated preloader screen
+│   ├── Projects.tsx              # Filterable project gallery (featured + minor)
+│   ├── ReviewForm.tsx            # Review submission form component
+│   ├── Reviews.tsx               # Testimonials slider/grid + rating breakdown
+│   ├── SplineRobot.tsx           # Spline 3D scene wrapper
+│   ├── ThemeProvider.tsx         # next-themes provider wrapper
+│   ├── ThemeToggle.tsx           # Dark/light mode switch button
+│   ├── Toolkit.tsx               # Categorized interactive skills matrix
 │   └── ToolsTechnologies.tsx     # Animated technology icon banner
-├── data/                         # Data layer
-│   ├── portfolio.ts              # Main portfolio configuration (Bio, Projects, Skills, Timeline)
-│   ├── reviews.ts                # Initial curated testimonials & reviews
-│   └── user_reviews.json         # Storage for user-submitted reviews
-├── public/                       # Static assets (Images, Resume, Icons)
-├── .env.example                  # Template for required environment variables
+│
+├── data/                         # Centralized content layer
+│   ├── portfolio.ts              # ← All portfolio data (bio, projects, skills, experience, certs)
+│   ├── reviews.ts                # Curated seed testimonials
+│   └── user_reviews.json         # Persistent storage for user-submitted reviews
+│
+├── public/                       # Static assets (images, icons, resume PDF)
+├── .env.example                  # Environment variable template
 ├── next.config.ts                # Next.js configuration
 ├── tailwind.config.ts            # Tailwind CSS configuration
-├── tsconfig.json                 # TypeScript compiler configuration
-└── package.json                  # Dependency specifications & scripts
+├── tsconfig.json                 # TypeScript compiler options
+└── package.json                  # Scripts and dependencies
 ```
 
 ---
 
-## 🚀 Getting Started
-
-Follow these steps to set up and run the project locally.
+## ⚡ Getting Started
 
 ### Prerequisites
 
-Ensure you have the following installed on your machine:
-- **Node.js** (v18.0.0 or higher recommended) — [Download Node.js](https://nodejs.org/)
+- **Node.js** v18.0.0 or higher → [Download](https://nodejs.org/)
 - **npm** (bundled with Node.js) or **pnpm** / **yarn**
 
-### 1. Clone the Repository
+### 1 · Clone the Repository
 
 ```bash
 git clone https://github.com/vranasinghe/portfolio.git
 cd portfolio
 ```
 
-### 2. Install Dependencies
+### 2 · Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 3. Configure Environment Variables
+### 3 · Configure Environment Variables
 
-Create a `.env.local` file in the root directory:
+Copy the example env file and fill in your values:
 
 ```bash
 cp .env.example .env.local
 ```
 
-Populate `.env.local` with your Web3Forms key:
-
 ```env
-# Web3Forms Access Key for the Contact Form (Get key at https://web3forms.com)
+# Web3Forms API key — get yours at https://web3forms.com
 NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=your_web3forms_access_key_here
 
-# WhatsApp Phone Number (international format with country code, e.g. +947XXXXXXXX)
-NEXT_PUBLIC_WHATSAPP_NUMBER=+94770000000
+# WhatsApp number in international format (e.g. +94770000000)
+NEXT_PUBLIC_WHATSAPP_NUMBER=+94706827870
 ```
 
-### 4. Run the Development Server
+### 4 · Start the Development Server
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to view the portfolio.
+Open [http://localhost:3000](http://localhost:3000) — the portfolio is live locally.
 
 ---
 
-## 📦 Build for Production
-
-To create an optimized production build:
+## 📦 Production Build
 
 ```bash
+# Create an optimized production build
 npm run build
-```
 
-To run the production build locally:
-
-```bash
+# Serve the production build locally
 npm run start
 ```
 
 ---
 
-## 🔌 API Endpoints
+## 🔌 API Reference
 
-The project includes built-in API handlers for dynamic client interactions:
+The project ships two built-in API endpoints for the testimonials system:
 
 | Method | Endpoint | Description |
 |---|---|---|
-| `GET` | `/api/reviews` | Fetches all approved and user-submitted reviews/testimonials. |
-| `POST` | `/api/reviews` | Submits a new review entry to `data/user_reviews.json`. |
+| `GET` | `/api/reviews` | Returns all curated + user-submitted reviews |
+| `POST` | `/api/reviews` | Persists a new user review to `data/user_reviews.json` |
 
 ---
 
-## 🛠️ Customization Guide
+## 🎨 Customization
 
-All personal info, project details, skills, certifications, and experience timelines are stored centrally in:
+All portfolio content is isolated in a single file — no component editing required.
 
-```text
-data/portfolio.ts
-```
+**To customize this portfolio with your own details:**
 
-To customize the portfolio for your own details:
-1. Open `data/portfolio.ts`.
-2. Update the `personalInfo`, `skills`, `projects`, `experience`, and `certifications` arrays/objects.
-3. Save the file — the UI components will update automatically!
+1. Open `data/portfolio.ts`
+2. Update the exported objects and arrays:
+   - `personalInfo` — name, bio, social links, resume URL
+   - `heroStats` — your headline stats (projects, year, specialization)
+   - `skills` — your skill categories and individual tools
+   - `featuredProjects` / `minorProjects` — your project showcase
+   - `experience` / `education` — your career and academic timeline
+   - `certifications` — your verified credentials
+3. Replace images in `/public/` with your own assets
+4. Update `.env.local` with your API keys
+
+---
+
+## 🖥️ Featured Projects
+
+| Project | Stack | Role |
+|---|---|---|
+| [X-ray Diagnostic AI](https://github.com/vranasinghe/ChestAI_Diagnostics.git) | PyTorch · ResNet-50 · DenseNet-121 · Python | ML Engineer |
+| [Aura Space — Real Estate Platform](https://github.com/vranasinghe/Real-state-project.git) | React · Vite · Supabase · PostgreSQL | Full-Stack Dev |
+| [Bright Future — Voting Platform](https://github.com/vranasinghe/web-voting-system) | Spring Boot · React · Java · Docker | Full-Stack Dev |
+| [Poth Library App](https://github.com/vranasinghe) | React Native · Expo · Node.js · MongoDB | Full-Stack Dev |
+| [DengueRisk — Outbreak Prediction](https://github.com/vranasinghe/Dengue-Outbreak-Prediction-Model) | Python · Scikit-learn · GeoPandas | ML Engineer |
+| [CarTrader — Car Marketplace](https://github.com/vranasinghe/Second-Hand-Car-Sales-and-Purchase-Platform-) | Java Servlets · JSP · Vanilla JS | Web Dev |
 
 ---
 
 ## 📬 Contact & Connect
 
-I am always open to discussing new projects, Data Science / AI internship opportunities, or full-stack collaborations!
+I'm always open to discussing **Data Science / AI internship opportunities**, collaborative projects, or full-stack work.
 
-- **Name:** Venuja Ranasinghe
-- **Role:** Data Science & AI Undergraduate @ SLIIT
-- **Email:** [venujaranasinghe26@gmail.com](mailto:venujaranasinghe26@gmail.com)
-- **LinkedIn:** [Venuja Ranasinghe](https://www.linkedin.com/in/venuja-ranasinghe-522a63423/)
-- **GitHub:** [@vranasinghe](https://github.com/vranasinghe)
-- **Instagram:** [@venujaranasinghe](https://instagram.com/venujaranasinghe)
+| | |
+|---|---|
+| **Email** | [venujaranasinghe26@gmail.com](mailto:venujaranasinghe26@gmail.com) |
+| **LinkedIn** | [Venuja Ranasinghe](https://www.linkedin.com/in/venuja-ranasinghe-522a63423/) |
+| **GitHub** | [@vranasinghe](https://github.com/vranasinghe) |
+| **Instagram** | [@venujaranasinghe](https://instagram.com/venujaranasinghe) |
+| **Portfolio** | [venujaranasinghe.com](https://venujaranasinghe.com) |
 
 ---
 
@@ -242,5 +265,7 @@ This project is open-source and available under the [MIT License](LICENSE).
 
 <div align="center">
   <br />
-  ⭐️ *If you find this repository helpful or inspiring, feel free to give it a star!*
+  If you found this helpful or inspiring, a ⭐ would mean a lot — thank you!
+  <br /><br />
+  <sub>Built with ❤️ by <a href="https://github.com/vranasinghe">Venuja Ranasinghe</a></sub>
 </div>
