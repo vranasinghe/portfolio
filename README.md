@@ -265,7 +265,7 @@ This project is open-source and available under the [MIT License](LICENSE).
 
 <div align="center">
   <br />
-  If you found this helpful or inspiring, a ⭐ would mean a lot — thank you!
+  If you found this helpful or inspiring, a ⭐ would mean a lot - thank you!
   <br /><br />
 
 </div>
