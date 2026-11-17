@@ -1,14 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { sectionNumber } from "@/lib/sections";
 import { experience, education } from "@/data/portfolio";
 import SectionHeader from "@/components/SectionHeader";
 
 export default function Experience() {
   return (
     <section className="wrap py-[120px] bg-transparent">
-      <SectionHeader index={sectionNumber("experience")} title="Experience and Academic Journey" />
+      <SectionHeader title="Experience and Academic Journey" />
 
       <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-14">
 

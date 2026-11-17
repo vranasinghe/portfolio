@@ -3,14 +3,16 @@
 import { motion } from "framer-motion";
 
 interface SectionHeaderProps {
-  index: string;
   title: string;
   subtitle?: string;
   id?: string;
 }
 
-/** v2 section header: mono index number + big title, closed by a hard rule. */
-export default function SectionHeader({ index, title, subtitle, id }: SectionHeaderProps) {
+/**
+ * Section header: big title with the subtitle set beside it on wide screens
+ * (stacked on phones), closed by a hard rule.
+ */
+export default function SectionHeader({ title, subtitle, id }: SectionHeaderProps) {
   return (
     <motion.div
       id={id}
@@ -20,17 +22,20 @@ export default function SectionHeader({ index, title, subtitle, id }: SectionHea
       transition={{ duration: 0.55 }}
       className="mb-14"
     >
-      <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] items-end gap-2 md:gap-5 pb-5 border-b-2 border-[var(--rule)]">
-        <span className="font-label text-[0.85rem] font-bold text-[var(--accent-color)]">{index}</span>
-        <h2 className="text-[clamp(2.2rem,5vw,3.8rem)] leading-none tracking-[-0.04em] font-extrabold text-[var(--text-primary)]">
+      <div
+        className={`grid grid-cols-1 gap-4 pb-5 border-b-2 border-[var(--rule)] ${
+          subtitle ? "md:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] md:items-end md:gap-10" : ""
+        }`}
+      >
+        <h2 className="text-[clamp(2.6rem,6vw,4.6rem)] leading-[0.95] tracking-[-0.04em] font-extrabold text-[var(--text-primary)] [text-wrap:balance]">
           {title}
         </h2>
+        {subtitle && (
+          <p className="text-sm md:text-[0.95rem] leading-relaxed text-[var(--text-muted)] md:pb-1 [text-wrap:pretty]">
+            {subtitle}
+          </p>
+        )}
       </div>
-      {subtitle && (
-        <p className="mt-5 max-w-2xl text-sm md:text-base leading-relaxed text-[var(--text-muted)]">
-          {subtitle}
-        </p>
-      )}
     </motion.div>
   );
 }
