@@ -110,91 +110,137 @@ export default function Projects() {
       </div>
     </div>
 
-    {/* ── Other projects: white section (filterable table) ── */}
+    {/* ── Other projects: white section, card grid (previous portfolio structure) ── */}
     <section className="bg-white py-[100px]">
       <div className="wrap">
-        <div>
-          <div className="flex flex-wrap items-end justify-between gap-5 mb-5">
-            <div>
-              <h3 className="text-[1.6rem] tracking-[-0.02em] font-bold text-[var(--text-primary)]">
-                Other Noteworthy Projects
-              </h3>
-              <p className="mt-2 text-sm text-[var(--text-muted)]">Smaller experiments, tools, and side projects.</p>
-            </div>
-
-            <div className="flex flex-wrap gap-1.5">
-              {filters.map((f) => (
-                <button
-                  key={f}
-                  onClick={() => setActiveFilter(f)}
-                  className={`font-label font-medium text-[0.8rem] px-3.5 py-2 border transition-colors ${
-                    activeFilter === f
-                      ? "bg-[#0b1222] text-white border-[#0b1222]"
-                      : "border-[#0b1222]/30 text-[var(--text-secondary)] hover:bg-[#0b1222] hover:text-white hover:border-[#0b1222]"
-                  }`}
-                >
-                  {f}
-                </button>
-              ))}
-            </div>
+        <div className="flex flex-wrap items-end justify-between gap-5 mb-8">
+          <div>
+            <h3 className="text-[1.6rem] tracking-[-0.02em] font-bold text-[var(--text-primary)]">
+              Other Noteworthy Projects
+            </h3>
+            <p className="mt-2 text-sm text-[var(--text-muted)]">Smaller experiments, tools, and side projects.</p>
           </div>
 
-          <div className="border-b border-[var(--line-soft)]">
-            <AnimatePresence mode="popLayout">
-              {filteredProjects.map((project) => (
-                <motion.div
-                  layout
-                  key={project.title}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.25 }}
-                  className="grid lg:grid-cols-[110px_1.3fr_2fr_1.2fr_110px] gap-3 lg:gap-5 items-center py-[22px] border-t border-[var(--line-soft)] transition-all duration-200 hover:bg-[#f3f7ff] lg:hover:pl-3"
-                >
-                  <span className="font-label font-medium text-[0.8rem] text-[var(--accent-color)]">{project.category}</span>
+          {/* Category tabs with a sliding active pill */}
+          <motion.div
+            className="flex flex-wrap gap-1.5"
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+          >
+            {filters.map((f) => (
+              <button
+                key={f}
+                onClick={() => setActiveFilter(f)}
+                aria-pressed={activeFilter === f}
+                className={`relative font-label font-medium text-[0.8rem] px-3.5 py-2 border overflow-hidden transition-colors duration-200 ${
+                  activeFilter === f
+                    ? "text-white border-[#0b1222]"
+                    : "border-[#0b1222]/25 text-[var(--text-secondary)] hover:border-[#0b1222] hover:text-[var(--text-primary)]"
+                }`}
+              >
+                {activeFilter === f && (
+                  <motion.span
+                    layoutId="other-projects-tab"
+                    className="absolute inset-0 bg-[#0b1222]"
+                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                  />
+                )}
+                <span className="relative z-10">{f}</span>
+              </button>
+            ))}
+          </motion.div>
+        </div>
 
-                  <div className="flex items-center gap-3">
-                    {project.imageUrl && (
-                      <img
-                        src={project.imageUrl}
-                        alt=""
-                        className="hidden sm:block w-14 h-10 object-cover object-top border border-[var(--line-soft)] shrink-0"
-                      />
-                    )}
-                    <h4 className="text-[1.05rem] font-bold text-[var(--text-primary)] leading-snug">{project.title}</h4>
+        {/* Card grid with smooth filter transitions */}
+        <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project) => (
+              <motion.article
+                layout
+                key={project.title}
+                initial={{ opacity: 0, scale: 0.94 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.94 }}
+                transition={{ duration: 0.3 }}
+                onMouseMove={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  e.currentTarget.style.setProperty("--x", `${e.clientX - rect.left}px`);
+                  e.currentTarget.style.setProperty("--y", `${e.clientY - rect.top}px`);
+                }}
+                className="group relative flex flex-col bg-white border border-[var(--line-soft)] overflow-hidden transition-[transform,border-color,box-shadow] duration-200 hover:-translate-y-1.5 hover:border-[#1f56f0]/50 hover:shadow-[0_14px_34px_rgba(15,23,42,0.10)]"
+              >
+                {/* Cursor-follow spotlight */}
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{ background: "radial-gradient(380px circle at var(--x) var(--y), rgba(31,86,240,0.07), transparent 70%)" }}
+                />
+
+                {project.imageUrl && (
+                  <div className="relative aspect-video overflow-hidden bg-[var(--bg-secondary)] border-b border-[var(--line-soft)]">
+                    <img
+                      src={project.imageUrl}
+                      alt={project.title}
+                      className="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-300"
+                    />
                   </div>
+                )}
 
-                  <p className="text-[0.9rem] text-[var(--text-secondary)] leading-relaxed">{project.description}</p>
-
-                  <span className="font-label text-[0.76rem] text-[var(--text-muted)] leading-relaxed">
-                    {project.tags.join(" · ")}
-                  </span>
-
-                  <div className="flex lg:flex-col gap-4 lg:gap-1 lg:items-end font-label text-[0.85rem] font-bold">
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[var(--accent-color)] hover:text-[var(--text-primary)] transition-colors"
-                    >
-                      Code ↗
-                    </a>
-                    {project.live && (
+                <div className="flex flex-1 flex-col p-6">
+                  {/* Header: folder icon + category, links on the right */}
+                  <div className="flex items-start justify-between mb-5">
+                    <div className="flex items-center gap-3">
+                      <span className="w-10 h-10 flex items-center justify-center bg-[var(--bg-secondary)] text-[var(--accent-color)]">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+                        </svg>
+                      </span>
+                      <span className="font-label font-medium text-[0.78rem] text-[var(--accent-color)]">{project.category}</span>
+                    </div>
+                    {/* Always visible on touch screens; revealed on hover or keyboard focus on desktop */}
+                    <div className="relative z-20 flex gap-3 lg:opacity-0 lg:group-hover:opacity-100 lg:focus-within:opacity-100 transition-opacity">
                       <a
-                        href={project.live}
+                        href={project.github}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[var(--accent-color)] hover:text-[var(--text-primary)] transition-colors"
+                        aria-label={`${project.title} source code on GitHub`}
+                        className="text-[var(--text-muted)] hover:text-[var(--accent-color)] transition-colors"
                       >
-                        Visit ↗
+                        <GitHubIcon />
                       </a>
-                    )}
+                      {project.live && (
+                        <a
+                          href={project.live}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`${project.title} live site`}
+                          className="text-[var(--text-muted)] hover:text-[var(--accent-color)] transition-colors"
+                        >
+                          <ExternalLinkIcon />
+                        </a>
+                      )}
+                    </div>
                   </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-        </div>
+
+                  <h4 className="text-base font-bold text-[var(--text-primary)] mb-2 group-hover:text-[var(--accent-color)] transition-colors">
+                    {project.title}
+                  </h4>
+                  <p className="text-sm text-[var(--text-muted)] leading-relaxed flex-1">{project.description}</p>
+
+                  <div className="flex flex-wrap gap-x-3 gap-y-1.5 mt-5">
+                    {project.tags.map((tag) => (
+                      <span key={tag} className="font-label text-xs text-[var(--text-muted)] transition-colors duration-200 hover:text-[var(--accent-color)]">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </motion.article>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       </div>
     </section>
     </>
