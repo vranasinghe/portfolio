@@ -422,16 +422,73 @@ export const certifications: Certification[] = [
   {
     title: "Generative AI for Everyone",
     link: "https://coursera.org/verify/FNBNBNCG0SL8",
-    image: "/genai-certificate.jpg.jpg",
+    // The file names are swapped on disk: frontend-certificate.jpg.jpg is the
+    // DeepLearning.AI "Generative AI for Everyone" certificate, and
+    // genai-certificate.jpg.jpg is the Meta "Introduction to Front-End Development" one.
+    image: "/frontend-certificate.jpg.jpg",
   },
   {
     title: "Introduction to Front-End Development",
     link: "https://coursera.org/verify/GV4S2WMWT1BU",
-    image: "/frontend-certificate.jpg.jpg",
+    image: "/genai-certificate.jpg.jpg",
   },
   {
     title: "Supervised Machine Learning: Regression and Classification",
     link: "https://coursera.org/verify/Z4G0EEWHYWDS",
     image: "/cetificate.jpg",
   },
+];
+
+// ── Achievements (competitions, hackathons, awards) ─────────────────────────
+// The Achievements section and its nav link only appear once this list has at
+// least one entry. Put certificate images in /public and reference them as "/file.jpg".
+export interface Achievement {
+  /** Competition or event name, e.g. "SLIIT CodeFest 2025" */
+  title: string;
+  /** Who ran it, e.g. "SLIIT FCSC" */
+  organizer: string;
+  /** Month and year, e.g. "Aug 2025" (optional: hidden when left out) */
+  date?: string;
+  /** Placing or outcome, e.g. "Winner", "1st Runner-up", "Finalist", "Participant" */
+  result: string;
+  /** Team name and/or size, e.g. "Team Nova · 4 members" */
+  team?: string;
+  /** One or two sentences on what you built or solved */
+  description: string;
+  /** Certificate image path in /public, e.g. "/codefest-2025.jpg" */
+  certificate?: string;
+  /** Optional links: GitHub, demo, competition page */
+  links?: { label: string; url: string }[];
+}
+
+export const achievements: Achievement[] = [
+  {
+    title: "NASA Space Apps Challenge 2026",
+    organizer: "NASA",
+    date: "Nov 2026",
+    result: "Galactic Problem Solver",
+    description:
+      "Took part in NASA's international Space Apps hackathon (November 14–15, 2026) and earned the Galactic Problem Solver certificate for outstanding participation and efforts to address challenges we face on Earth and in space.",
+    certificate: "/nasa-space-apps-2026.jpg",
+  },
+  {
+    title: "TensorForge 2.0",
+    organizer: "IEEE Computer Society Student Branch Chapter, General Sir John Kotelawala Defence University",
+    date: "Oct 2026",
+    result: "Outstanding Performance",
+    team: "Team Ascension",
+    description:
+      "Inter-university AI Engineering and MLOps Buildathon. Recognised for dedication, creativity, technical contribution and commitment throughout Phase 2 – MVP Development.",
+    certificate: "/tensorforge-2-certificate.jpg",
+  },
+  // {
+  //   title: "Competition name",
+  //   organizer: "Organiser",
+  //   date: "Mon YYYY",
+  //   result: "Finalist",
+  //   team: "Team name · 4 members",
+  //   description: "What you built or solved.",
+  //   certificate: "/competition-certificate.jpg",
+  //   links: [{ label: "GitHub", url: "https://github.com/..." }],
+  // },
 ];

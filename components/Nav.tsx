@@ -3,17 +3,12 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { personalInfo } from "@/data/portfolio";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { SECTIONS } from "@/lib/sections";
 
-const NAV_ITEMS = [
-  { id: "about",          label: "About" },
-  { id: "skills",         label: "Skills" },
-  { id: "projects",       label: "Projects" },
-  { id: "experience",     label: "Experience" },
-  { id: "certifications", label: "Certifications" },
-  { id: "reviews",        label: "Reviews" },
-  { id: "contact",        label: "Contact" },
-];
+// Nav order and numbering come from the shared section list, so they always match the page.
+const NAV_ITEMS = SECTIONS;
+
+const pad = (n: number) => String(n + 1).padStart(2, "0");
 
 export default function Nav() {
   const [active,    setActive]    = useState("home");
@@ -25,7 +20,7 @@ export default function Nav() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      setScrolled(window.scrollY > 40);
 
       const sections = NAV_ITEMS.map((item) => {
         const el = document.getElementById(item.id);
@@ -53,64 +48,67 @@ export default function Nav() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 py-4 border-b
+        className={`theme-dark fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b
           ${scrolled
-            ? "backdrop-blur-md shadow-xl border-[var(--border-color)]"
-            : "border-transparent"
+            ? "backdrop-blur-md border-[var(--border-color)] bg-[var(--nav-bg)]"
+            : "border-transparent bg-transparent"
           }
-          bg-[var(--nav-bg)]
         `}
       >
         {/* Scroll progress indicator */}
         <motion.div
-          className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[var(--accent-color)] to-indigo-500 origin-left"
+          className="absolute bottom-0 left-0 right-0 h-[2px] bg-[var(--accent-color)] origin-left"
           style={{ scaleX: scrollProgress }}
         />
 
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+        <div className="wrap flex items-center justify-between h-[74px]">
 
           {/* Logo */}
           <button
             onClick={() => scrollTo("home")}
-            className="text-2xl font-bold tracking-tighter text-[var(--text-primary)] hover:text-[var(--accent-color)] transition-colors"
+            className="flex items-center gap-1.5 font-label font-bold text-[1.05rem] text-[var(--text-primary)] hover:text-[var(--accent-color)] transition-colors"
           >
-            &lt;<span className="text-[var(--accent-color)]">VR</span>/&gt;
+            &lt;
+            <b className="grid place-items-center w-[34px] h-[34px] bg-[#1f56f0] text-white text-[0.85rem]">VR</b>
+            /&gt;
           </button>
 
           {/* Desktop Links */}
-          <div className="hidden md:flex items-center gap-6">
-            {NAV_ITEMS.map(({ id, label }) => {
-              const isActive = active === id;
-              return (
-                <button
-                  key={id}
-                  onClick={() => scrollTo(id)}
-                  className={`relative group py-1 text-sm font-medium transition-colors duration-200 ${
-                    isActive
-                      ? "text-[var(--accent-color)]"
-                      : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
-                  }`}
-                >
-                  {label}
-                  {isActive ? (
-                    <motion.span
-                      layoutId="nav-active-underline"
-                      className="absolute left-0 right-0 -bottom-1 h-0.5 rounded-full bg-[var(--accent-color)]"
-                      transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                    />
-                  ) : (
-                    <span className="absolute left-0 right-0 -bottom-1 h-0.5 rounded-full bg-[var(--text-muted)]/40 scale-x-0 group-hover:scale-x-100 transition-transform duration-200" />
-                  )}
-                </button>
-              );
-            })}
+          <div className="hidden xl:flex items-center gap-1">
+            <ul className="flex items-center gap-1 font-label font-medium text-[0.82rem]">
+              {NAV_ITEMS.map(({ id, label }, i) => {
+                const isActive = active === id;
+                return (
+                  <li key={id}>
+                    <button
+                      onClick={() => scrollTo(id)}
+                      className={`relative px-3 py-2 transition-colors duration-200 hover:bg-[var(--text-primary)]/[0.08] ${
+                        isActive
+                          ? "text-[var(--text-primary)]"
+                          : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                      }`}
+                    >
+                      <span className="text-[var(--accent-color)] mr-1">{pad(i)}</span>
+                      {label}
+                      {isActive && (
+                        <motion.span
+                          layoutId="nav-active-underline"
+                          className="absolute left-3 right-3 bottom-0 h-0.5 bg-[var(--accent-color)]"
+                          transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                        />
+                      )}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
 
             {/* Resume Button */}
             <a
               href={personalInfo.resumeLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-2 rounded-lg text-sm font-medium border border-[var(--accent-color)] text-[var(--accent-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-colors flex items-center gap-2"
+              className="ml-4 inline-flex items-center gap-2 px-[18px] py-[9px] border-2 border-current text-[0.82rem] font-bold text-[var(--text-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors"
             >
               Resume
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -118,25 +116,22 @@ export default function Nav() {
               </svg>
             </a>
 
-            {/* ── Theme Toggle ── */}
-            <ThemeToggle />
           </div>
 
           {/* Mobile: toggle + hamburger */}
-          <div className="flex md:hidden items-center gap-3">
-            <ThemeToggle />
+          <div className="flex xl:hidden items-center gap-3">
             <button
               id="mobile-menu-btn"
               onClick={() => setMenuOpen((o) => !o)}
               aria-label="Toggle mobile menu"
-              className="p-2 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-colors"
+              className="p-2 text-[var(--text-primary)] hover:bg-[var(--text-primary)]/[0.08] transition-colors"
             >
               {menuOpen ? (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
               ) : (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="4" y1="6" x2="20" y2="6" /><line x1="4" y1="12" x2="20" y2="12" /><line x1="4" y1="18" x2="20" y2="18" />
                 </svg>
               )}
@@ -152,9 +147,9 @@ export default function Nav() {
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.25, ease: "easeInOut" }}
-              className="md:hidden overflow-hidden border-t border-[var(--border-color)] bg-[var(--nav-bg)] backdrop-blur-md"
+              className="xl:hidden overflow-hidden border-t border-[var(--border-color)] bg-[var(--nav-bg)] backdrop-blur-md"
             >
-              <div className="px-6 py-4 flex flex-col gap-3">
+              <div className="wrap py-4 flex flex-col gap-1 font-label font-medium text-[0.9rem]">
                 {NAV_ITEMS.map(({ id, label }, i) => (
                   <motion.button
                     key={id}
@@ -162,12 +157,13 @@ export default function Nav() {
                     initial={{ opacity: 0, x: -12 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.04, duration: 0.2 }}
-                    className={`text-sm font-medium text-left py-1 transition-colors ${
+                    className={`text-left py-2.5 border-b border-[var(--border-color)] transition-colors ${
                       active === id
-                        ? "text-[var(--accent-color)]"
+                        ? "text-[var(--text-primary)]"
                         : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
                     }`}
                   >
+                    <span className="text-[var(--accent-color)] mr-2">{pad(i)}</span>
                     {label}
                   </motion.button>
                 ))}
@@ -178,7 +174,7 @@ export default function Nav() {
                   initial={{ opacity: 0, x: -12 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: NAV_ITEMS.length * 0.04, duration: 0.2 }}
-                  className="mt-1 px-4 py-2 rounded-lg text-sm font-medium border border-[var(--accent-color)] text-[var(--accent-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-colors flex items-center gap-2 w-fit"
+                  className="mt-3 px-[18px] py-[9px] border-2 border-current text-[0.82rem] font-bold text-[var(--text-primary)] flex items-center gap-2 w-fit"
                 >
                   Resume ↗
                 </motion.a>

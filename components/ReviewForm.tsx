@@ -28,7 +28,7 @@ function StarPicker({ value, onChange }: { value: number; onChange: (v: number) 
           <svg
             className={`w-8 h-8 transition-all duration-150 ${s <= (hover || value)
               ? "text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]"
-              : "text-white/10"
+              : "text-[var(--text-primary)]/15"
             }`}
             viewBox="0 0 20 20"
             fill="currentColor"
@@ -46,7 +46,7 @@ function StarPicker({ value, onChange }: { value: number; onChange: (v: number) 
 
 function FieldLabel({ children, required }: { children: React.ReactNode; required?: boolean }) {
   return (
-    <label className="block text-[10px] font-bold tracking-widest uppercase text-[var(--text-muted)] mb-1.5 font-mono">
+    <label className="block text-[10px] font-bold tracking-widest uppercase text-[var(--text-muted)] mb-1.5 font-label">
       {children}{required && <span className="text-[var(--accent-color)] ml-1">*</span>}
     </label>
   );
@@ -56,7 +56,7 @@ function Input({ ...props }: React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <input
       {...props}
-      className="w-full px-4 py-3 rounded-xl input-neon text-sm placeholder:text-[var(--text-muted)]/50"
+      className="w-full px-4 py-3 input-neon text-sm placeholder:text-[var(--text-muted)]/50"
     />
   );
 }
@@ -65,7 +65,7 @@ function Textarea({ ...props }: React.TextareaHTMLAttributes<HTMLTextAreaElement
   return (
     <textarea
       {...props}
-      className="w-full px-4 py-3 rounded-xl input-neon text-sm placeholder:text-[var(--text-muted)]/50 resize-none"
+      className="w-full px-4 py-3 input-neon text-sm placeholder:text-[var(--text-muted)]/50 resize-none"
     />
   );
 }
@@ -149,7 +149,7 @@ export default function ReviewForm({ onReviewSubmitted, isModal = false }: Revie
         transition={{ duration: 0.3 }}
         className="flex flex-col items-center justify-center text-center py-10 gap-4"
       >
-        <div className="w-16 h-16 rounded-2xl bg-emerald-400/10 border border-emerald-400/30 flex items-center justify-center">
+        <div className="w-16 h-16 bg-emerald-400/10 border border-emerald-400/30 flex items-center justify-center">
           <svg className="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
@@ -161,7 +161,7 @@ export default function ReviewForm({ onReviewSubmitted, isModal = false }: Revie
         <div className="flex items-center gap-3 mt-2 flex-wrap justify-center">
           <Link
             href="/#reviews"
-            className="btn-accent px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2"
+            className="btn-accent px-5 py-2.5 text-sm font-bold flex items-center gap-2"
           >
             View on Portfolio
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
@@ -171,7 +171,7 @@ export default function ReviewForm({ onReviewSubmitted, isModal = false }: Revie
           {!isModal && (
             <button
               onClick={() => { setSubmitted(false); setName(""); setRole(""); setCompany(""); setComment(""); setAvatarUrl(""); setLinkedinUrl(""); setProjectUrl(""); }}
-              className="btn-outline px-5 py-2.5 rounded-xl text-sm font-semibold"
+              className="btn-outline px-5 py-2.5 text-sm font-semibold"
             >
               Submit Another
             </button>
@@ -185,7 +185,7 @@ export default function ReviewForm({ onReviewSubmitted, isModal = false }: Revie
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       {errorMsg && (
-        <div className="flex items-center gap-3 p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
+        <div className="flex items-center gap-3 p-3.5 bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
           <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
@@ -196,7 +196,7 @@ export default function ReviewForm({ onReviewSubmitted, isModal = false }: Revie
       {/* Star Rating */}
       <div>
         <FieldLabel required>Overall Rating</FieldLabel>
-        <div className="flex items-center gap-3 p-3.5 rounded-xl bg-[var(--bg-tertiary)] border border-[var(--border-color)] w-fit">
+        <div className="flex items-center gap-3 p-3.5 bg-[var(--bg-tertiary)] border border-[var(--border-color)] w-fit">
           <StarPicker value={rating} onChange={setRating} />
         </div>
       </div>
@@ -224,10 +224,10 @@ export default function ReviewForm({ onReviewSubmitted, isModal = false }: Revie
           <select
             value={service}
             onChange={(e) => setService(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl input-neon text-sm cursor-pointer"
+            className="w-full px-4 py-3 input-neon text-sm cursor-pointer"
           >
             {SERVICE_CATEGORIES.filter((c) => c !== "All Services").map((cat) => (
-              <option key={cat} value={cat} className="bg-[#04111e]">{cat}</option>
+              <option key={cat} value={cat} className="bg-[#04060b]">{cat}</option>
             ))}
           </select>
         </div>
@@ -237,7 +237,7 @@ export default function ReviewForm({ onReviewSubmitted, isModal = false }: Revie
       <div>
         <div className="flex items-center justify-between mb-1.5">
           <FieldLabel required>Your Review</FieldLabel>
-          <span className="text-[10px] text-[var(--text-muted)] font-mono">{comment.length}/500</span>
+          <span className="text-[10px] text-[var(--text-muted)] font-label">{comment.length}/500</span>
         </div>
         <Textarea
           value={comment}
@@ -285,10 +285,10 @@ export default function ReviewForm({ onReviewSubmitted, isModal = false }: Revie
             value={projectUrl}
             onChange={(e) => setProjectUrl(e.target.value)}
             placeholder="https://your-project.vercel.app  (the live site I built for you)"
-            className="w-full pl-11 pr-4 py-3 rounded-xl input-neon text-sm placeholder:text-[var(--text-muted)]/50"
+            className="w-full pl-11 pr-4 py-3 input-neon text-sm placeholder:text-[var(--text-muted)]/50"
           />
         </div>
-        <p className="mt-1.5 text-[10px] text-[var(--text-muted)] font-mono pl-1">
+        <p className="mt-1.5 text-[10px] text-[var(--text-muted)] font-label pl-1">
           Share the live URL of your deployed web app, dashboard, or AI tool.
         </p>
       </div>
@@ -297,7 +297,7 @@ export default function ReviewForm({ onReviewSubmitted, isModal = false }: Revie
       <button
         type="submit"
         disabled={submitting}
-        className="w-full btn-accent flex items-center justify-center gap-2.5 py-3.5 rounded-xl text-base font-bold disabled:opacity-50 mt-1"
+        className="w-full btn-accent flex items-center justify-center gap-2.5 py-3.5 text-base font-bold disabled:opacity-50 mt-1"
       >
         {submitting ? (
           <>

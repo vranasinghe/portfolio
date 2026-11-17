@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import ReviewForm from "@/components/ReviewForm";
-import ParticlesBackground from "@/components/ParticlesBackground";
+import NetworkBackground from "@/components/NetworkBackground";
 
 export const metadata: Metadata = {
   title: "Submit a Review | Venuja Ranasinghe",
@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 
 export default function ReviewPage() {
   return (
-    <main className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] relative overflow-x-hidden transition-colors duration-300">
-      <ParticlesBackground />
+    <main className="band-dark min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] relative overflow-x-hidden transition-colors duration-300">
+      <NetworkBackground />
 
       {/* Background glows */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-blue-950/20 blur-[110px] rounded-full pointer-events-none" />
@@ -24,7 +24,7 @@ export default function ReviewPage() {
         <div className="flex items-center justify-between mb-12 pb-5 border-b border-[var(--border-color)]">
           <Link
             href="/"
-            className="flex items-center gap-2 text-sm font-semibold text-[var(--text-muted)] hover:text-[var(--accent-color)] transition-colors group font-mono"
+            className="flex items-center gap-2 text-sm font-semibold text-[var(--text-muted)] hover:text-[var(--accent-color)] transition-colors group font-label"
           >
             <svg className="w-4 h-4 transition-transform group-hover:-translate-x-1 duration-200" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
@@ -43,10 +43,10 @@ export default function ReviewPage() {
         {/* ── Hero header ── */}
         <div className="text-center mb-10 space-y-4">
           {/* Eyebrow */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full
+          <div className="inline-flex items-center gap-2 px-4 py-1.5
                           border border-[var(--accent-color)]/25
                           bg-[color-mix(in_srgb,var(--accent-color)_8%,transparent)]
-                          text-[var(--accent-color)] text-[11px] font-bold tracking-widest uppercase font-mono">
+                          text-[var(--accent-color)] text-[11px] font-bold tracking-widest uppercase font-label">
             <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
             </svg>
@@ -64,11 +64,11 @@ export default function ReviewPage() {
             Thank you for partnering with me. Your honest feedback helps build trust with future clients and celebrates the work we created together.
           </p>
 
-          <div className="w-24 h-1.5 bg-gradient-to-r from-[var(--accent-color)] to-indigo-500 mx-auto rounded-full shadow-sm" />
+          <div className="w-24 h-1.5 bg-gradient-to-r from-[var(--accent-color)] to-indigo-500 mx-auto shadow-sm" />
         </div>
 
         {/* Trust signals */}
-        <div className="flex flex-wrap items-center justify-center gap-6 mb-10 text-xs text-[var(--text-muted)] font-medium font-mono">
+        <div className="flex flex-wrap items-center justify-center gap-6 mb-10 text-xs text-[var(--text-muted)] font-medium font-label">
           <span className="flex items-center gap-2">
             <svg className="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -92,7 +92,7 @@ export default function ReviewPage() {
         </div>
 
         {/* ── Form card ── */}
-        <div className="relative bg-[var(--card-bg)] rounded-3xl border border-[var(--border-color)]
+        <div className="relative bg-[var(--card-bg)] border border-[var(--border-color)]
                         shadow-[0_30px_80px_-20px_rgba(0,0,0,0.5)] overflow-hidden">
           {/* Top gradient accent strip */}
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--accent-color)]/40 to-transparent" />
@@ -103,7 +103,7 @@ export default function ReviewPage() {
         </div>
 
         {/* Footer */}
-        <p className="mt-10 text-center text-[10px] text-[var(--text-muted)] font-mono">
+        <p className="mt-10 text-center text-[10px] text-[var(--text-muted)] font-label">
           © {new Date().getFullYear()} Venuja Ranasinghe · All submissions are protected &amp; verified.
         </p>
       </div>
