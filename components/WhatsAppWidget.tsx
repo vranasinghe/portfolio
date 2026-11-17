@@ -130,7 +130,7 @@ export default function WhatsAppWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.92 }}
             transition={{ type: "spring", stiffness: 350, damping: 26 }}
-            className="pointer-events-auto w-[calc(100vw-2.5rem)] sm:w-[380px] mb-4 rounded-3xl overflow-hidden shadow-2xl border border-emerald-500/20 bg-[var(--card-bg)] backdrop-blur-xl flex flex-col max-h-[560px] text-[var(--text-primary)]"
+            className="pointer-events-auto w-[calc(100vw-2.5rem)] sm:w-[380px] mb-4 overflow-hidden shadow-2xl border border-emerald-500/20 bg-[var(--card-bg)] backdrop-blur-xl flex flex-col max-h-[560px] text-[var(--text-primary)]"
             style={{
               boxShadow: "0 20px 45px -10px rgba(16, 185, 129, 0.25)",
             }}
@@ -139,7 +139,7 @@ export default function WhatsAppWidget() {
             <div className="bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 p-4 text-white flex items-center justify-between relative shadow-md">
               <div className="flex items-center gap-3">
                 <div className="relative">
-                  <div className="w-11 h-11 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center font-bold text-white shadow-inner text-base">
+                  <div className="w-11 h-11 bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center font-bold text-white shadow-inner text-base">
                     VR
                   </div>
                   <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 border-2 border-emerald-600 rounded-full animate-pulse" />
@@ -147,7 +147,7 @@ export default function WhatsAppWidget() {
                 <div className="leading-tight">
                   <h4 className="font-bold text-base tracking-wide flex items-center gap-1.5">
                     {personalInfo.name}
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-white/20 text-white/90 font-medium">
+                    <span className="text-xs px-2 py-0.5 bg-white/20 text-white/90 font-medium">
                       Online
                     </span>
                   </h4>
@@ -161,7 +161,7 @@ export default function WhatsAppWidget() {
               <button
                 onClick={() => setIsOpen(false)}
                 aria-label="Close chat"
-                className="w-8 h-8 rounded-full bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition-colors active:scale-90"
+                className="w-8 h-8 bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition-colors active:scale-90"
               >
                 <svg
                   className="w-4 h-4"
@@ -183,17 +183,17 @@ export default function WhatsAppWidget() {
             <div className="p-4 overflow-y-auto space-y-3 bg-[var(--bg-primary)]/40 flex-1 max-h-[300px]">
               {/* Timestamp */}
               <div className="text-center">
-                <span className="text-[10px] font-mono tracking-wider px-2.5 py-1 rounded-full bg-[var(--bg-tertiary)] text-[var(--text-muted)] border border-[var(--border-color)]">
+                <span className="text-[10px] font-label tracking-wider px-2.5 py-1 bg-[var(--bg-tertiary)] text-[var(--text-muted)] border border-[var(--border-color)]">
                   {chatTime}
                 </span>
               </div>
 
               {/* Incoming greeting bubble */}
               <div className="flex items-start gap-2.5 max-w-[90%]">
-                <div className="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0 text-xs font-bold border border-emerald-500/30">
+                <div className="w-7 h-7 bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0 text-xs font-bold border border-emerald-500/30">
                   <FaWhatsapp className="w-4 h-4 text-emerald-500" />
                 </div>
-                <div className="bg-[var(--card-bg)] border border-[var(--border-color)] text-[var(--text-primary)] rounded-2xl rounded-tl-sm p-3.5 shadow-sm text-xs md:text-sm leading-relaxed">
+                <div className="bg-[var(--card-bg)] border border-[var(--border-color)] text-[var(--text-primary)] p-3.5 shadow-sm text-xs md:text-sm leading-relaxed">
                   <p className="font-medium mb-1">
                     Hey there! 👋 I&apos;m Venuja.
                   </p>
@@ -216,7 +216,7 @@ export default function WhatsAppWidget() {
                       key={index}
                       type="button"
                       onClick={() => handleSelectPrompt(prompt.text)}
-                      className="text-xs px-2.5 py-1.5 rounded-xl bg-[var(--bg-tertiary)] hover:bg-emerald-500/10 hover:border-emerald-500/40 border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-emerald-500 text-left transition-all duration-150 active:scale-95 flex items-center gap-1.5"
+                      className="text-xs px-2.5 py-1.5 bg-[var(--bg-tertiary)] hover:bg-emerald-500/10 hover:border-emerald-500/40 border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-emerald-500 text-left transition-all duration-150 active:scale-95 flex items-center gap-1.5"
                     >
                       <span>{prompt.icon}</span>
                       <span>{prompt.label}</span>
@@ -244,13 +244,13 @@ export default function WhatsAppWidget() {
                   }}
                   rows={2}
                   placeholder="Write your message here..."
-                  className="w-full bg-[var(--bg-tertiary)] border border-[var(--border-color)] focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 rounded-xl px-3 py-2 text-xs md:text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none resize-none transition-all"
+                  className="w-full bg-[var(--bg-tertiary)] border border-[var(--border-color)] focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 px-3 py-2 text-xs md:text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none resize-none transition-all"
                 />
 
                 <button
                   type="submit"
                   aria-label="Send via WhatsApp"
-                  className="h-10 px-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-semibold flex items-center justify-center gap-1.5 transition-all shadow-md shadow-emerald-500/30 active:scale-95 flex-shrink-0"
+                  className="h-10 px-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold flex items-center justify-center gap-1.5 transition-all shadow-md shadow-emerald-500/30 active:scale-95 flex-shrink-0"
                 >
                   <FaWhatsapp className="w-4 h-4" />
                   <span className="hidden sm:inline text-xs">Send</span>
@@ -275,7 +275,7 @@ export default function WhatsAppWidget() {
               initial={{ opacity: 0, x: 10, scale: 0.9 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
               exit={{ opacity: 0, x: 10, scale: 0.9 }}
-              className="bg-[var(--card-bg)] text-[var(--text-primary)] border border-emerald-500/30 px-3.5 py-2 rounded-2xl shadow-xl backdrop-blur-md text-xs font-medium flex items-center gap-2 cursor-pointer hover:border-emerald-500 transition-colors"
+              className="bg-[var(--card-bg)] text-[var(--text-primary)] border border-emerald-500/30 px-3.5 py-2 shadow-xl backdrop-blur-md text-xs font-medium flex items-center gap-2 cursor-pointer hover:border-emerald-500 transition-colors"
               onClick={toggleOpen}
             >
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
@@ -300,14 +300,14 @@ export default function WhatsAppWidget() {
           whileTap={{ scale: 0.92 }}
           onClick={toggleOpen}
           aria-label="Open WhatsApp chat"
-          className="relative w-14 h-14 rounded-full bg-gradient-to-tr from-emerald-600 via-emerald-500 to-teal-500 text-white shadow-[0_8px_25px_rgba(16,185,129,0.45)] flex items-center justify-center transition-all duration-300 group hover:shadow-[0_12px_30px_rgba(16,185,129,0.6)]"
+          className="relative w-14 h-14 bg-gradient-to-tr from-emerald-600 via-emerald-500 to-teal-500 text-white shadow-[0_8px_25px_rgba(16,185,129,0.45)] flex items-center justify-center transition-all duration-300 group hover:shadow-[0_12px_30px_rgba(16,185,129,0.6)]"
         >
           {/* Pulsing ring indicator */}
-          <span className="absolute -inset-1 rounded-full bg-emerald-400 opacity-40 group-hover:opacity-70 animate-ping pointer-events-none" />
+          <span className="absolute -inset-1 bg-emerald-400 opacity-40 group-hover:opacity-70 animate-ping pointer-events-none" />
 
           {/* New message notification badge */}
           {hasNewBadge && !isOpen && (
-            <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 border-2 border-[var(--bg-primary)] text-white text-[10px] font-bold flex items-center justify-center shadow-md animate-bounce">
+            <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 border-2 border-[var(--bg-primary)] text-white text-[10px] font-bold flex items-center justify-center shadow-md animate-bounce">
               1
             </span>
           )}

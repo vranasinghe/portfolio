@@ -56,10 +56,10 @@ The site is built for performance and impact, combining immersive **3D interacti
 | Feature | Description |
 |---|---|
 | 🤖 **Interactive 3D** | Spline 3D robot (`@splinetool/react-spline`) + dynamic WebGL canvas scenes via `@react-three/fiber` |
-| 🎨 **Glassmorphic Theming** | Seamless dark/light mode switching via `next-themes` with fully custom glassmorphic UI |
+| 🎨 **Mixed Dark/Light Design** | Fixed layout mixing a dark hero, nav and projects band with light paper sections and a blue contact band |
 | 💬 **Reviews & Testimonials** | Live review submission at `/review`, star-rating breakdown, slider/grid toggle, persisted via API |
 | ⚡ **High Performance** | Next.js 15 App Router + React 19 Server Components for fast TTI and optimal Core Web Vitals |
-| 💫 **Micro-Animations** | Framer Motion scroll transitions, canvas particle background, preloader, and typewriter dynamics |
+| 💫 **Micro-Animations** | Framer Motion scroll transitions, animated node-network hero background, preloader, and typewriter dynamics |
 | 📬 **Functional Contact Form** | Serverless email delivery via **Web3Forms API** + WhatsApp direct-link integration |
 | 📱 **Fully Responsive** | Mobile-first layouts optimized across all screen sizes |
 | ⚙️ **Centralized Data Layer** | All content (projects, skills, experience) managed from a single `data/portfolio.ts` file |
@@ -93,7 +93,6 @@ The site is built for performance and impact, combining immersive **3D interacti
 |---|---|
 | Next.js API Routes | Review storage (`GET /api/reviews`, `POST /api/reviews`) |
 | [Web3Forms](https://web3forms.com/) | Serverless contact form email delivery |
-| `next-themes` | SSR-safe dark/light theme management |
 
 ---
 
@@ -108,7 +107,7 @@ portfolio/
 │   ├── review/                   # Public review submission page (/review)
 │   │   └── page.tsx
 │   ├── globals.css               # Global styles & Tailwind directives
-│   ├── layout.tsx                # Root layout — ThemeProvider, metadata, fonts
+│   ├── layout.tsx                # Root layout — metadata, fonts, preloader
 │   └── page.tsx                  # Main single-page portfolio view
 │
 ├── components/                   # Feature UI components
@@ -117,15 +116,13 @@ portfolio/
 │   ├── Contact.tsx               # Web3Forms contact form & social links
 │   ├── Experience.tsx            # Work experience & education timeline
 │   ├── Hero.tsx                  # Hero section — 3D robot, typewriter, stats
-│   ├── Nav.tsx                   # Sticky navbar with scroll links & theme toggle
-│   ├── ParticlesBackground.tsx   # Interactive canvas particle background
+│   ├── Nav.tsx                   # Sticky navbar with numbered scroll links
+│   ├── NetworkBackground.tsx     # Animated node-network canvas background
 │   ├── Preloader.tsx             # Custom animated preloader screen
 │   ├── Projects.tsx              # Filterable project gallery (featured + minor)
 │   ├── ReviewForm.tsx            # Review submission form component
 │   ├── Reviews.tsx               # Testimonials slider/grid + rating breakdown
 │   ├── SplineRobot.tsx           # Spline 3D scene wrapper
-│   ├── ThemeProvider.tsx         # next-themes provider wrapper
-│   ├── ThemeToggle.tsx           # Dark/light mode switch button
 │   ├── Toolkit.tsx               # Categorized interactive skills matrix
 │   └── ToolsTechnologies.tsx     # Animated technology icon banner
 │
@@ -169,15 +166,27 @@ npm install
 Copy the example env file and fill in your values:
 
 ```bash
+# macOS / Linux
 cp .env.example .env.local
+
+# Windows (PowerShell)
+Copy-Item .env.example .env.local
 ```
 
-```env
-# Web3Forms API key — get yours at https://web3forms.com
-NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=your_web3forms_access_key_here
+Open `.env.local` and set the following variables:
 
-# WhatsApp number in international format (e.g. +94770000000)
+```env
+# ── Contact Form ─────────────────────────────────────────────
+# Get your free Access Key at https://web3forms.com
+NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=your_access_key_here
+
+# ── WhatsApp Integration ─────────────────────────────────────
+# International format, no spaces (e.g. +94706827870)
 NEXT_PUBLIC_WHATSAPP_NUMBER=+94706827870
+
+# ── Feature Flags ────────────────────────────────────────────
+# Set to 'true' to display the Reviews & Testimonials section
+NEXT_PUBLIC_SHOW_REVIEWS=false
 ```
 
 ### 4 · Start the Development Server

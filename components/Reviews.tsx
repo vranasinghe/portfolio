@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { sectionNumber } from "@/lib/sections";
 import { motion, AnimatePresence } from "framer-motion";
 import { Review, SERVICE_CATEGORIES, getStoredReviews } from "@/data/reviews";
 import ReviewForm from "@/components/ReviewForm";
+import SectionHeader from "@/components/SectionHeader";
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 function getInitials(str: string) {
@@ -15,11 +17,11 @@ function getInitials(str: string) {
 }
 
 const GRADIENT_PAIRS = [
-  "from-blue-500 to-indigo-600",
-  "from-violet-500 to-purple-600",
-  "from-cyan-500 to-blue-600",
-  "from-indigo-500 to-blue-500",
-  "from-sky-500 to-indigo-500",
+  "from-blue-500 to-blue-700",
+  "from-blue-400 to-blue-600",
+  "from-blue-600 to-blue-800",
+  "from-blue-400 to-blue-700",
+  "from-blue-500 to-blue-600",
 ];
 
 function StarRow({ rating, size = "sm" }: { rating: number; size?: "sm" | "xs" }) {
@@ -27,7 +29,7 @@ function StarRow({ rating, size = "sm" }: { rating: number; size?: "sm" | "xs" }
   return (
     <div className="flex items-center gap-0.5">
       {[1, 2, 3, 4, 5].map((s) => (
-        <svg key={s} className={`${px} ${s <= rating ? "text-amber-400" : "text-white/10"}`} viewBox="0 0 20 20" fill="currentColor">
+        <svg key={s} className={`${px} ${s <= rating ? "text-amber-400" : "text-[var(--text-primary)]/15"}`} viewBox="0 0 20 20" fill="currentColor">
           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
         </svg>
       ))}
@@ -51,22 +53,22 @@ function ReviewCard({ review, index }: { review: Review; index: number }) {
         e.currentTarget.style.setProperty("--mx", `${e.clientX - rect.left}px`);
         e.currentTarget.style.setProperty("--my", `${e.clientY - rect.top}px`);
       }}
-      className="group relative flex flex-col bg-[var(--card-bg)] rounded-3xl border border-[var(--border-color)] p-6
+      className="group relative flex flex-col bg-[var(--card-bg)] border border-[var(--border-color)] p-6
                  shadow-[0_15px_40px_-15px_var(--shadow-color)]
                  hover:border-[color-mix(in_srgb,var(--accent-color)_35%,transparent)]
-                 hover:shadow-[0_20px_50px_rgba(96,165,250,0.12)]
+                 hover:shadow-[0_20px_50px_rgba(107,147,255,0.12)]
                  transition-all duration-400 overflow-hidden"
     >
       {/* Spotlight glow on hover */}
       <div
-        className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        style={{ background: "radial-gradient(320px circle at var(--mx) var(--my), rgba(96,165,250,0.09), transparent 70%)" }}
+        className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        style={{ background: "radial-gradient(320px circle at var(--mx) var(--my), rgba(107,147,255,0.09), transparent 70%)" }}
       />
 
       {/* Top row: stars + service badge */}
       <div className="flex items-start justify-between gap-3 mb-5">
         <StarRow rating={review.rating} />
-        <span className="shrink-0 text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full
+        <span className="shrink-0 text-[10px] font-bold tracking-widest uppercase px-2.5 py-1
                          bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)]
                          text-[var(--accent-color)]
                          border border-[color-mix(in_srgb,var(--accent-color)_25%,transparent)]">
@@ -76,7 +78,7 @@ function ReviewCard({ review, index }: { review: Review; index: number }) {
 
       {/* Quote mark watermark */}
       <svg
-        className="absolute top-5 right-5 w-14 h-14 text-white/[0.03] group-hover:text-[var(--accent-color)]/[0.06] transition-colors duration-500 pointer-events-none"
+        className="absolute top-5 right-5 w-14 h-14 text-[var(--text-primary)]/[0.05] group-hover:text-[var(--accent-color)]/[0.06] transition-colors duration-500 pointer-events-none"
         viewBox="0 0 24 24" fill="currentColor"
       >
         <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
@@ -93,7 +95,7 @@ function ReviewCard({ review, index }: { review: Review; index: number }) {
           href={review.projectUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 self-start mb-5 px-3.5 py-1.5 rounded-lg
+          className="inline-flex items-center gap-2 self-start mb-5 px-3.5 py-1.5
                      text-[11px] font-bold tracking-wide
                      bg-[var(--accent-color)]/10
                      text-[var(--accent-color)]
@@ -123,11 +125,11 @@ function ReviewCard({ review, index }: { review: Review; index: number }) {
             <img
               src={review.avatarUrl}
               alt={review.name}
-              className="w-10 h-10 rounded-full object-cover border-2 border-[var(--accent-color)]/40 shrink-0"
+              className="w-10 h-10 object-cover border-2 border-[var(--accent-color)]/40 shrink-0"
               onError={(e) => { (e.target as HTMLElement).style.display = "none"; }}
             />
           ) : (
-            <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${grad} text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-md`}>
+            <div className={`w-10 h-10 bg-gradient-to-br ${grad} text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-md`}>
               {getInitials(review.name)}
             </div>
           )}
@@ -150,14 +152,14 @@ function ReviewCard({ review, index }: { review: Review; index: number }) {
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
-          <span className="text-[10px] font-mono text-[var(--text-muted)]">{review.date}</span>
+          <span className="text-[10px] font-label text-[var(--text-muted)]">{review.date}</span>
           {review.linkedinUrl && (
             <a
               href={review.linkedinUrl}
               target="_blank"
               rel="noopener noreferrer"
               title="View Profile"
-              className="w-7 h-7 rounded-lg bg-[var(--bg-tertiary)] border border-[var(--border-color)]
+              className="w-7 h-7 bg-[var(--bg-tertiary)] border border-[var(--border-color)]
                          text-[var(--text-muted)] hover:text-[var(--accent-color)]
                          hover:border-[color-mix(in_srgb,var(--accent-color)_40%,transparent)]
                          flex items-center justify-center transition-all duration-200"
@@ -232,30 +234,14 @@ export default function Reviews() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-blue-950/20 blur-[110px] rounded-full pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-[500px] h-[400px] bg-indigo-950/15 blur-[120px] rounded-full pointer-events-none" />
 
-      <div className="max-w-6xl mx-auto px-6 relative z-10">
+      <div className="wrap relative z-10">
 
         {/* ── Section Header ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.55 }}
-          className="mb-16 text-center"
-        >
-          <h2 className="text-4xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-6 tracking-tight">
-            What My{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent-color)] to-indigo-400">
-              Clients Say
-            </span>
-          </h2>
-
-          <p className="text-[var(--text-muted)] text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-6">
-            Genuine testimonials from leaders and clients I&apos;ve collaborated with on Data Science,
-            Machine Learning, and Web projects.
-          </p>
-
-          <div className="w-24 h-1.5 bg-gradient-to-r from-[var(--accent-color)] to-indigo-500 mx-auto rounded-full shadow-sm" />
-        </motion.div>
+        <SectionHeader
+          index={sectionNumber("reviews")}
+          title="What My Clients Say"
+          subtitle="Genuine testimonials from leaders and clients I've collaborated with on Data Science, Machine Learning, and Web projects."
+        />
 
         {/* ── Stats & Actions Bar ── */}
         <motion.div
@@ -264,7 +250,7 @@ export default function Reviews() {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.15 }}
           className="relative flex flex-col sm:flex-row items-center justify-between gap-6
-                     p-5 sm:p-6 rounded-2xl mb-10
+                     p-5 sm:p-6 mb-10
                      bg-[var(--card-bg)] border border-[var(--border-color)]
                      shadow-[0_15px_40px_-15px_var(--shadow-color)] overflow-hidden"
         >
@@ -275,7 +261,7 @@ export default function Reviews() {
           <div className="flex items-center gap-6 sm:gap-8 flex-wrap justify-center sm:justify-start">
             {/* Avg Rating */}
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-400/10 border border-amber-400/20 flex items-center justify-center">
+              <div className="w-10 h-10 bg-amber-400/10 border border-amber-400/20 flex items-center justify-center">
                 <svg className="w-5 h-5 text-amber-400 fill-amber-400" viewBox="0 0 20 20">
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
@@ -292,7 +278,7 @@ export default function Reviews() {
 
             {/* Total reviews */}
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[var(--accent-color)]/10 border border-[var(--accent-color)]/20 flex items-center justify-center">
+              <div className="w-10 h-10 bg-[var(--accent-color)]/10 border border-[var(--accent-color)]/20 flex items-center justify-center">
                 <svg className="w-5 h-5 text-[var(--accent-color)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
@@ -307,7 +293,7 @@ export default function Reviews() {
 
             {/* Satisfaction */}
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center">
+              <div className="w-10 h-10 bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center">
                 <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
                 </svg>
@@ -324,7 +310,7 @@ export default function Reviews() {
             {/* Copy link */}
             <button
               onClick={handleCopyLink}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold
+              className="flex items-center gap-2 px-4 py-2.5 text-sm font-semibold
                          border border-[var(--border-color)] bg-[var(--bg-tertiary)]
                          text-[var(--text-muted)] hover:text-[var(--accent-color)]
                          hover:border-[color-mix(in_srgb,var(--accent-color)_40%,transparent)]
@@ -350,7 +336,7 @@ export default function Reviews() {
             {/* Write a Review */}
             <button
               onClick={() => setIsModalOpen(true)}
-              className="btn-accent flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold"
+              className="btn-accent flex items-center gap-2 px-5 py-2.5 text-sm font-bold"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -374,10 +360,10 @@ export default function Reviews() {
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200
+                className={`px-4 py-1.5 text-xs sm:text-sm font-semibold transition-all duration-200
                   ${isActive
                     ? "btn-accent"
-                    : "btn-outline bg-transparent text-white hover:bg-[color-mix(in_srgb,var(--accent-color)_8%,transparent)]"
+                    : "btn-outline bg-transparent text-[var(--text-primary)] hover:bg-[color-mix(in_srgb,var(--accent-color)_8%,transparent)]"
                   }`}
               >
                 {cat}
@@ -430,7 +416,7 @@ export default function Reviews() {
               className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto pointer-events-none"
             >
               <div className="w-full max-w-xl pointer-events-auto my-8
-                              bg-[var(--card-bg)] rounded-3xl border border-[var(--border-color)]
+                              bg-[var(--card-bg)] border border-[var(--border-color)]
                               shadow-[0_40px_80px_-20px_rgba(0,0,0,0.7)]
                               relative overflow-hidden">
 
@@ -451,7 +437,7 @@ export default function Reviews() {
                     <button
                       onClick={() => setIsModalOpen(false)}
                       aria-label="Close"
-                      className="w-8 h-8 rounded-lg bg-[var(--bg-tertiary)] border border-[var(--border-color)]
+                      className="w-8 h-8 bg-[var(--bg-tertiary)] border border-[var(--border-color)]
                                  text-[var(--text-muted)] hover:text-[var(--text-primary)]
                                  flex items-center justify-center transition-colors duration-150 shrink-0"
                     >
