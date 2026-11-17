@@ -105,8 +105,46 @@ body {
 .marquee-item::after { content: "✦"; margin-left: 52px; color: #c3d4ff; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 
+/* Footer pipeline train (components/PipelineTrain.tsx)
+   Drives left → right: enters from the left edge, exits on the right. */
+.pipeline-train {
+  transform: translateX(calc(var(--train-w, 375px) * -1));
+  animation: pipeline-ride var(--train-duration, 24s) linear infinite;
+}
+@keyframes pipeline-ride {
+  from { transform: translateX(calc(var(--train-w, 375px) * -1)); }
+  to   { transform: translateX(100vw); }
+}
+.pipeline-wheel { animation: pipeline-spin 0.9s linear infinite; }
+@keyframes pipeline-spin { to { transform: rotate(360deg); } }
+.pipeline-puff {
+  position: absolute;
+  top: 0;
+  width: 6px;
+  height: 6px;
+  background: #ffffff;
+  opacity: 0;
+  animation: pipeline-puff 1.65s ease-out infinite;
+}
+@keyframes pipeline-puff {
+  0%   { transform: translate(0, 3px); opacity: 0.9; }
+  100% { transform: translate(-20px, -24px) scale(0.5); opacity: 0; }
+}
+.pipeline-caption { opacity: 0; transition: opacity 0.2s ease; }
+.pipeline-train:hover .pipeline-caption { opacity: 1; }
+.pipeline-train:hover,
+.pipeline-train:hover * { animation-play-state: paused; }
+
+/* Contact "Open to internships" seal: the lettered ring turns slowly */
+.seal-spin { animation: seal-spin 28s linear infinite; }
+@keyframes seal-spin { to { transform: rotate(360deg); } }
+
 @media (prefers-reduced-motion: reduce) {
   .marquee-track { animation: none; }
+  .seal-spin { animation: none; }
+  /* Park the train near the right edge instead of driving */
+  .pipeline-train { animation: none; transform: translateX(calc(100vw - var(--train-w, 375px) - 40px)); }
+  .pipeline-wheel, .pipeline-puff { animation: none; }
 }
 
 /* =========================================================

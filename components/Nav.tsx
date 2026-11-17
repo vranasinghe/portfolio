@@ -8,7 +8,6 @@ import { SECTIONS } from "@/lib/sections";
 // Nav order and numbering come from the shared section list, so they always match the page.
 const NAV_ITEMS = SECTIONS;
 
-const pad = (n: number) => String(n + 1).padStart(2, "0");
 
 export default function Nav() {
   const [active,    setActive]    = useState("home");
@@ -76,7 +75,7 @@ export default function Nav() {
           {/* Desktop Links */}
           <div className="hidden xl:flex items-center gap-1">
             <ul className="flex items-center gap-1 font-label font-medium text-[0.82rem]">
-              {NAV_ITEMS.map(({ id, label }, i) => {
+              {NAV_ITEMS.map(({ id, label }) => {
                 const isActive = active === id;
                 return (
                   <li key={id}>
@@ -88,7 +87,6 @@ export default function Nav() {
                           : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
                       }`}
                     >
-                      <span className="text-[var(--accent-color)] mr-1">{pad(i)}</span>
                       {label}
                       {isActive && (
                         <motion.span
@@ -163,7 +161,6 @@ export default function Nav() {
                         : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
                     }`}
                   >
-                    <span className="text-[var(--accent-color)] mr-2">{pad(i)}</span>
                     {label}
                   </motion.button>
                 ))}
