@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { sectionNumber } from "@/lib/sections";
 import { personalInfo, heroStats } from "@/data/portfolio";
 import SectionHeader from "@/components/SectionHeader";
 
@@ -24,7 +23,7 @@ const RECENT = [
 export default function About() {
   return (
     <section className="wrap py-[120px] relative">
-      <SectionHeader index={sectionNumber("about")} title="About Me" />
+      <SectionHeader title="About Me" />
 
       <div className="grid grid-cols-2 lg:grid-cols-12 gap-4">
 

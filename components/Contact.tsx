@@ -1,16 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { sectionNumber } from "@/lib/sections";
 import { motion } from "framer-motion";
 import { personalInfo } from "@/data/portfolio";
+import PipelineTrain from "@/components/PipelineTrain";
+import AvailabilitySeal from "@/components/AvailabilitySeal";
 
+// On desktop (lg+) the contact screen is exactly one viewport tall, so vertical
+// spacing scales with the viewport height (vh) instead of using fixed pixels.
 const rowClass =
-  "flex items-center justify-between gap-4 py-[18px] border-b-2 border-white font-bold text-[1.05rem] transition-all duration-200 hover:pl-3 hover:text-[#04060b]";
+  "flex items-center justify-between gap-4 py-[18px] lg:py-[clamp(9px,1.5vh,18px)] border-b-2 border-white font-bold text-[1.05rem] transition-all duration-200 hover:pl-3 hover:text-[#04060b]";
 const rowValue = "min-w-0 font-label text-[0.8rem] opacity-85 font-normal truncate";
 
 const inputClass =
-  "w-full bg-transparent border-2 border-white px-3.5 py-3.5 text-[1rem] text-white placeholder-white/75 outline-none transition-colors focus:bg-[#04060b]/20";
+  "w-full bg-transparent border-2 border-white px-3.5 py-3.5 lg:py-[clamp(8px,1.4vh,14px)] text-[1rem] text-white placeholder-white/75 outline-none transition-colors focus:bg-[#04060b]/20";
 const labelClass = "grid gap-1.5 font-label text-[0.8rem]";
 
 // "https://www.linkedin.com/in/x/" -> "linkedin.com/in/x"
@@ -80,30 +83,38 @@ export default function Contact() {
   };
 
   return (
-    <>
-      <section className="relative w-full bg-[#1f56f0] text-white pt-[120px] overflow-hidden">
+    // Blue contact area + footer together fill exactly one screen on desktop
+    <div className="flex flex-col lg:min-h-[100svh]">
+      <section className="relative w-full flex-1 flex flex-col justify-center bg-[#1f56f0] text-white pt-[120px] pb-[110px] lg:pt-[clamp(80px,10.5vh,112px)] lg:pb-[clamp(72px,8.6vh,96px)] overflow-hidden">
         <div className="wrap relative">
 
           {/* Header */}
+          <div className="relative">
+          {/* Open-to-internships seal behind the headline (the letters print over it) */}
+          <AvailabilitySeal className="absolute z-0 -right-2 -top-3 h-[108px] w-[108px] text-white/40 lg:right-[-3%] lg:top-[-4px] lg:h-[clamp(132px,22vh,200px)] lg:w-[clamp(132px,22vh,200px)] lg:text-white" />
+
           <motion.div
+            className="relative z-10"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.55 }}
           >
-            <p className="font-label text-[0.85rem] font-bold mb-6">
-              <span className="mr-3 opacity-80">{sectionNumber("contact")}</span>Get In Touch
+            <p className="font-label text-[0.85rem] font-bold mb-6 lg:mb-[clamp(10px,2vh,24px)]">
+              Get In Touch
             </p>
-            <h2 className="text-[clamp(2.8rem,9vw,8rem)] leading-[0.9] tracking-[-0.06em] font-black uppercase mb-12">
-              Let&apos;s build
-              <br />
+            {/* Three lines on phones; two lines on desktop so the screen fits one viewport */}
+            <h2 className="text-[clamp(2.8rem,9vw,8rem)] lg:text-[clamp(3rem,min(6.4vw,8.3vh),5.6rem)] leading-[0.9] tracking-[-0.06em] font-black uppercase mb-12 lg:mb-[clamp(20px,4.5vh,52px)]">
+              Let&apos;s build{" "}
+              <br className="lg:hidden" />
               something
               <br />
               <span className="text-[#04060b]">together.</span>
             </h2>
           </motion.div>
+          </div>
 
-          <div className="grid grid-cols-[minmax(0,1fr)] lg:grid-cols-2 gap-14 pb-[100px]">
+          <div className="grid grid-cols-[minmax(0,1fr)] lg:grid-cols-2 gap-14 lg:gap-x-[clamp(40px,5vw,72px)] lg:items-end">
 
             {/* Details & links */}
             <motion.div
@@ -112,10 +123,10 @@ export default function Contact() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <p className="text-[1.1rem] mb-5 max-w-[460px]">
+              <p className="text-[1.1rem] lg:text-[clamp(0.95rem,1.9vh,1.1rem)] mb-5 lg:mb-[clamp(10px,1.8vh,20px)] max-w-[460px] lg:max-w-[520px]">
                 I&apos;m currently looking for internship opportunities. Whether you have a question, a project idea, or just want to say hi — I&apos;ll get back to you.
               </p>
-              <p className="text-[1.1rem] mb-8 max-w-[460px]">
+              <p className="text-[1.1rem] lg:text-[clamp(0.95rem,1.9vh,1.1rem)] mb-8 lg:mb-[clamp(16px,3vh,32px)] max-w-[460px] lg:max-w-[520px]">
                 I&apos;m actively looking for internship roles in{" "}
                 <strong>Data Science</strong>, <strong>AI / ML</strong>, or <strong>Full-Stack Development</strong>.{" "}
                 Drop me a line — I respond within 24 hours.
@@ -170,7 +181,7 @@ export default function Contact() {
             {/* Contact form */}
             <motion.form
               onSubmit={handleSubmit}
-              className="grid gap-3.5 content-start"
+              className="grid gap-3.5 lg:gap-[clamp(8px,1.5vh,14px)] content-start"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -210,7 +221,7 @@ export default function Contact() {
                   value={formState.message}
                   onChange={handleInputChange}
                   required
-                  className={`${inputClass} min-h-[140px] resize-y`}
+                  className={`${inputClass} min-h-[140px] lg:min-h-[clamp(52px,8vh,140px)] resize-y`}
                 />
               </label>
 
@@ -241,10 +252,13 @@ export default function Contact() {
             </motion.form>
           </div>
         </div>
+
+        {/* Workflow train riding along the top edge of the footer */}
+        <PipelineTrain />
       </section>
 
       {/* ── Footer ── */}
-      <footer className="bg-[#04060b] text-white/75 py-[26px] font-label text-[0.8rem]">
+      <footer className="bg-[#04060b] text-white/75 py-[26px] lg:py-[clamp(14px,2.2vh,26px)] font-label text-[0.8rem]">
         <div className="wrap flex flex-wrap justify-between gap-4">
           <span>
             Designed &amp; Built by <span className="text-[#6b93ff] font-bold">{personalInfo.name}</span>
@@ -262,6 +276,6 @@ export default function Contact() {
           </a>
         </div>
       </footer>
-    </>
+    </div>
   );
 }

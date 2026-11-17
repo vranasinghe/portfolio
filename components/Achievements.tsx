@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { achievements, type Achievement } from "@/data/portfolio";
 import SectionHeader from "@/components/SectionHeader";
-import { sectionNumber } from "@/lib/sections";
 
 /** Full-screen certificate viewer: closes on Esc, the close button, or a click outside the image. */
 function CertificateViewer({ item, onClose }: { item: Achievement; onClose: () => void }) {
@@ -63,7 +62,6 @@ export default function Achievements() {
   return (
     <section className="wrap py-[120px] bg-transparent">
       <SectionHeader
-        index={sectionNumber("achievements")}
         title="Achievements"
         subtitle="Competitions and hackathons I've taken part in, and how they went."
       />

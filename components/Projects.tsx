@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { sectionNumber } from "@/lib/sections";
 import { AnimatePresence, motion } from "framer-motion";
 import { featuredProjects, minorProjects } from "@/data/portfolio";
 import SectionHeader from "@/components/SectionHeader";
@@ -38,7 +37,6 @@ export default function Projects() {
     <div className="band-dark pt-[120px] pb-[60px]">
       <div className="wrap">
         <SectionHeader
-          index={sectionNumber("projects")}
           title="Projects"
           subtitle="A curated selection of end-to-end projects spanning AI, data science, and full-stack development."
         />
