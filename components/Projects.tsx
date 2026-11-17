@@ -110,7 +110,7 @@ export default function Projects() {
       </div>
     </div>
 
-    {/* ── Other projects: white section, card grid (previous portfolio structure) ── */}
+    {/* ── Other projects: white section, cards in the Achievements style ── */}
     <section className="bg-white py-[100px]">
       <div className="wrap">
         <div className="flex flex-wrap items-end justify-between gap-5 mb-8">
@@ -153,92 +153,86 @@ export default function Projects() {
           </motion.div>
         </div>
 
-        {/* Card grid with smooth filter transitions */}
-        <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {/* Card grid, styled like the Achievements cards */}
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project) => (
-              <motion.article
-                layout
-                key={project.title}
-                initial={{ opacity: 0, scale: 0.94 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.94 }}
-                transition={{ duration: 0.3 }}
-                onMouseMove={(e) => {
-                  const rect = e.currentTarget.getBoundingClientRect();
-                  e.currentTarget.style.setProperty("--x", `${e.clientX - rect.left}px`);
-                  e.currentTarget.style.setProperty("--y", `${e.clientY - rect.top}px`);
-                }}
-                className="group relative flex flex-col bg-white border border-[var(--line-soft)] overflow-hidden transition-[transform,border-color,box-shadow] duration-200 hover:-translate-y-1.5 hover:border-[#1f56f0]/50 hover:shadow-[0_14px_34px_rgba(15,23,42,0.10)]"
-              >
-                {/* Cursor-follow spotlight */}
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{ background: "radial-gradient(380px circle at var(--x) var(--y), rgba(31,86,240,0.07), transparent 70%)" }}
-                />
-
-                {project.imageUrl && (
-                  <div className="relative aspect-video overflow-hidden bg-[var(--bg-secondary)] border-b border-[var(--line-soft)]">
-                    <img
-                      src={project.imageUrl}
-                      alt={project.title}
-                      className="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-300"
-                    />
-                  </div>
-                )}
-
-                <div className="flex flex-1 flex-col p-6">
-                  {/* Header: folder icon + category, links on the right */}
-                  <div className="flex items-start justify-between mb-5">
-                    <div className="flex items-center gap-3">
-                      <span className="w-10 h-10 flex items-center justify-center bg-[var(--bg-secondary)] text-[var(--accent-color)]">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-                        </svg>
-                      </span>
-                      <span className="font-label font-medium text-[0.78rem] text-[var(--accent-color)]">{project.category}</span>
-                    </div>
-                    {/* Always visible on touch screens; revealed on hover or keyboard focus on desktop */}
-                    <div className="relative z-20 flex gap-3 lg:opacity-0 lg:group-hover:opacity-100 lg:focus-within:opacity-100 transition-opacity">
+            {filteredProjects.map((project) => {
+              const primary = project.live ?? project.github;
+              return (
+                // Framer owns this wrapper's transform (layout + filter animation),
+                // so the hover lift lives on the inner card where CSS can move it.
+                <motion.div
+                  layout
+                  key={project.title}
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  transition={{ duration: 0.3 }}
+                  className="flex"
+                >
+                  <article className="group flex w-full flex-col border-2 border-[var(--rule-card)] bg-white transition-all duration-200 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[6px_6px_0_#1f56f0]">
+                    {/* Full screenshot, edge to edge */}
+                    {project.imageUrl && (
                       <a
-                        href={project.github}
+                        href={primary}
                         target="_blank"
                         rel="noopener noreferrer"
-                        aria-label={`${project.title} source code on GitHub`}
-                        className="text-[var(--text-muted)] hover:text-[var(--accent-color)] transition-colors"
+                        tabIndex={-1}
+                        aria-hidden="true"
+                        className="block aspect-video overflow-hidden bg-[var(--bg-tertiary)]"
                       >
-                        <GitHubIcon />
+                        <img
+                          src={project.imageUrl}
+                          alt=""
+                          className="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-500"
+                        />
+                      </a>
+                    )}
+
+                    <div className="flex flex-1 flex-col p-7">
+                    {/* Category badge */}
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <span className="px-3 py-1.5 bg-[#1f56f0] text-white font-label text-[0.78rem] font-bold uppercase tracking-[0.06em]">
+                        {project.category}
+                      </span>
+                    </div>
+
+                    <h4 className="mt-5 text-[1.3rem] tracking-[-0.02em] leading-[1.25] font-bold text-[var(--text-primary)]">
+                      {project.title}
+                    </h4>
+                    <p className="mt-1.5 font-label text-[0.8rem] leading-relaxed text-[var(--accent-color)]">
+                      {project.tags.join(" · ")}
+                    </p>
+
+                    <p className="mt-4 text-[0.95rem] leading-relaxed text-[var(--text-secondary)]">{project.description}</p>
+
+                    {/* Links */}
+                    <div className="mt-auto pt-6 flex flex-wrap items-center justify-between gap-4">
+                      <a
+                        href={primary}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-label text-[0.85rem] font-bold text-[var(--accent-color)] hover:text-[var(--text-primary)] transition-colors"
+                      >
+                        {project.live ? "View live ↗" : "View code ↗"}
                       </a>
                       {project.live && (
                         <a
-                          href={project.live}
+                          href={project.github}
                           target="_blank"
                           rel="noopener noreferrer"
-                          aria-label={`${project.title} live site`}
-                          className="text-[var(--text-muted)] hover:text-[var(--accent-color)] transition-colors"
+                          aria-label={`${project.title} source code on GitHub`}
+                          className="font-label text-[0.85rem] font-bold text-[var(--accent-color)] hover:text-[var(--text-primary)] transition-colors"
                         >
-                          <ExternalLinkIcon />
+                          GitHub ↗
                         </a>
                       )}
                     </div>
-                  </div>
-
-                  <h4 className="text-base font-bold text-[var(--text-primary)] mb-2 group-hover:text-[var(--accent-color)] transition-colors">
-                    {project.title}
-                  </h4>
-                  <p className="text-sm text-[var(--text-muted)] leading-relaxed flex-1">{project.description}</p>
-
-                  <div className="flex flex-wrap gap-x-3 gap-y-1.5 mt-5">
-                    {project.tags.map((tag) => (
-                      <span key={tag} className="font-label text-xs text-[var(--text-muted)] transition-colors duration-200 hover:text-[var(--accent-color)]">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </motion.article>
-            ))}
+                    </div>
+                  </article>
+                </motion.div>
+              );
+            })}
           </AnimatePresence>
         </motion.div>
       </div>
