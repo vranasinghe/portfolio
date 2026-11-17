@@ -1,35 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { sectionNumber } from "@/lib/sections";
 import { motion, AnimatePresence } from "framer-motion";
-import { useTheme } from "next-themes";
 import { skills } from "@/data/portfolio";
+import SectionHeader from "@/components/SectionHeader";
 
 export default function Toolkit() {
   const [activeCategory, setActiveCategory] = useState(0);
-  const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-  const isDark = mounted && resolvedTheme === "dark";
 
   return (
-    <section className="max-w-6xl mx-auto px-6 py-24 bg-transparent">
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="mb-16 text-center"
-      >
-
-        <h2 className="text-4xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-6 tracking-tight">
-          Tech Stack
-        </h2>
-        <div className="w-24 h-1.5 bg-gradient-to-r from-[var(--accent-color)] to-indigo-500 mx-auto rounded-full shadow-sm mb-6" />
-        <p className="text-[var(--text-muted)] max-w-xl mx-auto text-sm md:text-base leading-relaxed">
-          Languages, frameworks, and tools I build with — mapped directly from my skill set.
-        </p>
-      </motion.div>
+    <div className="band-dark">
+    <section className="wrap py-[120px] bg-transparent">
+      <SectionHeader
+        index={sectionNumber("skills")}
+        title="Tech Stack"
+        subtitle="Languages, frameworks, and tools I build with — mapped directly from my skill set."
+      />
 
       {/* Category tabs */}
       <motion.div
@@ -41,7 +28,7 @@ export default function Toolkit() {
           <button
             key={cat.category}
             onClick={() => setActiveCategory(i)}
-            className={`relative flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium border overflow-hidden transition-colors duration-200 ${activeCategory === i
+            className={`relative flex items-center gap-1.5 px-4 py-2 text-sm font-medium border overflow-hidden transition-colors duration-200 ${activeCategory === i
                 ? "text-white border-indigo-600"
                 : "bg-[var(--card-bg)] text-[var(--text-muted)] border-[var(--border-color)] hover:border-[var(--accent-color)] hover:text-[var(--accent-color)]"
               }`}
@@ -72,8 +59,8 @@ export default function Toolkit() {
           className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-4"
         >
           {skills[activeCategory].items.map((skill, i) => {
-            // In dark mode use darkBrandColor if defined, otherwise fall back to brandColor
-            const activeColor = isDark && skill.darkBrandColor ? skill.darkBrandColor : skill.brandColor;
+            // Skills sit on the black band: use the light variant of dark brand colours when defined
+            const activeColor = skill.darkBrandColor ?? skill.brandColor;
 
             return (
               <motion.div
@@ -81,8 +68,8 @@ export default function Toolkit() {
                 initial={{ opacity: 0, scale: 0.85 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.04, duration: 0.25 }}
-                whileHover={{ 
-                  y: -3, 
+                whileHover={{
+                  y: -3,
                   borderColor: activeColor,
                   boxShadow: `0 6px 20px ${skill.hoverGlow}`
                 }}
@@ -90,21 +77,21 @@ export default function Toolkit() {
                   backgroundColor: skill.bgColor,
                   borderColor: `${activeColor}4D` // 4D = 30% opacity in hex
                 }}
-                className="group flex flex-col items-center justify-center gap-2 p-4 rounded-xl border cursor-default transition-all duration-200"
+                className="group flex flex-col items-center justify-center gap-2 p-4 border cursor-default transition-all duration-200"
               >
                 {skill.Icon ? (
-                  <skill.Icon 
-                    className="text-[36px] transition-all duration-300 opacity-80 group-hover:opacity-100" 
+                  <skill.Icon
+                    className="text-[36px] transition-all duration-300 opacity-80 group-hover:opacity-100"
                     style={{ color: activeColor }}
                   />
                 ) : skill.iconUrl ? (
-                  <img 
-                    src={skill.iconUrl} 
-                    alt={skill.name} 
-                    className="w-[36px] h-[36px] transition-all duration-300 opacity-80 group-hover:opacity-100 object-contain" 
+                  <img
+                    src={skill.iconUrl}
+                    alt={skill.name}
+                    className="w-[36px] h-[36px] transition-all duration-300 opacity-80 group-hover:opacity-100 object-contain"
                   />
                 ) : null}
-                <span 
+                <span
                   className="text-xs text-center font-medium text-[var(--text-secondary)] leading-tight transition-colors duration-300"
                   onMouseEnter={e => (e.currentTarget.style.color = activeColor)}
                   onMouseLeave={e => (e.currentTarget.style.color = '')}
@@ -117,5 +104,6 @@ export default function Toolkit() {
         </motion.div>
       </AnimatePresence>
     </section>
+    </div>
   );
 }

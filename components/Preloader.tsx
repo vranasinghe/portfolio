@@ -10,7 +10,7 @@ const DURATION = 2600; // ms — particle convergence + count to 100%
 const SETTLE = 550;    // ms — hold on the formed monogram before fade
 
 // Dark navy blue palette
-const COLORS = ["#1a3a8f", "#1D4ED8", "#1e3a6e", "#0f2d6b"];
+const COLORS = ["#1640c4", "#1f56f0", "#0c2766", "#0a1a3f"];
 
 interface Particle {
   hx: number;
@@ -56,6 +56,14 @@ export default function Preloader() {
       H = canvas.height = Math.floor(window.innerHeight * dpr);
       canvas.style.width = window.innerWidth + "px";
       canvas.style.height = window.innerHeight + "px";
+
+      // A zero-size window (hidden tab, background preview, mid-resize) makes
+      // getImageData throw "source width is 0" and crash the whole app.
+      // Skip until a real size exists; the resize listener rebuilds later.
+      if (W <= 0 || H <= 0) {
+        particles = [];
+        return;
+      }
 
       const off = document.createElement("canvas");
       off.width = W;
@@ -119,7 +127,7 @@ export default function Preloader() {
       }
 
       ctx.clearRect(0, 0, W, H);
-      ctx.shadowColor = "#1D4ED8";
+      ctx.shadowColor = "#1f56f0";
       for (const pt of particles) {
         const local = Math.min(1, Math.max(0, (p - pt.delay) / (1 - pt.delay)));
         const e = easeOutCubic(local);
@@ -157,7 +165,7 @@ export default function Preloader() {
           className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden"
           style={{
             background:
-              "radial-gradient(circle at 50% 42%, #061a2e 0%, #04111e 45%, #02080f 100%)",
+              "radial-gradient(circle at 50% 42%, #0b1222 0%, #04060b 45%, #020409 100%)",
           }}
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, filter: "blur(6px)" }}
@@ -183,13 +191,13 @@ export default function Preloader() {
                 className="h-full rounded-full transition-[width] duration-150 ease-out"
                 style={{
                   width: `${progress}%`,
-                  background: "linear-gradient(to right, #1D4ED8, #3B82F6)",
+                  background: "linear-gradient(to right, #1f56f0, #3b6dff)",
                 }}
               />
             </div>
 
-            <p className="font-mono text-[10px] tracking-[0.3em] text-white/30">
-              LOADING <span className="text-[#3B82F6]">{progress}%</span>
+            <p className="font-label text-[10px] tracking-[0.3em] text-white/30">
+              LOADING <span className="text-[#3b6dff]">{progress}%</span>
             </p>
           </motion.div>
         </motion.div>

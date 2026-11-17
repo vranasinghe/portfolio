@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { sectionNumber } from "@/lib/sections";
 import { AnimatePresence, motion } from "framer-motion";
 import { featuredProjects, minorProjects } from "@/data/portfolio";
+import SectionHeader from "@/components/SectionHeader";
 
 function GitHubIcon() {
   return (
@@ -20,181 +22,76 @@ function ExternalLinkIcon() {
 }
 
 const categories = ["AI / ML", "Web Development", "Mobile App", "Fullstack", "Design"] as const;
+type Filter = "All" | (typeof categories)[number];
+const filters: Filter[] = ["All", ...categories];
 
 export default function Projects() {
-  const [activeCategory, setActiveCategory] = useState<typeof categories[number]>("AI / ML");
+  const [activeFilter, setActiveFilter] = useState<Filter>("All");
 
-  const filteredProjects = minorProjects.filter((p) => p.category === activeCategory);
+  const filteredProjects =
+    activeFilter === "All"
+      ? minorProjects
+      : minorProjects.filter((p) => p.category === activeFilter);
 
   return (
-    <section className="max-w-6xl mx-auto px-6 py-24 bg-transparent">
-      {/* ── Header ── */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="mb-16 text-center"
-      >
+    <>
+    <div className="band-dark pt-[120px] pb-[60px]">
+      <div className="wrap">
+        <SectionHeader
+          index={sectionNumber("projects")}
+          title="Projects"
+          subtitle="A curated selection of end-to-end projects spanning AI, data science, and full-stack development."
+        />
 
-        <h2 className="text-4xl md:text-5xl font-extrabold text-[var(--text-primary)] mb-6 tracking-tight">
-          Projects
-        </h2>
-        <div className="w-24 h-1.5 bg-gradient-to-r from-[var(--accent-color)] to-indigo-500 mx-auto rounded-full shadow-sm mb-6" />
-        <p className="text-[var(--text-muted)] max-w-xl mx-auto text-sm md:text-base leading-relaxed">
-          A curated selection of end-to-end projects spanning AI, data science, and full-stack development.
-        </p>
-      </motion.div>
-
-      {/* ── Featured Projects (alternating layout) ── */}
-      <div className="space-y-24 mb-24">
-        {featuredProjects.map((project, i) => (
-          <motion.div
-            key={project.id}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className={`grid lg:grid-cols-12 gap-6 items-center ${project.reversed ? "lg:text-right" : ""
-              }`}
-          >
-            {/* Image */}
-            <div className={`lg:col-span-7 ${project.reversed ? "lg:order-2" : ""}`}>
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-                className="relative rounded-2xl overflow-hidden shadow-xl aspect-video bg-indigo-950/30 group"
-              >
-                <img
-                  src={project.imageUrl}
-                  alt={project.title}
-                  className="w-full h-full object-cover group-hover:scale-[1.03] transition-all duration-500"
-                />
-              </motion.div>
-            </div>
-
-            {/* Content */}
-            <div className={`lg:col-span-5 space-y-4 ${project.reversed ? "lg:order-1" : ""}`}>
-              <h3 className="text-2xl font-bold text-[var(--text-primary)]">{project.title}</h3>
-
-              <div className="relative z-10 p-5 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-[0_15px_40px_var(--shadow-color)]">
-                <p className="text-[var(--text-secondary)] text-sm leading-relaxed">{project.description}</p>
-                <p className="text-[var(--text-muted)] text-xs mt-2 leading-relaxed">{project.longDescription}</p>
-              </div>
-
-              {/* Tags */}
-              <div className={`flex flex-wrap gap-2 ${project.reversed ? "lg:justify-end" : ""}`}>
-                {project.tags.map((tag) => (
-                  <span key={tag} className="px-2.5 py-1 text-xs font-mono font-medium rounded-full bg-indigo-50 dark:bg-indigo-950/40 text-[var(--accent-color)] border border-indigo-200/70 dark:border-indigo-900/50 transition-all duration-200 hover:scale-105 hover:border-[var(--accent-color)] hover:bg-indigo-100 dark:hover:bg-indigo-950/60">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
-              {/* Links */}
-              <div className={`flex gap-3 ${project.reversed ? "lg:justify-end" : ""}`}>
-                <a href={project.github} target="_blank" rel="noopener noreferrer"
-                  className="text-[var(--text-muted)] hover:text-[var(--accent-color)] transition-colors">
-                  <GitHubIcon />
-                </a>
-                {project.live && (
-                  <a href={project.live} target="_blank" rel="noopener noreferrer"
-                    className="text-[var(--text-muted)] hover:text-[var(--accent-color)] transition-colors">
-                    <ExternalLinkIcon />
-                  </a>
-                )}
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* ── Minor Projects Grid ── */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="mt-32 mb-16 text-center"
-      >
-
-        <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--text-primary)] mb-6 tracking-tight">
-          Other Noteworthy Projects
-        </h2>
-        <div className="w-16 h-1 bg-gradient-to-r from-[var(--accent-color)] to-indigo-500 mx-auto rounded-full shadow-sm mb-6" />
-        <p className="text-[var(--text-muted)] max-w-xl mx-auto text-sm md:text-base leading-relaxed">
-          Smaller experiments, tools, and side projects.
-        </p>
-      </motion.div>
-
-      {/* Category Tabs */}
-      <motion.div
-        className="flex flex-wrap justify-center gap-2 mb-10"
-        initial={{ opacity: 0, y: 15 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.1 }}
-      >
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setActiveCategory(cat)}
-            className={`relative px-4 py-2 rounded-xl text-sm font-medium border overflow-hidden transition-colors duration-200 ${
-              activeCategory === cat
-                ? "text-white border-indigo-600"
-                : "bg-[var(--card-bg)] text-[var(--text-muted)] border-[var(--border-color)] hover:border-[var(--accent-color)] hover:text-[var(--accent-color)]"
-            }`}
-          >
-            {activeCategory === cat && (
-              <motion.span
-                layoutId="projects-tab-pill"
-                className="absolute inset-0 bg-indigo-600 shadow-md shadow-indigo-950/50"
-                transition={{ type: "spring", stiffness: 380, damping: 32 }}
-              />
-            )}
-            <span className="relative z-10">{cat}</span>
-          </button>
-        ))}
-      </motion.div>
-
-      {/* Grid with smooth transitions */}
-      <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        <AnimatePresence mode="popLayout">
-          {filteredProjects.map((project) => (
+        {/* ── Featured Projects (alternating layout) ── */}
+        <div className="space-y-24 mb-24">
+          {featuredProjects.map((project) => (
             <motion.div
-              layout
-              key={project.title}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.3 }}
-              whileHover={{ y: -6 }}
-              onMouseMove={(e) => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                e.currentTarget.style.setProperty("--x", `${e.clientX - rect.left}px`);
-                e.currentTarget.style.setProperty("--y", `${e.clientY - rect.top}px`);
-              }}
-              className="group relative flex flex-col p-6 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-sm hover:border-[color-mix(in_srgb,var(--accent-color)_40%,transparent)] hover:shadow-[0_8px_30px_var(--shadow-color)] transition-all duration-250 overflow-hidden"
+              key={project.id}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className={`grid lg:grid-cols-12 gap-6 items-center ${project.reversed ? "lg:text-right" : ""}`}
             >
-              <div
-                className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                style={{ background: "radial-gradient(400px circle at var(--x) var(--y), rgba(96,165,250,0.12), transparent 70%)" }}
-              />
-              {project.imageUrl && (
-                <div className="relative -mx-6 -mt-6 mb-5 aspect-video overflow-hidden rounded-t-2xl bg-indigo-950/30 border-b border-[var(--border-color)]">
+              {/* Image */}
+              <div className={`lg:col-span-7 ${project.reversed ? "lg:order-2" : ""}`}>
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                  className="relative overflow-hidden shadow-xl aspect-video bg-indigo-950/30 group"
+                >
                   <img
                     src={project.imageUrl}
                     alt={project.title}
-                    className="w-full h-full object-cover group-hover:scale-[1.03] transition-all duration-300"
+                    className="w-full h-full object-cover group-hover:scale-[1.03] transition-all duration-500"
                   />
+                </motion.div>
+              </div>
+
+              {/* Content */}
+              <div className={`lg:col-span-5 space-y-4 ${project.reversed ? "lg:order-1" : ""}`}>
+                <h3 className="text-2xl font-bold text-[var(--text-primary)]">{project.title}</h3>
+
+                <div className="relative z-10 p-5 bg-[var(--card-bg)] border border-[var(--border-color)] shadow-[0_15px_40px_var(--shadow-color)]">
+                  <p className="text-[var(--text-secondary)] text-sm leading-relaxed">{project.description}</p>
+                  <p className="text-[var(--text-muted)] text-xs mt-2 leading-relaxed">{project.longDescription}</p>
                 </div>
-              )}
-              {/* Header */}
-              <div className="flex items-start justify-between mb-5">
-                <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 flex items-center justify-center text-[var(--accent-color)]">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-                  </svg>
+
+                {/* Tags */}
+                <div className={`flex flex-wrap gap-2 ${project.reversed ? "lg:justify-end" : ""}`}>
+                  {project.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2.5 py-1 text-xs font-label font-medium bg-indigo-950/40 text-[var(--accent-color)] border border-indigo-900/50 transition-all duration-200 hover:scale-105 hover:border-[var(--accent-color)] hover:bg-indigo-950/60"
+                    >
+                      {tag}
+                    </span>
+                  ))}
                 </div>
-                <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+
+                {/* Links */}
+                <div className={`flex gap-3 ${project.reversed ? "lg:justify-end" : ""}`}>
                   <a href={project.github} target="_blank" rel="noopener noreferrer"
                     className="text-[var(--text-muted)] hover:text-[var(--accent-color)] transition-colors">
                     <GitHubIcon />
@@ -207,21 +104,99 @@ export default function Projects() {
                   )}
                 </div>
               </div>
-
-              <h4 className="text-base font-bold text-[var(--text-primary)] mb-2 group-hover:text-[var(--accent-color)] transition-colors">
-                {project.title}
-              </h4>
-              <p className="text-sm text-[var(--text-muted)] leading-relaxed flex-1">{project.description}</p>
-
-              <div className="flex flex-wrap gap-1.5 mt-4">
-                {project.tags.map((tag) => (
-                  <span key={tag} className="text-xs font-mono text-[var(--text-muted)] transition-colors duration-200 hover:text-[var(--accent-color)]">{tag}</span>
-                ))}
-              </div>
             </motion.div>
           ))}
-        </AnimatePresence>
-      </motion.div>
+        </div>
+      </div>
+    </div>
+
+    {/* ── Other projects: white section (filterable table) ── */}
+    <section className="bg-white py-[100px]">
+      <div className="wrap">
+        <div>
+          <div className="flex flex-wrap items-end justify-between gap-5 mb-5">
+            <div>
+              <h3 className="text-[1.6rem] tracking-[-0.02em] font-bold text-[var(--text-primary)]">
+                Other Noteworthy Projects
+              </h3>
+              <p className="mt-2 text-sm text-[var(--text-muted)]">Smaller experiments, tools, and side projects.</p>
+            </div>
+
+            <div className="flex flex-wrap gap-1.5">
+              {filters.map((f) => (
+                <button
+                  key={f}
+                  onClick={() => setActiveFilter(f)}
+                  className={`font-label font-medium text-[0.8rem] px-3.5 py-2 border transition-colors ${
+                    activeFilter === f
+                      ? "bg-[#0b1222] text-white border-[#0b1222]"
+                      : "border-[#0b1222]/30 text-[var(--text-secondary)] hover:bg-[#0b1222] hover:text-white hover:border-[#0b1222]"
+                  }`}
+                >
+                  {f}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="border-b border-[var(--line-soft)]">
+            <AnimatePresence mode="popLayout">
+              {filteredProjects.map((project) => (
+                <motion.div
+                  layout
+                  key={project.title}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.25 }}
+                  className="grid lg:grid-cols-[110px_1.3fr_2fr_1.2fr_110px] gap-3 lg:gap-5 items-center py-[22px] border-t border-[var(--line-soft)] transition-all duration-200 hover:bg-[#f3f7ff] lg:hover:pl-3"
+                >
+                  <span className="font-label font-medium text-[0.8rem] text-[var(--accent-color)]">{project.category}</span>
+
+                  <div className="flex items-center gap-3">
+                    {project.imageUrl && (
+                      <img
+                        src={project.imageUrl}
+                        alt=""
+                        className="hidden sm:block w-14 h-10 object-cover object-top border border-[var(--line-soft)] shrink-0"
+                      />
+                    )}
+                    <h4 className="text-[1.05rem] font-bold text-[var(--text-primary)] leading-snug">{project.title}</h4>
+                  </div>
+
+                  <p className="text-[0.9rem] text-[var(--text-secondary)] leading-relaxed">{project.description}</p>
+
+                  <span className="font-label text-[0.76rem] text-[var(--text-muted)] leading-relaxed">
+                    {project.tags.join(" · ")}
+                  </span>
+
+                  <div className="flex lg:flex-col gap-4 lg:gap-1 lg:items-end font-label text-[0.85rem] font-bold">
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[var(--accent-color)] hover:text-[var(--text-primary)] transition-colors"
+                    >
+                      Code ↗
+                    </a>
+                    {project.live && (
+                      <a
+                        href={project.live}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[var(--accent-color)] hover:text-[var(--text-primary)] transition-colors"
+                      >
+                        Visit ↗
+                      </a>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
     </section>
+    </>
   );
 }
