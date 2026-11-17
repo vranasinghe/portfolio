@@ -100,7 +100,7 @@ body {
 .band-dark { background: #04060b; }
 
 /* Hero marquee */
-.marquee-track { display: inline-block; animation: marquee 32s linear infinite; }
+.marquee-track { display: inline-block; animation: marquee 60s linear infinite; }
 .marquee-item { margin: 0 26px; }
 .marquee-item::after { content: "✦"; margin-left: 52px; color: #c3d4ff; }
 @keyframes marquee { to { transform: translateX(-50%); } }
