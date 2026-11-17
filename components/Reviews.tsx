@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { sectionNumber } from "@/lib/sections";
 import { motion, AnimatePresence } from "framer-motion";
 import { Review, SERVICE_CATEGORIES, getStoredReviews } from "@/data/reviews";
 import ReviewForm from "@/components/ReviewForm";
@@ -238,7 +237,6 @@ export default function Reviews() {
 
         {/* ── Section Header ── */}
         <SectionHeader
-          index={sectionNumber("reviews")}
           title="What My Clients Say"
           subtitle="Genuine testimonials from leaders and clients I've collaborated with on Data Science, Machine Learning, and Web projects."
         />

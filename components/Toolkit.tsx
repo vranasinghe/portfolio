@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { sectionNumber } from "@/lib/sections";
 import { motion, AnimatePresence } from "framer-motion";
 import { skills } from "@/data/portfolio";
 import SectionHeader from "@/components/SectionHeader";
@@ -13,7 +12,6 @@ export default function Toolkit() {
     <div className="band-dark">
     <section className="wrap py-[120px] bg-transparent">
       <SectionHeader
-        index={sectionNumber("skills")}
         title="Tech Stack"
         subtitle="Languages, frameworks, and tools I build with — mapped directly from my skill set."
       />
@@ -40,10 +38,7 @@ export default function Toolkit() {
                 transition={{ type: "spring", stiffness: 380, damping: 32 }}
               />
             )}
-            <span className="relative z-10 flex items-center gap-1.5">
-              <span>{cat.icon}</span>
-              {cat.category}
-            </span>
+            <span className="relative z-10">{cat.category}</span>
           </button>
         ))}
       </motion.div>
