@@ -77,7 +77,19 @@ export default function Experience() {
                 transition={{ delay: i * 0.1, duration: 0.5 }}
                 className="grid md:grid-cols-[150px_1fr] gap-1.5 md:gap-6 py-7 border-b border-[var(--line-soft)]"
               >
-                <span className="font-label text-[0.85rem] font-bold text-[var(--accent-color)]">{item.period}</span>
+                {/* Years, with the school crest underneath */}
+                <div className="flex flex-col items-start gap-4">
+                  <span className="font-label text-[0.85rem] font-bold text-[var(--accent-color)]">{item.period}</span>
+                  {item.logo && (
+                    <img
+                      src={item.logo}
+                      alt=""
+                      aria-hidden="true"
+                      loading="lazy"
+                      className="h-16 w-auto max-w-[96px] object-contain"
+                    />
+                  )}
+                </div>
                 <div>
                   <h4 className="text-[1.2rem] tracking-[-0.01em] font-bold text-[var(--text-primary)]">{item.degree}</h4>
                   <p className="text-[0.92rem] text-[var(--text-muted)] mt-0.5 mb-2.5">{item.institution}</p>
