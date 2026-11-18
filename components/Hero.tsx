@@ -20,7 +20,7 @@ export default function Hero() {
   const lastName = rest.join(" ");
 
   return (
-    <div className="band-dark relative min-h-screen flex flex-col justify-end pt-[120px] overflow-hidden">
+    <div className="band-dark relative min-h-screen flex flex-col justify-end pt-[clamp(84px,12vh,120px)] overflow-hidden">
 
       {/* Node-network background */}
       <NetworkBackground />
@@ -96,33 +96,47 @@ export default function Hero() {
       </motion.div>
 
       {/* ── Content (left column on desktop; robot fills the right) ── */}
-      <div className="wrap relative z-10 order-1 pointer-events-none flex-1 flex items-center py-10">
+      <div className="wrap relative z-10 order-1 pointer-events-none flex-1 flex items-center py-[clamp(14px,3.5vh,40px)]">
       <div className="w-full lg:max-w-[56%]">
 
-        {/* Top row: status · location · title */}
+        {/* Status chip, then where and what: two clear rows in one typeface instead of three mismatched items */}
         <motion.div
-          className="flex flex-wrap items-center gap-x-6 gap-y-3 mb-8 font-label text-[0.82rem] text-[var(--text-muted)]"
+          className="mb-[clamp(20px,3.6vh,36px)] flex flex-col items-start gap-[clamp(10px,1.6vh,16px)]"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <span className="inline-flex items-center gap-2.5 px-3.5 py-[7px] border border-[var(--text-primary)]/30 text-[var(--text-primary)]">
-            <span className="w-2 h-2 rounded-full bg-[#34d399] animate-pulse" />
+          <span className="inline-flex items-center gap-3 border border-white/35 bg-white/[0.05] px-4 py-2.5 text-base font-semibold leading-none text-[var(--text-primary)]">
+            {/* Live dot: a soft ring pulses outward from the solid centre */}
+            <span className="relative flex h-2.5 w-2.5" aria-hidden="true">
+              <span className="absolute inset-0 rounded-full bg-[#34d399] opacity-60 animate-ping motion-reduce:hidden" />
+              <span className="relative h-2.5 w-2.5 rounded-full bg-[#34d399]" />
+            </span>
             Available for 2026 Internships
           </span>
-          <span>{personalInfo.location}</span>
-          <span>[ {personalInfo.title} ]</span>
+
+          <p className="flex flex-col gap-1.5 text-[1.0625rem] font-medium leading-snug text-[var(--text-secondary)] sm:flex-row sm:items-center sm:gap-4">
+            <span className="inline-flex items-center gap-2">
+              <svg className="h-4 w-4 shrink-0 text-[var(--accent-color)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              {personalInfo.location}
+            </span>
+            <span aria-hidden="true" className="hidden h-1 w-1 bg-[var(--accent-color)] sm:block" />
+            <span>{personalInfo.title}</span>
+          </p>
         </motion.div>
 
         {/* Greeting + giant name */}
         <motion.p
-          className="font-label text-base text-[var(--text-muted)] mb-2"
+          className="mb-3 text-[1.2rem] font-medium leading-none text-[var(--text-secondary)]"
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35 }}
         >
           Hi, my name is
         </motion.p>
         <motion.h1
-          className="font-black uppercase leading-[0.9] tracking-[-0.03em] text-[clamp(2.4rem,12vw,4.5rem)] lg:text-[clamp(3.6rem,6.5vw,6.3rem)] text-[var(--text-primary)]"
+          className="font-black uppercase leading-[0.9] tracking-[-0.03em] text-[clamp(2.4rem,12vw,4.5rem)] lg:text-[clamp(3.4rem,min(6.5vw,10.2vh),6.3rem)] text-[var(--text-primary)]"
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }}
         >
           {firstName}
@@ -142,7 +156,7 @@ export default function Hero() {
         </motion.h1>
 
         {/* Typewriter + bio, then CTAs */}
-        <div className="flex flex-col gap-8 mt-8">
+        <div className="flex flex-col gap-[clamp(18px,3.4vh,32px)] mt-[clamp(18px,3.4vh,32px)]">
           <div>
             <motion.div
               className="text-xl lg:text-2xl font-medium min-h-[2rem] mb-4"
@@ -174,14 +188,14 @@ export default function Hero() {
                 e.preventDefault();
                 document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="pointer-events-auto inline-flex items-center gap-2.5 px-[26px] py-[15px] border-2 border-[#1f56f0] bg-[#1f56f0] text-white text-[0.95rem] font-bold hover:bg-[var(--text-primary)] hover:border-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors duration-200"
+              className="lift pointer-events-auto inline-flex items-center gap-2.5 px-[26px] py-[15px] border-2 border-[#1f56f0] bg-[#1f56f0] text-white text-[0.95rem] font-bold hover:bg-[var(--text-primary)] hover:border-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors duration-200"
             >
-              Check out my work ↗
+              Check out my work <span className="arrow-nudge">↗</span>
             </a>
             <a
               href={personalInfo.resumeLink}
               download
-              className="pointer-events-auto inline-flex items-center gap-2.5 px-[26px] py-[15px] border-2 border-current text-[var(--text-primary)] text-[0.95rem] font-bold hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors duration-200"
+              className="lift pointer-events-auto inline-flex items-center gap-2.5 px-[26px] py-[15px] border-2 border-current text-[var(--text-primary)] text-[0.95rem] font-bold hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors duration-200"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>

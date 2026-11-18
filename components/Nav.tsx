@@ -106,10 +106,10 @@ export default function Nav() {
               href={personalInfo.resumeLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="ml-4 inline-flex items-center gap-2 px-[18px] py-[9px] border-2 border-current text-[0.82rem] font-bold text-[var(--text-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors"
+              className="lift ml-4 inline-flex items-center gap-2 px-[18px] py-[9px] border-2 border-current text-[0.82rem] font-bold text-[var(--text-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors"
             >
               Resume
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg className="arrow-nudge" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M7 17l9.2-9.2M17 17V7H7" />
               </svg>
             </a>
@@ -173,7 +173,7 @@ export default function Nav() {
                   transition={{ delay: NAV_ITEMS.length * 0.04, duration: 0.2 }}
                   className="mt-3 px-[18px] py-[9px] border-2 border-current text-[0.82rem] font-bold text-[var(--text-primary)] flex items-center gap-2 w-fit"
                 >
-                  Resume ↗
+                  Resume <span className="arrow-nudge">↗</span>
                 </motion.a>
               </div>
             </motion.div>

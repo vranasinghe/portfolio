@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Preloader from "@/components/Preloader";
+import PointerLight from "@/components/PointerLight";
 
 export const metadata: Metadata = {
   title: "Venuja Ranasinghe | Data Science & AI Portfolio",
@@ -30,6 +31,7 @@ export default function RootLayout({
       </head>
       <body className="bg-[var(--bg-primary)] text-[var(--text-primary)] font-sans antialiased transition-colors duration-300">
         <Preloader />
+        <PointerLight />
         {children}
       </body>
     </html>
