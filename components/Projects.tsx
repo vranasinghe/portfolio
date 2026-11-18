@@ -50,26 +50,41 @@ export default function Projects() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.6, ease: "easeOut" }}
-              className={`grid lg:grid-cols-12 gap-6 items-center ${project.reversed ? "lg:text-right" : ""}`}
+              className={`group/row grid lg:grid-cols-12 gap-6 items-center ${project.reversed ? "lg:text-right" : ""}`}
             >
-              {/* Image */}
-              <div className={`lg:col-span-7 ${project.reversed ? "lg:order-2" : ""}`}>
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ duration: 0.3 }}
-                  className="relative overflow-hidden shadow-xl aspect-video bg-indigo-950/30 group"
-                >
+              {/* Image: the whole thing is a link; on hover a glow blooms behind it, the edge lights up,
+                  the picture zooms, a light band sweeps across and a label slides up */}
+              <a
+                href={project.live ?? project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${project.live ? "Open live site" : "View code"}: ${project.title}`}
+                className={`group relative block lg:col-span-7 ${project.reversed ? "lg:order-2" : ""}`}
+              >
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -inset-2 bg-[#1f56f0]/30 blur-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 motion-reduce:transition-none"
+                />
+                <div className="spotlight relative overflow-hidden shadow-xl aspect-video bg-indigo-950/30 ring-1 ring-white/10 transition-shadow duration-500 group-hover:ring-[#6b93ff]/70">
                   <img
                     src={project.imageUrl}
                     alt={project.title}
-                    className="w-full h-full object-cover group-hover:scale-[1.03] transition-all duration-500"
+                    className="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-700 ease-out motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                   />
-                </motion.div>
-              </div>
+                  <span aria-hidden="true" className="shine-sweep" />
+                  <span aria-hidden="true" className="grow-bar" />
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute bottom-4 left-4 z-[3] translate-y-2 bg-[#04060b]/90 px-3 py-1.5 font-label text-[0.75rem] font-bold uppercase tracking-[0.08em] text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 motion-reduce:transition-none"
+                  >
+                    {project.live ? "View live" : "View code"} <span className="arrow-nudge">↗</span>
+                  </span>
+                </div>
+              </a>
 
               {/* Content */}
               <div className={`lg:col-span-5 space-y-4 ${project.reversed ? "lg:order-1" : ""}`}>
-                <h3 className="text-2xl font-bold text-[var(--text-primary)]">{project.title}</h3>
+                <h3 className="text-2xl font-bold text-[var(--text-primary)] transition-colors duration-300 group-hover/row:text-[var(--accent-color)]">{project.title}</h3>
 
                 <div className="relative z-10 p-5 bg-[var(--card-bg)] border border-[var(--border-color)] shadow-[0_15px_40px_var(--shadow-color)]">
                   <p className="text-[var(--text-secondary)] text-sm leading-relaxed">{project.description}</p>
@@ -91,12 +106,14 @@ export default function Projects() {
                 {/* Links */}
                 <div className={`flex gap-3 ${project.reversed ? "lg:justify-end" : ""}`}>
                   <a href={project.github} target="_blank" rel="noopener noreferrer"
-                    className="text-[var(--text-muted)] hover:text-[var(--accent-color)] transition-colors">
+                    aria-label={`${project.title} source code on GitHub`}
+                    className="text-[var(--text-muted)] hover:text-[var(--accent-color)] hover:-translate-y-0.5 transition-all duration-200">
                     <GitHubIcon />
                   </a>
                   {project.live && (
                     <a href={project.live} target="_blank" rel="noopener noreferrer"
-                      className="text-[var(--text-muted)] hover:text-[var(--accent-color)] transition-colors">
+                      aria-label={`${project.title} live site`}
+                      className="text-[var(--text-muted)] hover:text-[var(--accent-color)] hover:-translate-y-0.5 transition-all duration-200">
                       <ExternalLinkIcon />
                     </a>
                   )}
@@ -168,7 +185,7 @@ export default function Projects() {
                   transition={{ duration: 0.3 }}
                   className="flex"
                 >
-                  <article className="group flex w-full flex-col border-2 border-[var(--rule-card)] bg-white transition-all duration-200 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[6px_6px_0_#1f56f0]">
+                  <article className="spotlight group flex w-full flex-col border-2 border-[var(--rule-card)] bg-white transition-all duration-200 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[6px_6px_0_#1f56f0]">
                     {/* Full screenshot, edge to edge */}
                     {project.imageUrl && (
                       <a
@@ -177,13 +194,14 @@ export default function Projects() {
                         rel="noopener noreferrer"
                         tabIndex={-1}
                         aria-hidden="true"
-                        className="block aspect-video overflow-hidden bg-[var(--bg-tertiary)]"
+                        className="relative block aspect-video overflow-hidden bg-[var(--bg-tertiary)]"
                       >
                         <img
                           src={project.imageUrl}
                           alt=""
-                          className="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-500"
+                          className="w-full h-full object-cover object-top group-hover:scale-[1.05] transition-transform duration-700 ease-out"
                         />
+                        <span aria-hidden="true" className="shine-sweep" />
                       </a>
                     )}
 
@@ -212,7 +230,7 @@ export default function Projects() {
                         rel="noopener noreferrer"
                         className="font-label text-[0.85rem] font-bold text-[var(--accent-color)] hover:text-[var(--text-primary)] transition-colors"
                       >
-                        {project.live ? "View live ↗" : "View code ↗"}
+                        {project.live ? "View live" : "View code"} <span className="arrow-nudge">↗</span>
                       </a>
                       {project.live && (
                         <a
@@ -222,7 +240,7 @@ export default function Projects() {
                           aria-label={`${project.title} source code on GitHub`}
                           className="font-label text-[0.85rem] font-bold text-[var(--accent-color)] hover:text-[var(--text-primary)] transition-colors"
                         >
-                          GitHub ↗
+                          GitHub <span className="arrow-nudge">↗</span>
                         </a>
                       )}
                     </div>

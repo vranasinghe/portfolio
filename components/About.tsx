@@ -12,7 +12,7 @@ const fadeUp = {
   }),
 };
 
-const cell = "border-2 border-[var(--rule-card)] bg-[var(--card-bg)] p-[30px] relative";
+const cell = "border-2 border-[var(--rule-card)] bg-[var(--card-bg)] p-[30px] relative transition-colors duration-300 hover:border-[var(--accent-color)]";
 
 const RECENT = [
   "Python / PyTorch", "React / Next.js",
