@@ -384,6 +384,8 @@ export interface EducationItem {
   period: string;
   description: string;
   tags: string[];
+  /** School or university crest in /public, shown under the years. Optional. */
+  logo?: string;
 }
 
 export const education: EducationItem[] = [
@@ -394,6 +396,7 @@ export const education: EducationItem[] = [
     description:
       "Specializing in Artificial Intelligence & Data Science. Relevant coursework: OOP, Data Structures & Algorithms, Database Management, Software Engineering, Machine Learning Fundamentals, and Web Technologies.",
     tags: ["Data Science Specialization"],
+    logo: "/sliit-logo.png",
   },
   {
     degree: "G.C.E. Advanced Level (A/L) - Physical Science Stream",
@@ -401,6 +404,7 @@ export const education: EducationItem[] = [
     period: "2019 — 2022",
     description: "Combined Mathematics, Physics, and Chemistry stream.",
     tags: ["Combined Maths", "Physics", "Chemistry"],
+    logo: "/ananda-college-crest.png",
   },
   {
     degree: "G.C.E. Ordinary Level (O/L)",
