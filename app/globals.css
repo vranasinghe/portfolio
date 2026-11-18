@@ -135,13 +135,100 @@ body {
 .pipeline-train:hover,
 .pipeline-train:hover * { animation-play-state: paused; }
 
+/* =========================================================
+   HOVER SYSTEM (spotlight, shine, sweeps, arrows, lift)
+   --mx / --my are set by components/PointerLight.tsx
+   ========================================================= */
+
+/* Spotlight: a soft glow follows the pointer inside the element and its edge lights up near the pointer */
+.spotlight { --mx: 50%; --my: 50%; position: relative; }
+.spotlight::before,
+.spotlight::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 2;
+  transition: opacity 0.35s ease;
+}
+.spotlight::before {
+  background: radial-gradient(420px circle at var(--mx) var(--my), rgba(107, 147, 255, 0.16), transparent 45%);
+}
+.spotlight::after {
+  padding: 2px;
+  background: radial-gradient(260px circle at var(--mx) var(--my), #6b93ff, rgba(195, 212, 255, 0.55) 35%, transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+.spotlight:hover::before,
+.spotlight:hover::after { opacity: 1; }
+
+/* Shine: a slanted band of light sweeps across on hover (parent needs .group, relative and overflow-hidden) */
+.shine-sweep {
+  position: absolute;
+  inset: 0 auto 0 0;
+  z-index: 1;
+  width: 33%;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+  transform: translateX(-150%) skewX(-12deg);
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.group:hover .shine-sweep { transform: translateX(400%) skewX(-12deg); }
+
+/* Underline bar: a gradient line grows from the left along the bottom edge */
+.grow-bar {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 3;
+  height: 3px;
+  pointer-events: none;
+  background: linear-gradient(90deg, #1f56f0, #6b93ff, #c3d4ff);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.group:hover .grow-bar { transform: scaleX(1); }
+
+/* Tile sweep: a light band passes across a tile */
+.tile-sweep {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(107, 147, 255, 0.16), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.7s ease;
+}
+.group:hover .tile-sweep { transform: translateX(100%); }
+
+/* Lift: a button rises and throws a soft blue glow (set --lift-glow on the element to change the colour) */
+.lift {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease,
+    background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.lift:where(:not(:disabled)):hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px -10px var(--lift-glow, rgba(31, 86, 240, 0.65));
+}
+.lift:where(:not(:disabled)):active { transform: translateY(-1px); }
+
+/* Arrow nudge: ↗ arrows shift up and right when their link is hovered */
+.arrow-nudge { display: inline-block; transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+a:hover .arrow-nudge,
+button:hover .arrow-nudge,
+.group:hover .arrow-nudge { transform: translate(3px, -3px); }
 /* Contact "Open to internships" seal: the lettered ring turns slowly */
 .seal-spin { animation: seal-spin 28s linear infinite; }
 @keyframes seal-spin { to { transform: rotate(360deg); } }
 
 @media (prefers-reduced-motion: reduce) {
   .marquee-track { animation: none; }
+  .lift:hover, .lift:active { transform: none; }
   .seal-spin { animation: none; }
+  .shine-sweep, .tile-sweep { display: none; }
+  .grow-bar, .arrow-nudge { transition: none; }
   /* Park the train near the right edge instead of driving */
   .pipeline-train { animation: none; transform: translateX(calc(100vw - var(--train-w, 375px) - 40px)); }
   .pipeline-wheel, .pipeline-puff { animation: none; }

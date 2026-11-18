@@ -72,22 +72,24 @@ export default function Toolkit() {
                   backgroundColor: skill.bgColor,
                   borderColor: `${activeColor}4D` // 4D = 30% opacity in hex
                 }}
-                className="group flex flex-col items-center justify-center gap-2 p-4 border cursor-default transition-all duration-200"
+                className="group relative overflow-hidden flex flex-col items-center justify-center gap-2 p-4 border cursor-default transition-all duration-200"
               >
+                {/* Light band that sweeps across on hover */}
+                <span aria-hidden="true" className="tile-sweep" />
                 {skill.Icon ? (
                   <skill.Icon
-                    className="text-[36px] transition-all duration-300 opacity-80 group-hover:opacity-100"
+                    className="relative text-[36px] transition-all duration-300 opacity-80 group-hover:opacity-100 group-hover:scale-110"
                     style={{ color: activeColor }}
                   />
                 ) : skill.iconUrl ? (
                   <img
                     src={skill.iconUrl}
                     alt={skill.name}
-                    className="w-[36px] h-[36px] transition-all duration-300 opacity-80 group-hover:opacity-100 object-contain"
+                    className="relative w-[36px] h-[36px] transition-all duration-300 opacity-80 group-hover:opacity-100 group-hover:scale-110 object-contain"
                   />
                 ) : null}
                 <span
-                  className="text-xs text-center font-medium text-[var(--text-secondary)] leading-tight transition-colors duration-300"
+                  className="relative text-xs text-center font-medium text-[var(--text-secondary)] leading-tight transition-colors duration-300"
                   onMouseEnter={e => (e.currentTarget.style.color = activeColor)}
                   onMouseLeave={e => (e.currentTarget.style.color = '')}
                 >

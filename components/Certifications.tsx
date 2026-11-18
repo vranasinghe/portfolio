@@ -5,7 +5,7 @@ import { certifications } from "@/data/portfolio";
 import SectionHeader from "@/components/SectionHeader";
 
 const cardClass =
-  "relative w-full flex flex-col justify-between min-h-[230px] p-7 border-2 border-[var(--rule-card)] bg-[var(--card-bg)] transition-all duration-200";
+  "spotlight relative w-full flex flex-col justify-between min-h-[230px] p-7 border-2 border-[var(--rule-card)] bg-[var(--card-bg)] transition-all duration-200";
 
 export default function Certifications() {
   return (
@@ -44,7 +44,7 @@ export default function Certifications() {
 
               {cert.link && (
                 <span className="font-label text-[0.85rem] font-bold text-[var(--accent-color)]">
-                  Verify Credential ↗
+                  Verify Credential <span className="arrow-nudge">↗</span>
                 </span>
               )}
             </>

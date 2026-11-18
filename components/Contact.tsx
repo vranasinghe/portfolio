@@ -153,7 +153,7 @@ export default function Contact() {
                   className={rowClass}
                 >
                   <span>GitHub</span>
-                  <span className={rowValue}>{displayUrl(personalInfo.github)} ↗</span>
+                  <span className={rowValue}>{displayUrl(personalInfo.github)} <span className="arrow-nudge">↗</span></span>
                 </a>
 
                 <a
@@ -163,7 +163,7 @@ export default function Contact() {
                   className={rowClass}
                 >
                   <span>LinkedIn</span>
-                  <span className={rowValue}>{displayUrl(personalInfo.linkedin)} ↗</span>
+                  <span className={rowValue}>{displayUrl(personalInfo.linkedin)} <span className="arrow-nudge">↗</span></span>
                 </a>
 
                 <a
@@ -228,7 +228,7 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={status === "sending"}
-                className="inline-flex items-center justify-center gap-2.5 px-[26px] py-[15px] bg-[#04060b] border-2 border-[#04060b] text-white font-bold text-[0.95rem] transition-colors duration-200 hover:bg-white hover:text-[#04060b] hover:border-white disabled:opacity-50"
+                className="lift [--lift-glow:rgba(4,6,11,0.55)] inline-flex items-center justify-center gap-2.5 px-[26px] py-[15px] bg-[#04060b] border-2 border-[#04060b] text-white font-bold text-[0.95rem] transition-colors duration-200 hover:bg-white hover:text-[#04060b] hover:border-white disabled:opacity-50"
               >
                 {status === "idle" && (
                   <>

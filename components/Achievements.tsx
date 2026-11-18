@@ -74,7 +74,7 @@ export default function Achievements() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: "easeOut", delay: i * 0.1 }}
-            className="flex flex-col p-7 border-2 border-[var(--rule-card)] bg-[var(--card-bg)] transition-all duration-200 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[6px_6px_0_#1f56f0]"
+            className="spotlight group flex flex-col p-7 border-2 border-[var(--rule-card)] bg-[var(--card-bg)] transition-all duration-200 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[6px_6px_0_#1f56f0]"
           >
             {/* Result + date */}
             <div className="flex flex-wrap items-center justify-between gap-3">
@@ -111,7 +111,7 @@ export default function Achievements() {
                       />
                     </span>
                     <span className="font-label text-[0.85rem] font-bold text-[var(--accent-color)] group-hover:text-[var(--text-primary)] transition-colors">
-                      View certificate ↗
+                      View certificate <span className="arrow-nudge">↗</span>
                     </span>
                   </button>
                 )}
@@ -125,7 +125,7 @@ export default function Achievements() {
                         rel="noopener noreferrer"
                         className="text-[var(--accent-color)] hover:text-[var(--text-primary)] transition-colors"
                       >
-                        {link.label} ↗
+                        {link.label} <span className="arrow-nudge">↗</span>
                       </a>
                     ))}
                   </div>
