@@ -22,7 +22,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    // suppressHydrationWarning: browser extensions (e.g. AI Nexus) inject
+    // data-* attributes on <html> before React hydrates. Only affects this tag.
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <head>
         <link
           rel="stylesheet"

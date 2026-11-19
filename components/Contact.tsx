@@ -49,20 +49,13 @@ export default function Contact() {
     setStatus("sending");
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
+      const response = await fetch("/api/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          // Prioritizes environment variables, falls back to the hardcoded key
-          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "b28ae741-ce6c-4702-89d3-ded18845f665",
           name: formState.name,
           email: formState.email,
           message: formState.message,
-          subject: `Portfolio Contact from ${formState.name}`,
-          from_name: "Portfolio Contact Form",
         }),
       });
 
