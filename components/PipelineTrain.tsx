@@ -63,7 +63,11 @@ export default function PipelineTrain() {
           {/* Boxcars with their labels */}
           {WAGONS.map(({ x, label }) => (
             <g key={label}>
-              <rect x={x} y="20" width={WAGON_W} height="15" fill="#04060b" />
+              <rect x={x} y="20" width={WAGON_W} height="15" rx="1.8" fill="#04060b" />
+              <path d={`M${x + 3} 22 H${x + WAGON_W - 3}`} stroke="#6b93ff" strokeWidth="0.8" />
+              <path d={`M${x + 3} 33 H${x + WAGON_W - 3}`} stroke="#6b93ff" strokeWidth="0.6" />
+              <circle cx={x + 3} cy="27.5" r="0.7" fill="#6b93ff" />
+              <circle cx={x + WAGON_W - 3} cy="27.5" r="0.7" fill="#6b93ff" />
               <text
                 x={x + WAGON_W / 2}
                 y="30.6"
@@ -88,9 +92,13 @@ export default function PipelineTrain() {
           ))}
 
           {/* DATA cargo: a stacked database */}
-          <rect x="18" y="4" width="30" height="4" fill="#ffffff" />
-          <rect x="18" y="9.5" width="30" height="4" fill="#c3d4ff" />
-          <rect x="18" y="15" width="30" height="4" fill="#ffffff" />
+          {[4, 9.5, 15].map((y) => (
+            <g key={y}>
+              <path d={`M18 ${y} V${y + 3} C18 ${y + 5} 48 ${y + 5} 48 ${y + 3} V${y}`} fill="#c3d4ff" />
+              <ellipse cx="33" cy={y} rx="15" ry="2" fill="#ffffff" />
+              <circle cx="43" cy={y + 2.4} r="0.65" fill="#1f56f0" />
+            </g>
+          ))}
 
           {/* MODEL cargo: a tiny neural network */}
           <g stroke="#ffffff" strokeWidth="1">
@@ -108,16 +116,24 @@ export default function PipelineTrain() {
           <rect x="158" y="2" width="30" height="4.5" fill="#04060b" />
           <rect x="160.5" y="3.6" width="2" height="1.3" fill="#6b93ff" />
           <rect x="163.8" y="3.6" width="2" height="1.3" fill="#6b93ff" />
+          <rect x="167.1" y="3.6" width="2" height="1.3" fill="#6b93ff" />
+          <path d="M161 17 H166 M180 17 H185" stroke="#c3d4ff" strokeWidth="0.8" />
           <path d="M166 12.5 L170.5 16 L179 8.5" stroke="#1f56f0" strokeWidth="2.2" />
 
           {/* Engine (facing right) with the VR monogram */}
           <rect x="212" y="16" width="46" height="19" fill="#04060b" />
           <rect x="212" y="4" width="20" height="13" fill="#04060b" />
-          <rect x="215" y="7" width="14" height="6" fill="#6b93ff" />
+          <rect x="215" y="7" width="14" height="6" rx="0.7" fill="#c3d4ff" />
+          <path d="M220 7 V13 M222 7 L226 13" stroke="#6b93ff" strokeWidth="1" />
+          <path d="M210 4 H234" stroke="#04060b" strokeWidth="2" strokeLinecap="round" />
+          <path d="M214 33 H254" stroke="#6b93ff" strokeWidth="1" />
+          <path d="M249 25 H253 M249 28 H253" stroke="#6b93ff" strokeWidth="0.8" />
           <rect x="242" y="7" width="8" height="10" fill="#04060b" />
           <rect x="240" y="5.5" width="12" height="2.5" fill="#04060b" />
-          <rect x="253" y="19" width="3" height="3" fill="#ffffff" />
+          <circle cx="255" cy="20.5" r="2.3" fill="#6b93ff" />
+          <circle cx="255" cy="20.5" r="1.4" fill="#ffffff" />
           <path d="M258 35 L268 35 L258 26 Z" fill="#04060b" />
+          <path d="M260 30 L262 34 M263 32 L264 34" stroke="#6b93ff" strokeWidth="0.8" />
           <text
             x="234"
             y="30.2"
@@ -134,8 +150,10 @@ export default function PipelineTrain() {
           {WHEELS.map((cx) => (
             <g key={cx} className="pipeline-wheel" style={{ transformOrigin: `${cx}px 40.5px` }}>
               <circle cx={cx} cy="40.5" r="5" fill="#04060b" />
+              <circle cx={cx} cy="40.5" r="3.8" fill="none" stroke="#6b93ff" strokeWidth="0.6" />
               <rect x={cx - 0.7} y="36.6" width="1.4" height="7.8" fill="#6b93ff" />
               <rect x={cx - 3.9} y="39.8" width="7.8" height="1.4" fill="#6b93ff" />
+              <circle cx={cx} cy="40.5" r="1.3" fill="#ffffff" />
             </g>
           ))}
         </svg>
