@@ -8,6 +8,7 @@ import Achievements from "@/components/Achievements";
 import Certifications from "@/components/Certifications";
 import Reviews from "@/components/Reviews";
 import Contact from "@/components/Contact";
+import VeeBot from "@/components/VeeBot";
 import { SHOW_ACHIEVEMENTS, SHOW_REVIEWS } from "@/lib/sections";
 
 export default function Home() {
@@ -52,6 +53,9 @@ export default function Home() {
           <Contact />
         </section>
       </div>
+
+      {/* Vee, the interactive portfolio guide (bottom-right) */}
+      <VeeBot />
     </main>
   );
 }

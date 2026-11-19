@@ -4,7 +4,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { personalInfo } from "@/data/portfolio";
 import PipelineTrain from "@/components/PipelineTrain";
-import AvailabilitySeal from "@/components/AvailabilitySeal";
 
 // On desktop (lg+) the contact screen is exactly one viewport tall, so vertical
 // spacing scales with the viewport height (vh) instead of using fixed pixels.
@@ -83,8 +82,6 @@ export default function Contact() {
 
           {/* Header */}
           <div className="relative">
-          {/* Open-to-internships seal behind the headline (the letters print over it) */}
-          <AvailabilitySeal className="absolute z-0 -right-2 -top-3 h-[108px] w-[108px] text-white/40 lg:right-[-3%] lg:top-[-4px] lg:h-[clamp(132px,22vh,200px)] lg:w-[clamp(132px,22vh,200px)] lg:text-white" />
 
           <motion.div
             className="relative z-10"
@@ -246,26 +243,21 @@ export default function Contact() {
           </div>
         </div>
 
-        {/* Workflow train riding along the top edge of the footer */}
+
         <PipelineTrain />
       </section>
 
-      {/* ── Footer ── */}
-      <footer className="bg-[#04060b] text-white/75 py-[26px] lg:py-[clamp(14px,2.2vh,26px)] font-label text-[0.8rem]">
-        <div className="wrap flex flex-wrap justify-between gap-4">
-          <span>
-            Designed &amp; Built by <span className="text-[#6b93ff] font-bold">{personalInfo.name}</span>
-          </span>
-          <span>© {new Date().getFullYear()} · All rights reserved</span>
-          <a
-            href="#home"
-            onClick={(e) => {
-              e.preventDefault();
-              document.getElementById("home")?.scrollIntoView({ behavior: "smooth" });
-            }}
-            className="hover:text-white transition-colors"
-          >
-            Back to top ↑
+      <footer className="portfolio-footer bg-[#04060b] text-[#a8b6d0] py-6 text-xs sm:text-sm">
+        <div className="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-3">
+          <p>
+            Designed &amp; built by <span className="font-semibold text-[#6b93ff]">{personalInfo.name}</span>
+          </p>
+          <p>© {new Date().getFullYear()} · All rights reserved</p>
+          <a href="#home" className="footer-link inline-flex min-h-11 items-center gap-2 font-semibold text-white">
+            Back to top
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 19V5m-6 6 6-6 6 6" />
+            </svg>
           </a>
         </div>
       </footer>
