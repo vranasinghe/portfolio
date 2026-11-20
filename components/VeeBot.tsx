@@ -222,6 +222,7 @@ export default function VeeBot() {
   const [input, setInput] = useState("");
   const [theme, setTheme] = useState<Theme>("blue");
   const [lift, setLift] = useState(0); // keeps Vee above the footer at the bottom of the page
+  const [tucked, setTucked] = useState(false); // phones: slid aside while scrolling down
   const [section, setSection] = useState("home");
   const [act, setAct] = useState<Act | null>(null);
 
@@ -396,6 +397,33 @@ export default function VeeBot() {
     };
   }, []);
 
+  // Phones: tuck Vee against the right edge while scrolling down so he doesn't
+  // cover links on the cards; bring him back on scroll up or once scrolling stops.
+  useEffect(() => {
+    if (open) {
+      setTucked(false);
+      return;
+    }
+    const small = window.matchMedia("(max-width: 639px)");
+    let lastY = window.scrollY;
+    let idle = 0;
+    const onScroll = () => {
+      if (!small.matches) return;
+      const y = window.scrollY;
+      const dy = y - lastY;
+      lastY = y;
+      if (dy > 4 && y > 200) setTucked(true);
+      else if (dy < -4) setTucked(false);
+      window.clearTimeout(idle);
+      idle = window.setTimeout(() => setTucked(false), 900);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.clearTimeout(idle);
+    };
+  }, [open]);
+
   // Keep the newest message in view
   useEffect(() => {
     logRef.current?.scrollTo({ top: logRef.current.scrollHeight });
@@ -466,7 +494,8 @@ export default function VeeBot() {
     <div
       ref={rootRef}
       className="vee pointer-events-none fixed right-3 z-[80] flex flex-col items-end gap-3 sm:right-6"
-      style={{ bottom: 10 + lift }}
+      style={{ bottom: `calc(${10 + lift}px + env(safe-area-inset-bottom, 0px))` }}
+      data-tucked={tucked ? "true" : undefined}
       data-state={awake ? "awake" : "asleep"}
       data-mood={happy ? "happy" : undefined}
       data-boot={booting ? "true" : undefined}
@@ -601,7 +630,7 @@ export default function VeeBot() {
       )}
 
       {/* ── Vee ── */}
-      <div className="group relative">
+      <div className="vee-dock group relative">
         {/* One-time hello, or a hover / focus tip */}
         {!open && (
           <span

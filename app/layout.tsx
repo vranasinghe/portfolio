@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Preloader from "@/components/Preloader";
 import PointerLight from "@/components/PointerLight";
@@ -14,6 +14,15 @@ export const metadata: Metadata = {
     description: "Data Science & AI undergraduate at SLIIT seeking internship opportunities.",
     type: "website",
   },
+};
+
+// viewport-fit=cover lets the dark nav run under the notch; safe-area insets pad it back in.
+// themeColor tints the mobile browser chrome to match the nav.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#04060b",
 };
 
 export default function RootLayout({

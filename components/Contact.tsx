@@ -7,9 +7,11 @@ import PipelineTrain from "@/components/PipelineTrain";
 
 // On desktop (lg+) the contact screen is exactly one viewport tall, so vertical
 // spacing scales with the viewport height (vh) instead of using fixed pixels.
+// Phones: label above value so long URLs show in full instead of being cut off.
+// The slide-in nudge only runs on devices that can hover (it would stick after a tap).
 const rowClass =
-  "flex items-center justify-between gap-4 py-[18px] lg:py-[clamp(9px,1.5vh,18px)] border-b-2 border-white font-bold text-[1.05rem] transition-all duration-200 hover:pl-3 hover:text-[#04060b]";
-const rowValue = "min-w-0 font-label text-[0.8rem] opacity-85 font-normal truncate";
+  "flex flex-col items-start gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-4 min-h-[60px] justify-center py-3.5 sm:py-[18px] lg:py-[clamp(9px,1.5vh,18px)] border-b-2 border-white font-bold text-[1.05rem] transition-all duration-200 active:bg-white/10 [@media(hover:hover)]:hover:pl-3 [@media(hover:hover)]:hover:text-[#04060b]";
+const rowValue = "min-w-0 max-w-full font-label text-[0.85rem] sm:text-[0.8rem] opacity-85 font-normal break-words sm:truncate";
 
 const inputClass =
   "w-full bg-transparent border-2 border-white px-3.5 py-3.5 lg:py-[clamp(8px,1.4vh,14px)] text-[1rem] text-white placeholder-white/75 outline-none transition-colors focus:bg-[#04060b]/20";
@@ -77,7 +79,7 @@ export default function Contact() {
   return (
     // Blue contact area + footer together fill exactly one screen on desktop
     <div className="flex flex-col lg:min-h-[100svh]">
-      <section className="relative w-full flex-1 flex flex-col justify-center bg-[#1f56f0] text-white pt-[120px] pb-[110px] lg:pt-[clamp(80px,10.5vh,112px)] lg:pb-[clamp(72px,8.6vh,96px)] overflow-hidden">
+      <section className="relative w-full flex-1 flex flex-col justify-center bg-[#1f56f0] text-white pt-[96px] pb-[110px] sm:pt-[120px] lg:pt-[clamp(80px,10.5vh,112px)] lg:pb-[clamp(72px,8.6vh,96px)] overflow-hidden">
         <div className="wrap relative">
 
           {/* Header */}
@@ -183,6 +185,7 @@ export default function Contact() {
                   type="text"
                   id="name"
                   name="name"
+                  autoComplete="name"
                   value={formState.name}
                   onChange={handleInputChange}
                   required
@@ -196,6 +199,8 @@ export default function Contact() {
                   type="email"
                   id="email"
                   name="email"
+                  autoComplete="email"
+                  inputMode="email"
                   value={formState.email}
                   onChange={handleInputChange}
                   required
@@ -247,7 +252,7 @@ export default function Contact() {
         <PipelineTrain />
       </section>
 
-      <footer className="portfolio-footer bg-[#04060b] text-[#a8b6d0] py-6 text-xs sm:text-sm">
+      <footer className="portfolio-footer bg-[#04060b] text-[#a8b6d0] pt-6 pb-[max(24px,env(safe-area-inset-bottom))] text-xs sm:text-sm">
         <div className="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-3">
           <p>
             Designed &amp; built by <span className="font-semibold text-[#6b93ff]">{personalInfo.name}</span>
