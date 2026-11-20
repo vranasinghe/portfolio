@@ -93,11 +93,9 @@ export default function Nav() {
           <button
             onClick={() => scrollTo("home")}
             aria-label="Back to top"
-            className="flex min-h-11 items-center gap-1.5 font-label font-bold text-[1.05rem] text-[var(--text-primary)] hover:text-[var(--accent-color)] transition-colors"
+            className="flex min-h-11 items-center transition-opacity hover:opacity-80"
           >
-            &lt;
-            <b className="grid place-items-center w-[34px] h-[34px] bg-[#1f56f0] text-white text-[0.85rem]">VR</b>
-            /&gt;
+            <img src="/logo.png" alt="VKR logo" width={480} height={243} className="h-10 w-auto" />
           </button>
 
           {/* Desktop Links */}
