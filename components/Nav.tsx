@@ -39,16 +39,43 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // While the mobile menu is open: lock the page behind it, close on Esc,
+  // and close if the screen grows past the breakpoint (rotation, resize).
+  useEffect(() => {
+    if (!menuOpen) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.documentElement.dataset.menu = "open"; // hides Vee (see globals.css)
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+        document.getElementById("mobile-menu-btn")?.focus();
+      }
+    };
+    const wide = window.matchMedia("(min-width: 1280px)");
+    const onWide = () => wide.matches && setMenuOpen(false);
+    window.addEventListener("keydown", onKey);
+    wide.addEventListener("change", onWide);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      delete document.documentElement.dataset.menu;
+      window.removeEventListener("keydown", onKey);
+      wide.removeEventListener("change", onWide);
+    };
+  }, [menuOpen]);
+
   const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    // Release the menu's scroll lock now, so the scroll below is not swallowed
+    document.body.style.overflow = "";
     setMenuOpen(false);
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (
     <>
       <nav
-        className={`theme-dark fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b
-          ${scrolled
+        className={`theme-dark fixed top-0 left-0 w-full z-50 pt-[env(safe-area-inset-top)] transition-all duration-300 border-b
+          ${scrolled || menuOpen
             ? "backdrop-blur-md border-[var(--border-color)] bg-[var(--nav-bg)]"
             : "border-transparent bg-transparent"
           }
@@ -65,7 +92,8 @@ export default function Nav() {
           {/* Logo */}
           <button
             onClick={() => scrollTo("home")}
-            className="flex items-center gap-1.5 font-label font-bold text-[1.05rem] text-[var(--text-primary)] hover:text-[var(--accent-color)] transition-colors"
+            aria-label="Back to top"
+            className="flex min-h-11 items-center gap-1.5 font-label font-bold text-[1.05rem] text-[var(--text-primary)] hover:text-[var(--accent-color)] transition-colors"
           >
             &lt;
             <b className="grid place-items-center w-[34px] h-[34px] bg-[#1f56f0] text-white text-[0.85rem]">VR</b>
@@ -121,8 +149,10 @@ export default function Nav() {
             <button
               id="mobile-menu-btn"
               onClick={() => setMenuOpen((o) => !o)}
-              aria-label="Toggle mobile menu"
-              className="p-2 text-[var(--text-primary)] hover:bg-[var(--text-primary)]/[0.08] transition-colors"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-menu"
+              className="-mr-2.5 grid h-11 w-11 place-items-center text-[var(--text-primary)] hover:bg-[var(--text-primary)]/[0.08] transition-colors"
             >
               {menuOpen ? (
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -140,42 +170,56 @@ export default function Nav() {
         {/* Mobile Dropdown Menu */}
         <AnimatePresence>
           {menuOpen && (
+            // Full-height sheet: big thumb-sized rows, the page behind is locked,
+            // and the Resume action sits at the bottom where the thumb already is.
             <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.25, ease: "easeInOut" }}
-              className="xl:hidden overflow-hidden border-t border-[var(--border-color)] bg-[var(--nav-bg)] backdrop-blur-md"
+              id="mobile-menu"
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+              className="xl:hidden flex flex-col h-[calc(100svh-74px-env(safe-area-inset-top))] overflow-y-auto overscroll-contain border-t border-[var(--border-color)] bg-[#04060b]"
             >
-              <div className="wrap py-4 flex flex-col gap-1 font-label font-medium text-[0.9rem]">
-                {NAV_ITEMS.map(({ id, label }, i) => (
-                  <motion.button
-                    key={id}
-                    onClick={() => scrollTo(id)}
-                    initial={{ opacity: 0, x: -12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.04, duration: 0.2 }}
-                    className={`text-left py-2.5 border-b border-[var(--border-color)] transition-colors ${
-                      active === id
-                        ? "text-[var(--text-primary)]"
-                        : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
-                    }`}
-                  >
-                    {label}
-                  </motion.button>
-                ))}
-                <motion.a
+              <ul className="wrap flex-1 pt-3">
+                {NAV_ITEMS.map(({ id, label }, i) => {
+                  const isActive = active === id;
+                  return (
+                    <motion.li
+                      key={id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.03 + i * 0.035, duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                      className="border-b border-[var(--border-color)]"
+                    >
+                      <button
+                        onClick={() => scrollTo(id)}
+                        aria-current={isActive ? "true" : undefined}
+                        className={`flex w-full min-h-[56px] items-center justify-between gap-4 text-left text-[clamp(1.35rem,6vw,1.75rem)] font-bold tracking-[-0.03em] transition-colors active:text-[var(--accent-color)] ${
+                          isActive ? "text-white" : "text-white/60"
+                        }`}
+                      >
+                        {label}
+                        {isActive && <span aria-hidden="true" className="h-2 w-2 bg-[var(--accent-color)]" />}
+                      </button>
+                    </motion.li>
+                  );
+                })}
+              </ul>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2, duration: 0.3 }}
+                className="wrap pt-6 pb-[max(24px,env(safe-area-inset-bottom))]"
+              >
+                <a
                   href={personalInfo.resumeLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  initial={{ opacity: 0, x: -12 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: NAV_ITEMS.length * 0.04, duration: 0.2 }}
-                  className="mt-3 px-[18px] py-[9px] border-2 border-current text-[0.82rem] font-bold text-[var(--text-primary)] flex items-center gap-2 w-fit"
+                  className="press flex min-h-[52px] w-full items-center justify-center gap-2 bg-[#1f56f0] text-[0.95rem] font-bold text-white"
                 >
-                  Resume <span className="arrow-nudge">↗</span>
-                </motion.a>
-              </div>
+                  Download Resume <span aria-hidden="true">↗</span>
+                </a>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>

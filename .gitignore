@@ -30,3 +30,6 @@ yarn-error.log*
 # local path wrappers
 git.bat
 powershell.bat
+
+# local design tool config/cache
+.impeccable/

@@ -34,7 +34,7 @@ export default function Projects() {
 
   return (
     <>
-    <div className="band-dark pt-[120px] pb-[60px]">
+    <div className="band-dark pt-[88px] pb-[40px] md:pt-[120px] md:pb-[60px]">
       <div className="wrap">
         <SectionHeader
           title="Projects"
@@ -42,7 +42,7 @@ export default function Projects() {
         />
 
         {/* ── Featured Projects (alternating layout) ── */}
-        <div className="space-y-24 mb-24">
+        <div className="space-y-16 mb-16 md:space-y-24 md:mb-24">
           {featuredProjects.map((project) => (
             <motion.div
               key={project.id}
@@ -75,7 +75,7 @@ export default function Projects() {
                   <span aria-hidden="true" className="grow-bar" />
                   <span
                     aria-hidden="true"
-                    className="pointer-events-none absolute bottom-4 left-4 z-[3] translate-y-2 bg-[#04060b]/90 px-3 py-1.5 font-label text-[0.75rem] font-bold uppercase tracking-[0.08em] text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 motion-reduce:transition-none"
+                    className="touch-show pointer-events-none absolute bottom-3 left-3 md:bottom-4 md:left-4 z-[3] translate-y-2 bg-[#04060b]/90 px-3 py-1.5 font-label text-[0.75rem] font-bold uppercase tracking-[0.08em] text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 motion-reduce:transition-none"
                   >
                     {project.live ? "View live" : "View code"} <span className="arrow-nudge">↗</span>
                   </span>
@@ -84,11 +84,11 @@ export default function Projects() {
 
               {/* Content */}
               <div className={`lg:col-span-5 space-y-4 ${project.reversed ? "lg:order-1" : ""}`}>
-                <h3 className="text-2xl font-bold text-[var(--text-primary)] transition-colors duration-300 group-hover/row:text-[var(--accent-color)]">{project.title}</h3>
+                <h3 className="text-[1.45rem] leading-[1.2] tracking-[-0.02em] md:text-2xl font-bold text-balance text-[var(--text-primary)] transition-colors duration-300 group-hover/row:text-[var(--accent-color)]">{project.title}</h3>
 
-                <div className="relative z-10 p-5 bg-[var(--card-bg)] border border-[var(--border-color)] shadow-[0_15px_40px_var(--shadow-color)]">
-                  <p className="text-[var(--text-secondary)] text-sm leading-relaxed">{project.description}</p>
-                  <p className="text-[var(--text-muted)] text-xs mt-2 leading-relaxed">{project.longDescription}</p>
+                <div className="relative z-10 p-4 sm:p-5 bg-[var(--card-bg)] border border-[var(--border-color)] shadow-[0_15px_40px_var(--shadow-color)]">
+                  <p className="text-[var(--text-secondary)] text-[0.95rem] sm:text-sm leading-relaxed">{project.description}</p>
+                  <p className="text-[var(--text-muted)] text-[0.82rem] sm:text-xs mt-2 leading-relaxed">{project.longDescription}</p>
                 </div>
 
                 {/* Tags */}
@@ -103,18 +103,20 @@ export default function Projects() {
                   ))}
                 </div>
 
-                {/* Links */}
-                <div className={`flex gap-3 ${project.reversed ? "lg:justify-end" : ""}`}>
+                {/* Links: labelled 44px targets (icon-only links were 18px, too small for a thumb) */}
+                <div className={`flex flex-wrap gap-2 ${project.reversed ? "lg:justify-end" : ""}`}>
                   <a href={project.github} target="_blank" rel="noopener noreferrer"
                     aria-label={`${project.title} source code on GitHub`}
-                    className="text-[var(--text-muted)] hover:text-[var(--accent-color)] hover:-translate-y-0.5 transition-all duration-200">
+                    className="press inline-flex min-h-11 items-center gap-2 border border-[var(--border-color)] px-3.5 font-label text-[0.82rem] font-semibold text-[var(--text-secondary)] hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] transition-colors duration-200">
                     <GitHubIcon />
+                    Code
                   </a>
                   {project.live && (
                     <a href={project.live} target="_blank" rel="noopener noreferrer"
                       aria-label={`${project.title} live site`}
-                      className="text-[var(--text-muted)] hover:text-[var(--accent-color)] hover:-translate-y-0.5 transition-all duration-200">
+                      className="press inline-flex min-h-11 items-center gap-2 border border-[var(--border-color)] px-3.5 font-label text-[0.82rem] font-semibold text-[var(--text-secondary)] hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] transition-colors duration-200">
                       <ExternalLinkIcon />
+                      Live site
                     </a>
                   )}
                 </div>
@@ -126,9 +128,9 @@ export default function Projects() {
     </div>
 
     {/* ── Other projects: white section, cards in the Achievements style ── */}
-    <section className="bg-white py-[100px]">
+    <section className="bg-white py-[72px] md:py-[100px]">
       <div className="wrap">
-        <div className="flex flex-wrap items-end justify-between gap-5 mb-8">
+        <div className="flex flex-wrap items-end justify-between gap-5 mb-6 md:mb-8">
           <div>
             <h3 className="text-[1.6rem] tracking-[-0.02em] font-bold text-[var(--text-primary)]">
               Other Noteworthy Projects
@@ -136,9 +138,11 @@ export default function Projects() {
             <p className="mt-2 text-sm text-[var(--text-muted)]">Smaller experiments, tools, and side projects.</p>
           </div>
 
-          {/* Category tabs with a sliding active pill */}
+          {/* Category tabs with a sliding active pill (one swipeable line on phones) */}
           <motion.div
-            className="flex flex-wrap gap-1.5"
+            className="scroll-strip w-[108.7%] md:w-auto gap-1.5"
+            role="group"
+            aria-label="Filter projects by category"
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -149,7 +153,7 @@ export default function Projects() {
                 key={f}
                 onClick={() => setActiveFilter(f)}
                 aria-pressed={activeFilter === f}
-                className={`relative font-label font-medium text-[0.8rem] px-3.5 py-2 border overflow-hidden transition-colors duration-200 ${
+                className={`relative min-h-11 md:min-h-0 font-label font-medium text-[0.85rem] md:text-[0.8rem] px-4 md:px-3.5 py-2 border overflow-hidden whitespace-nowrap transition-colors duration-200 ${
                   activeFilter === f
                     ? "text-white border-[#0b1222]"
                     : "border-[#0b1222]/25 text-[var(--text-secondary)] hover:border-[#0b1222] hover:text-[var(--text-primary)]"
@@ -168,8 +172,9 @@ export default function Projects() {
           </motion.div>
         </div>
 
-        {/* Card grid, styled like the Achievements cards */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Card grid, styled like the Achievements cards. On phones the cards sit in a
+            swipeable row with the next one peeking in, instead of a 3,000px stack. */}
+        <motion.div layout layoutScroll className="scroll-strip gap-3 pb-2 md:grid md:grid-cols-2 md:gap-4 md:pb-0">
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project) => {
               const primary = project.live ?? project.github;
@@ -183,7 +188,7 @@ export default function Projects() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.96 }}
                   transition={{ duration: 0.3 }}
-                  className="flex"
+                  className="flex w-[84%] max-w-[380px] md:w-auto md:max-w-none"
                 >
                   <article className="spotlight group flex w-full flex-col border-2 border-[var(--rule-card)] bg-white transition-all duration-200 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[6px_6px_0_#1f56f0]">
                     {/* Full screenshot, edge to edge */}
@@ -205,7 +210,7 @@ export default function Projects() {
                       </a>
                     )}
 
-                    <div className="flex flex-1 flex-col p-7">
+                    <div className="flex flex-1 flex-col p-5 md:p-7">
                     {/* Category badge */}
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <span className="px-3 py-1.5 bg-[#1f56f0] text-white font-label text-[0.78rem] font-bold uppercase tracking-[0.06em]">
@@ -213,7 +218,7 @@ export default function Projects() {
                       </span>
                     </div>
 
-                    <h4 className="mt-5 text-[1.3rem] tracking-[-0.02em] leading-[1.25] font-bold text-[var(--text-primary)]">
+                    <h4 className="mt-4 md:mt-5 text-[1.2rem] md:text-[1.3rem] text-balance tracking-[-0.02em] leading-[1.25] font-bold text-[var(--text-primary)]">
                       {project.title}
                     </h4>
                     <p className="mt-1.5 font-label text-[0.8rem] leading-relaxed text-[var(--accent-color)]">
@@ -223,12 +228,12 @@ export default function Projects() {
                     <p className="mt-4 text-[0.95rem] leading-relaxed text-[var(--text-secondary)]">{project.description}</p>
 
                     {/* Links */}
-                    <div className="mt-auto pt-6 flex flex-wrap items-center justify-between gap-4">
+                    <div className="mt-auto pt-4 md:pt-6 flex flex-wrap items-center justify-between gap-x-4">
                       <a
                         href={primary}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="font-label text-[0.85rem] font-bold text-[var(--accent-color)] hover:text-[var(--text-primary)] transition-colors"
+                        className="inline-flex min-h-11 items-center font-label text-[0.85rem] font-bold text-[var(--accent-color)] hover:text-[var(--text-primary)] transition-colors"
                       >
                         {project.live ? "View live" : "View code"} <span className="arrow-nudge">↗</span>
                       </a>
@@ -238,7 +243,7 @@ export default function Projects() {
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label={`${project.title} source code on GitHub`}
-                          className="font-label text-[0.85rem] font-bold text-[var(--accent-color)] hover:text-[var(--text-primary)] transition-colors"
+                          className="inline-flex min-h-11 items-center font-label text-[0.85rem] font-bold text-[var(--accent-color)] hover:text-[var(--text-primary)] transition-colors"
                         >
                           GitHub <span className="arrow-nudge">↗</span>
                         </a>
