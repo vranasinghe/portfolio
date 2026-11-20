@@ -5,7 +5,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { personalInfo } from "@/data/portfolio";
 
 // ─── Timing ────────────────────────────────────────────────
-const LOAD = 9500;   // ms: wander → constellation forms → counter reaches 100% (~10 s total with SETTLE)
+const LOAD = 4500;   // ms: wander → constellation forms → counter reaches 100% (~5 s total with SETTLE)
 const SETTLE = 500;  // ms: hold on the finished constellation before the exit
 const EASE_OUT = [0.16, 1, 0.3, 1] as const;
 
