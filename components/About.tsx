@@ -12,7 +12,7 @@ const fadeUp = {
   }),
 };
 
-const cell = "border-2 border-[var(--rule-card)] bg-[var(--card-bg)] p-[30px] relative transition-colors duration-300 hover:border-[var(--accent-color)]";
+const cell = "border-2 border-[var(--rule-card)] bg-[var(--card-bg)] p-5 sm:p-[30px] relative transition-colors duration-300 hover:border-[var(--accent-color)]";
 
 const RECENT = [
   "Python / PyTorch", "React / Next.js",
@@ -22,14 +22,14 @@ const RECENT = [
 
 export default function About() {
   return (
-    <section className="wrap py-[120px] relative">
+    <section className="wrap py-[88px] md:py-[120px] relative">
       <SectionHeader title="About Me" />
 
       <div className="grid grid-cols-2 lg:grid-cols-12 gap-4">
 
         {/* ── Photo cell ── */}
         <motion.div
-          className="col-span-2 lg:col-span-4 lg:row-span-2 min-h-[440px] bg-[#1f56f0] text-white flex flex-col justify-between overflow-hidden relative border-2 border-[var(--rule-card)]"
+          className="col-span-2 lg:col-span-4 lg:row-span-2 min-h-[400px] sm:min-h-[440px] bg-[#1f56f0] text-white flex flex-col justify-between overflow-hidden relative border-2 border-[var(--rule-card)]"
           custom={0} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
         >
           <div className="relative flex-1 min-h-[360px] group">
@@ -104,11 +104,11 @@ export default function About() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className={`${cell} col-span-1 lg:col-span-2 min-h-[160px] flex flex-col justify-between ${
+            className={`${cell} col-span-1 lg:col-span-2 min-h-[132px] sm:min-h-[160px] flex flex-col justify-between gap-3 ${
               i % 2 === 1 ? "!bg-[#0b1222] text-white" : ""
             }`}
           >
-            <b className={`text-[clamp(1.35rem,2.2vw,2rem)] leading-[1.05] tracking-[-0.04em] font-extrabold break-words ${
+            <b className={`text-[clamp(1.25rem,2.2vw,2rem)] leading-[1.05] tracking-[-0.03em] font-extrabold break-words ${
               i % 2 === 1 ? "text-white" : "text-[var(--text-primary)]"
             }`}>
               {stat.value}

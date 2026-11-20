@@ -36,8 +36,12 @@
 
 html {
   scroll-behavior: smooth;
+  /* Anchor jumps land below the fixed 74px nav (plus the notch) */
+  scroll-padding-top: calc(74px + env(safe-area-inset-top, 0px));
   background-color: var(--bg-primary);
   color: var(--text-primary);
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -71,6 +75,36 @@ body {
    ========================================================= */
 
 .wrap { width: min(1200px, 92%); margin-inline: auto; }
+
+/* Scroll strip: on phones a row of chips or cards becomes one swipeable line
+   that bleeds to the screen edges (the .wrap gutter is 4vw) and snaps.
+   From md up it is a plain wrapping row; md:grid etc. override it because it
+   lives in the components layer, below Tailwind's utilities. */
+@layer components {
+  .scroll-strip {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 4vw;
+    margin-inline: -4.35%;
+    padding-inline: 4.35%;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .scroll-strip::-webkit-scrollbar { display: none; }
+  .scroll-strip > * { flex: none; scroll-snap-align: start; }
+  @media (min-width: 768px) {
+    .scroll-strip {
+      flex-wrap: wrap;
+      overflow: visible;
+      scroll-snap-type: none;
+      margin-inline: 0;
+      padding-inline: 0;
+    }
+  }
+}
 
 /* Dark area: re-scopes the theme variables so every var(--...) utility
    inside it resolves to its dark value. .band-dark also paints the
@@ -192,6 +226,17 @@ button:hover .arrow-nudge,
 /* Contact "Open to internships" seal: the lettered ring turns slowly */
 .seal-spin { animation: seal-spin 28s linear infinite; }
 @keyframes seal-spin { to { transform: rotate(360deg); } }
+
+/* Touch screens: there is no hover, so labels that only appear on hover are
+   shown outright, the pointer spotlight is switched off (it would stick where
+   the finger lifted) and presses get a quick pressed state instead. */
+@media (hover: none) {
+  .touch-show { opacity: 1 !important; transform: none !important; }
+  .spotlight::before,
+  .spotlight::after { display: none; }
+  .press { transition: transform 0.12s ease; }
+  .press:active { transform: scale(0.97); }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .marquee-track { animation: none; }
@@ -466,6 +511,16 @@ button:hover .arrow-nudge,
   0% { opacity: 0; transform: translate(0, 0) scale(0.6); }
   25% { opacity: 1; }
   100% { opacity: 0; transform: translate(9px, -20px) scale(1.15); }
+}
+
+/* Phones: Vee slides most of the way off the right edge while you scroll down,
+   so he never sits on top of a card's links, and comes back when you stop or scroll up */
+.vee-dock { transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease; }
+html[data-menu="open"] .vee { display: none; } /* the mobile menu sheet owns the screen */
+.vee[data-tucked="true"] .vee-dock { transform: translateX(72%); opacity: 0.55; }
+@media (prefers-reduced-motion: reduce) {
+  .vee-dock { transition: opacity 0.2s ease; }
+  .vee[data-tucked="true"] .vee-dock { transform: none; opacity: 0; pointer-events: none; }
 }
 
 /* Bubbles, chat panel entrance, typing dots */

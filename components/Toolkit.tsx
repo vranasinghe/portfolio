@@ -10,23 +10,30 @@ export default function Toolkit() {
 
   return (
     <div className="band-dark">
-    <section className="wrap py-[120px] bg-transparent">
+    <section className="wrap py-[88px] md:py-[120px] bg-transparent">
       <SectionHeader
         title="Tech Stack"
         subtitle="Languages, frameworks, and tools I build with — mapped directly from my skill set."
       />
 
-      {/* Category tabs */}
+      {/* Category tabs: one swipeable line on phones instead of five wrapped rows */}
       <motion.div
-        className="flex flex-wrap gap-2 mb-8"
+        className="scroll-strip gap-2 mb-6 md:mb-8"
+        role="group"
+        aria-label="Skill categories"
         initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }} transition={{ delay: 0.2 }}
       >
         {skills.map((cat, i) => (
           <button
             key={cat.category}
-            onClick={() => setActiveCategory(i)}
-            className={`relative flex items-center gap-1.5 px-4 py-2 text-sm font-medium border overflow-hidden transition-colors duration-200 ${activeCategory === i
+            onClick={(e) => {
+              setActiveCategory(i);
+              // Bring a half-hidden tab fully into the swipe row
+              e.currentTarget.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+            }}
+            aria-pressed={activeCategory === i}
+            className={`relative flex min-h-11 md:min-h-0 items-center gap-1.5 whitespace-nowrap px-4 py-2 text-sm font-medium border overflow-hidden transition-colors duration-200 ${activeCategory === i
                 ? "text-white border-indigo-600"
                 : "bg-[var(--card-bg)] text-[var(--text-muted)] border-[var(--border-color)] hover:border-[var(--accent-color)] hover:text-[var(--accent-color)]"
               }`}
@@ -51,7 +58,7 @@ export default function Toolkit() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -12 }}
           transition={{ duration: 0.3 }}
-          className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-4"
+          className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-2.5 sm:gap-4"
         >
           {skills[activeCategory].items.map((skill, i) => {
             // Skills sit on the black band: use the light variant of dark brand colours when defined
