@@ -348,6 +348,16 @@ export const minorProjects: MinorProject[] = [
     live: "https://e-commerce-web-system-web.vercel.app/",
     imageUrl: "/E-Commerce Web System.webp",
   },
+  {
+    title: "Dateza — Real-Time Social & Chat Platform",
+    description:
+      "A full-stack real-time social and dating platform with instant messaging, swipe-based matching, user profiles, stories, online status, and notifications. Socket.IO powers the live chat, Zustand manages state, and the interface runs on both web and mobile.",
+    tags: ["React Native", "Expo Router", "Node.js", "Express.js", "Socket.IO", "PostgreSQL", "Zustand", "NativeWind"],
+    category: "Mobile App",
+    github: "https://github.com/vranasinghe/Real-Time-Chat-App",
+    live: "https://real-time-chat-app-tau-six.vercel.app/",
+    imageUrl: "/Dateza.webp",
+  },
 ];
 
 // ─── EXPERIENCE ───────────────────────────────────────────
