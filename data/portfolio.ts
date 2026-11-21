@@ -292,7 +292,7 @@ export interface MinorProject {
   title: string;
   description: string;
   tags: string[];
-  category: "AI / ML" | "Web Development" | "Mobile App" | "Fullstack" | "Design";
+  category: "AI / ML" | "Data & BI" | "Web Development" | "Mobile App" | "Fullstack" | "Design";
   github: string;
   live?: string;
   imageUrl?: string;
@@ -308,6 +308,15 @@ export const minorProjects: MinorProject[] = [
     github: "https://github.com/vranasinghe/Dengue-Outbreak-Prediction-Model",
     live: "https://macromaster101.github.io/DengueRisk/dashboard/",
     imageUrl: "/Dengu Risk.png",
+  },
+  {
+    title: "CommerceLens — E-Commerce Data Intelligence",
+    description:
+      "An end-to-end e-commerce data warehousing and business intelligence solution that turns historical Olist marketplace data into actionable insights, with automated ETL pipelines, a medallion architecture, a star-schema data model, sales analytics, customer insights, and interactive Power BI reporting.",
+    tags: ["Python", "Pandas", "SQL Server", "SSIS", "Power BI", "DAX", "Data Warehousing", "ETL"],
+    category: "Data & BI",
+    github: "https://github.com/vranasinghe/Commerce_Lense",
+    imageUrl: "/CommerceLens.webp",
   },
   {
     title: "CarTrader — Premium Car Marketplace",

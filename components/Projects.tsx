@@ -20,7 +20,7 @@ function ExternalLinkIcon() {
   );
 }
 
-const categories = ["AI / ML", "Web Development", "Mobile App", "Fullstack", "Design"] as const;
+const categories = ["AI / ML", "Data & BI", "Web Development", "Mobile App", "Fullstack", "Design"] as const;
 type Filter = "All" | (typeof categories)[number];
 const filters: Filter[] = ["All", ...categories];
 
