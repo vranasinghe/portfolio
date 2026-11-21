@@ -341,7 +341,7 @@ export const minorProjects: MinorProject[] = [
   {
     title: "E-Commerce Web System",
     description:
-      "A full-stack e-commerce web platform featuring dynamic product catalog browsing, cart management, secure user authentication, and responsive shopping experience.",
+      "AURA, a full-stack fashion e-commerce platform with curated collections, cart and wishlist, and secure user accounts, plus a Gemini-powered shopping assistant that suggests outfits and an AI virtual try-on (IDM-VTON) that previews garments on the shopper.",
     tags: ["Next.js", "TypeScript", "Tailwind CSS", "Express", "PostgreSQL", "Prisma", "FastAPI", "Gemini"],
     category: "Fullstack",
     github: "https://github.com/vranasinghe/E-Commerce-web-system",
