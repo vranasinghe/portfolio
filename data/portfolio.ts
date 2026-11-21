@@ -29,7 +29,7 @@ export const personalInfo = {
 };
 
 export const heroStats = [
-  { value: "8+", label: "Projects Shipped" },
+  { value: "11+", label: "Projects Shipped" },
   { value: "3rd", label: "Year @ SLIIT" },
   { value: "Data Science", label: "Specialization" },
   { value: "LK", label: "Based in Sri Lanka" },
@@ -387,7 +387,7 @@ export const experience: ExperienceItem[] = [
     period: "Seeking · 2026",
     type: "seeking",
     description:
-      "Looking for my first internship where I can contribute to a real engineering team. I've shipped 8+ end-to-end projects spanning web, mobile, and ML — ready from day one.",
+      "Looking for my first internship where I can contribute to a real engineering team. I've shipped 11+ end-to-end projects spanning web, mobile, and ML — ready from day one.",
     bullets: [
       "Project-tested skills across web, mobile, and ML domains",
       "Strong foundation in CNNs, NLP, and statistical modeling",

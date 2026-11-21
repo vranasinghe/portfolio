@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { featuredProjects, minorProjects } from "@/data/portfolio";
 import SectionHeader from "@/components/SectionHeader";
@@ -24,13 +24,30 @@ const categories = ["AI / ML", "Data & BI", "Web Development", "Mobile App", "Fu
 type Filter = "All" | (typeof categories)[number];
 const filters: Filter[] = ["All", ...categories];
 
+// Other projects reveal one desktop row at a time
+const PAGE_SIZE = 3;
+
 export default function Projects() {
   const [activeFilter, setActiveFilter] = useState<Filter>("All");
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const otherRef = useRef<HTMLDivElement>(null);
 
   const filteredProjects =
     activeFilter === "All"
       ? minorProjects
       : minorProjects.filter((p) => p.category === activeFilter);
+  const shownProjects = filteredProjects.slice(0, visibleCount);
+  const remaining = filteredProjects.length - shownProjects.length;
+
+  const selectFilter = (f: Filter) => {
+    setActiveFilter(f);
+    setVisibleCount(PAGE_SIZE);
+  };
+
+  const showLess = () => {
+    setVisibleCount(PAGE_SIZE);
+    otherRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
     <>
@@ -130,7 +147,7 @@ export default function Projects() {
     {/* ── Other projects: white section, cards in the Achievements style ── */}
     <section className="bg-white py-[72px] md:py-[100px]">
       <div className="wrap">
-        <div className="flex flex-wrap items-end justify-between gap-5 mb-6 md:mb-8">
+        <div ref={otherRef} className="scroll-mt-[96px] flex flex-wrap items-end justify-between gap-5 mb-6 md:mb-8">
           <div>
             <h3 className="text-[1.6rem] tracking-[-0.02em] font-bold text-[var(--text-primary)]">
               Other Noteworthy Projects
@@ -151,7 +168,7 @@ export default function Projects() {
             {filters.map((f) => (
               <button
                 key={f}
-                onClick={() => setActiveFilter(f)}
+                onClick={() => selectFilter(f)}
                 aria-pressed={activeFilter === f}
                 className={`relative min-h-11 md:min-h-0 font-label font-medium text-[0.85rem] md:text-[0.8rem] px-4 md:px-3.5 py-2 border overflow-hidden whitespace-nowrap transition-colors duration-200 ${
                   activeFilter === f
@@ -173,10 +190,11 @@ export default function Projects() {
         </div>
 
         {/* Card grid, styled like the Achievements cards. On phones the cards sit in a
-            swipeable row with the next one peeking in, instead of a 3,000px stack. */}
-        <motion.div layout layoutScroll className="scroll-strip gap-3 pb-2 md:grid md:grid-cols-2 md:gap-4 md:pb-0">
+            swipeable row with the next one peeking in, instead of a 3,000px stack.
+            Two columns on tablets, three on desktop. */}
+        <motion.div layout layoutScroll className="scroll-strip gap-3 pb-2 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-4 md:pb-0">
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project) => {
+            {shownProjects.map((project) => {
               const primary = project.live ?? project.github;
               return (
                 // Framer owns this wrapper's transform (layout + filter animation),
@@ -210,7 +228,7 @@ export default function Projects() {
                       </a>
                     )}
 
-                    <div className="flex flex-1 flex-col p-5 md:p-7">
+                    <div className="flex flex-1 flex-col p-5 md:p-7 lg:p-6">
                     {/* Category badge */}
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <span className="px-3 py-1.5 bg-[#1f56f0] text-white font-label text-[0.78rem] font-bold uppercase tracking-[0.06em]">
@@ -256,6 +274,30 @@ export default function Projects() {
             })}
           </AnimatePresence>
         </motion.div>
+
+        {/* Load more / show less */}
+        {filteredProjects.length > PAGE_SIZE && (
+          <div className="mt-8 md:mt-10 flex justify-center">
+            <button
+              type="button"
+              onClick={remaining > 0 ? () => setVisibleCount((n) => n + PAGE_SIZE) : showLess}
+              aria-expanded={remaining === 0}
+              className="lift inline-flex min-h-11 items-center gap-2.5 px-[26px] py-[13px] border-2 border-[#0b1222] font-label text-[0.9rem] font-bold text-[#0b1222] hover:bg-[#0b1222] hover:text-white transition-colors duration-200"
+            >
+              {remaining > 0 ? (
+                <>
+                  Load more projects
+                  <span className="font-medium opacity-60">({remaining} more)</span>
+                  <span aria-hidden="true">↓</span>
+                </>
+              ) : (
+                <>
+                  Show less <span aria-hidden="true">↑</span>
+                </>
+              )}
+            </button>
+          </div>
+        )}
       </div>
     </section>
     </>
