@@ -342,10 +342,11 @@ export const minorProjects: MinorProject[] = [
     title: "E-Commerce Web System",
     description:
       "A full-stack e-commerce web platform featuring dynamic product catalog browsing, cart management, secure user authentication, and responsive shopping experience.",
-    tags: ["React", "Next.js", "Tailwind CSS", "Node.js", "REST API", "Vercel"],
+    tags: ["Next.js", "TypeScript", "Tailwind CSS", "Express", "PostgreSQL", "Prisma", "FastAPI", "Gemini"],
     category: "Fullstack",
-    github: "https://github.com/vranasinghe",
-    live: "https://e-commerce-web-system-45cuzrk9t-teams-01.vercel.app/",
+    github: "https://github.com/vranasinghe/E-Commerce-web-system",
+    live: "https://e-commerce-web-system-web.vercel.app/",
+    imageUrl: "/E-Commerce Web System.webp",
   },
 ];
 
