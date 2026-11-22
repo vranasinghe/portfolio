@@ -155,7 +155,7 @@ export default function Contact() {
                   className={rowClass}
                 >
                   <span>LinkedIn</span>
-                  <span className={rowValue}>{displayUrl(personalInfo.linkedin)} <span className="arrow-nudge">↗</span></span>
+                  <span className={rowValue}>View LinkedIn profile <span className="arrow-nudge">↗</span></span>
                 </a>
 
                 <a
