@@ -15,8 +15,7 @@ export default function Toolkit() {
     <section className="wrap py-14 md:py-[72px] bg-transparent">
       <SectionHeader
         compact
-        title="Tech Stack & Technical Expertise"
-        subtitle="Languages, frameworks, and tools I build with — mapped directly from my skill set."
+        title="Tech Stack"
       />
 
       {/* Category tabs: one swipeable line on phones instead of five wrapped rows */}
