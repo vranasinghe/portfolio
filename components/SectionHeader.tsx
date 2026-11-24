@@ -28,7 +28,7 @@ export default function SectionHeader({ title, subtitle, id, compact = false }: 
           subtitle ? "md:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] md:items-end md:gap-10" : ""
         }`}
       >
-        <h2 className={`${compact ? "text-[clamp(1.9rem,3.6vw,3rem)] leading-[1.05] tracking-[-0.03em]" : "text-[clamp(2.6rem,6vw,4.6rem)] leading-[0.95] tracking-[-0.04em]"} font-extrabold text-[var(--text-primary)] [text-wrap:balance]`}>
+        <h2 className="text-[clamp(2.6rem,6vw,4.6rem)] leading-[0.95] tracking-[-0.04em] font-extrabold text-[var(--text-primary)] [text-wrap:balance]">
           {title}
         </h2>
         {subtitle && (
