@@ -26,6 +26,9 @@ const filters: Filter[] = ["All", ...categories];
 
 // Other projects reveal one desktop row at a time
 const PAGE_SIZE = 3;
+// Keep all projects; present AI, data, then software engineering evidence first.
+const projectPriority = ["AI / ML", "Data & BI", "Fullstack", "Web Development", "Mobile App", "Design"];
+const prioritizedProjects = [...minorProjects].sort((a, b) => projectPriority.indexOf(a.category) - projectPriority.indexOf(b.category));
 
 export default function Projects() {
   const [activeFilter, setActiveFilter] = useState<Filter>("All");
@@ -34,8 +37,8 @@ export default function Projects() {
 
   const filteredProjects =
     activeFilter === "All"
-      ? minorProjects
-      : minorProjects.filter((p) => p.category === activeFilter);
+      ? prioritizedProjects
+      : prioritizedProjects.filter((p) => p.category === activeFilter);
   const shownProjects = filteredProjects.slice(0, visibleCount);
   const remaining = filteredProjects.length - shownProjects.length;
 
@@ -54,7 +57,7 @@ export default function Projects() {
     <div className="band-dark pt-[88px] pb-[40px] md:pt-[120px] md:pb-[60px]">
       <div className="wrap">
         <SectionHeader
-          title="Projects"
+          title="Featured Projects"
           subtitle="A curated selection of end-to-end projects spanning AI, data science, and full-stack development."
         />
 

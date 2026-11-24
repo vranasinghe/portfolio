@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { personalInfo } from "@/data/portfolio";
 import { SECTIONS } from "@/lib/sections";
+import { activeSectionAt } from "@/lib/sectionTracking";
 
 // Nav order and numbering come from the shared section list, so they always match the page.
 const NAV_ITEMS = SECTIONS;
@@ -18,25 +19,34 @@ export default function Nav() {
   const scrollProgress = useSpring(scrollYProgress, { stiffness: 200, damping: 30, restDelta: 0.001 });
 
   useEffect(() => {
-    const handleScroll = () => {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
       setScrolled(window.scrollY > 40);
-
-      const sections = NAV_ITEMS.map((item) => {
-        const el = document.getElementById(item.id);
-        if (!el) return { id: item.id, top: Infinity };
-        return { id: item.id, top: Math.abs(el.getBoundingClientRect().top) };
-      });
-
-      const homeEl = document.getElementById("home");
-      if (homeEl) {
-        sections.push({ id: "home", top: Math.abs(homeEl.getBoundingClientRect().top) });
-      }
-
-      const closest = sections.reduce((a, b) => (a.top < b.top ? a : b));
-      setActive(closest.id);
+      const positions = NAV_ITEMS.map(item => ({ id: item.id, top: document.getElementById(item.id)?.getBoundingClientRect().top ?? Infinity }));
+      const atEnd = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4;
+      setActive(atEnd ? "contact" : activeSectionAt(positions, Math.min(180, window.innerHeight * 0.25)));
     };
+    const handleScroll = () => { if (!frame) frame = requestAnimationFrame(update); };
+    update();
+    const refresh = window.setInterval(update, 1000); // Reconcile late canvas/layout changes after smooth navigation.
+    const observer = new ResizeObserver(handleScroll);
+    observer.observe(document.body);
+    for (const item of NAV_ITEMS) {
+      const section = document.getElementById(item.id);
+      if (section) observer.observe(section);
+    }
+    window.addEventListener("scrollend", update);
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+      window.removeEventListener("scrollend", update);
+      observer.disconnect();
+      window.clearInterval(refresh);
+      cancelAnimationFrame(frame);
+    };
   }, []);
 
   // While the mobile menu is open: lock the page behind it, close on Esc,
@@ -68,12 +78,17 @@ export default function Nav() {
     // Release the menu's scroll lock now, so the scroll below is not swallowed
     document.body.style.overflow = "";
     setMenuOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    const target = document.getElementById(id);
+    target?.focus({ preventScroll: true });
+    target?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+    window.history.replaceState(null, "", `#${id}`);
+    setActive(id);
   };
 
   return (
     <>
       <nav
+        aria-label="Main navigation"
         className={`theme-dark fixed top-0 left-0 w-full z-50 pt-[env(safe-area-inset-top)] transition-all duration-300 border-b
           ${scrolled || menuOpen
             ? "backdrop-blur-md border-[var(--border-color)] bg-[var(--nav-bg)]"
@@ -105,8 +120,10 @@ export default function Nav() {
                 const isActive = active === id;
                 return (
                   <li key={id}>
-                    <button
-                      onClick={() => scrollTo(id)}
+                    <a
+                      href={`#${id}`}
+                      onClick={(event) => { event.preventDefault(); scrollTo(id); }}
+                      aria-current={isActive ? "location" : undefined}
                       className={`relative px-3 py-2 transition-colors duration-200 hover:bg-[var(--text-primary)]/[0.08] ${
                         isActive
                           ? "text-[var(--text-primary)]"
@@ -121,7 +138,7 @@ export default function Nav() {
                           transition={{ type: "spring", stiffness: 380, damping: 32 }}
                         />
                       )}
-                    </button>
+                    </a>
                   </li>
                 );
               })}
@@ -189,16 +206,17 @@ export default function Nav() {
                       transition={{ delay: 0.03 + i * 0.035, duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                       className="border-b border-[var(--border-color)]"
                     >
-                      <button
-                        onClick={() => scrollTo(id)}
-                        aria-current={isActive ? "true" : undefined}
+                      <a
+                        href={`#${id}`}
+                        onClick={(event) => { event.preventDefault(); scrollTo(id); }}
+                        aria-current={isActive ? "location" : undefined}
                         className={`flex w-full min-h-[56px] items-center justify-between gap-4 text-left text-[clamp(1.35rem,6vw,1.75rem)] font-bold tracking-[-0.03em] transition-colors active:text-[var(--accent-color)] ${
                           isActive ? "text-white" : "text-white/60"
                         }`}
                       >
                         {label}
                         {isActive && <span aria-hidden="true" className="h-2 w-2 bg-[var(--accent-color)]" />}
-                      </button>
+                      </a>
                     </motion.li>
                   );
                 })}

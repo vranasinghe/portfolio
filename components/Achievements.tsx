@@ -62,7 +62,7 @@ export default function Achievements() {
   return (
     <section className="wrap py-[120px] bg-transparent">
       <SectionHeader
-        title="Achievements"
+        title="Achievements & Competitions"
         subtitle="Competitions and hackathons I've taken part in, and how they went."
       />
 

@@ -8,8 +8,9 @@ export const SHOW_ACHIEVEMENTS = achievements.length > 0;
 /** Page sections in order; the nav is built from this list. */
 export const SECTIONS = [
   { id: "about",          label: "About" },
+  { id: "skills",         label: "Tech Stack" },
   { id: "projects",       label: "Projects" },
-  { id: "skills",         label: "Skills" },
+  { id: "github-activity", label: "GitHub" },
   { id: "experience",     label: "Experience" },
   ...(SHOW_ACHIEVEMENTS ? [{ id: "achievements", label: "Achievements" }] : []),
   { id: "certifications", label: "Certifications" },

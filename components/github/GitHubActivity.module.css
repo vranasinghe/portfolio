@@ -1,0 +1,17 @@
+.section {
+  background: #050505; color: #ffffff; padding: 72px 0;
+  --accent-color: #7ee787;
+  --color-background: #050505; --color-foreground: #ffffff;
+  --color-muted-foreground: #a3b3a7; --color-border: #183a20;
+}
+.wrap { width: min(1200px, 92%); margin-inline: auto; }
+.heading { color: #ffffff; font-size: clamp(30px, 3.8vw, 48px); font-weight: 600; line-height: 1.15; letter-spacing: -.025em; }
+.chart { margin-top: 36px; }
+.status { color: #a3b3a7; min-height: 240px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.section ::selection { color: #fff; background: #216e39; }
+@media (max-width: 639px) {
+  .section { padding: 56px 0; }
+  .chart { margin-top: 28px; }
+}
+
+.section button:focus-visible,.section canvas:focus-visible { outline-color: #7ee787; }
