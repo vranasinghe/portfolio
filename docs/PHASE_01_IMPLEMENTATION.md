@@ -4,6 +4,8 @@ Date: 2026-11-25. Scope: approved immediate improvements only. No commits, pushe
 
 ## Owner-requested follow-up
 
+The owner supplied replacement live URLs for Poth, E-Commerce and Dateza and a CommerceLens YouTube walkthrough. All four returned HTTP 200 when checked; HTTP availability does not verify application workflows. Earlier link-check results below are historical and the old deployment URLs have been replaced in the portfolio.
+
 Poth Library App was subsequently moved into Featured Projects at the owner's request and removed from the secondary list. The portfolio now has four featured and seven secondary projects, preserving all eleven without duplication. Its existing screenshot, stack and GitHub-profile label are retained; unknown contribution details remain unclaimed.
 
 After Phase 01, the owner requested a black Tech Stack background and a simpler GitHub section. Tech Stack now uses the existing dark band and dark-compatible logo colors. GitHub automatically uses the current UTC year; the visible year selector, last-updated timestamp, daily contribution list and streak explanation were removed. Totals, streak figures, 2D/3D controls, theme toggle, error/retry handling and stale-data warning remain. These later preferences supersede the earlier visual/control requirements below. Type checking, hierarchy checks and all 44 focused assertions passed after this change.

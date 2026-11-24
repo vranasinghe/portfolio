@@ -56,6 +56,7 @@ type AnyProject = {
   live?: string;
   liveStatus?: "unavailable";
   sourceStatus?: "unavailable";
+  demoVideo?: string;
 };
 const allProjects: AnyProject[] = [...featuredProjects, ...minorProjects];
 
@@ -253,7 +254,8 @@ export function veeReply(raw: string): VeeReply {
   if (project) {
     const links: VeeAction[] = [];
     if (project.live && project.liveStatus !== "unavailable") links.push({ label: "Live site", href: project.live });
-    if (project.sourceStatus !== "unavailable") links.push({ label: project.github === personalInfo.github ? "GitHub profile" : "Code", href: project.github });
+    if (project.demoVideo) links.push({ label: "Watch walkthrough", href: project.demoVideo });
+    links.push({ label: project.github === personalInfo.github ? "GitHub profile" : "Code", href: project.github });
     return {
       text: `${shortTitle(project.title)}: ${project.description}\n\nBuilt with ${project.tags.slice(0, 6).join(", ")}.`,
       actions: links,

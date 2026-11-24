@@ -200,7 +200,7 @@ export default function Projects() {
           <AnimatePresence mode="popLayout">
             {shownProjects.map((project) => {
               const live = project.liveStatus !== "unavailable" ? project.live : undefined;
-              const primary = live ?? (project.sourceStatus !== "unavailable" ? project.github : undefined);
+              const primary = live ?? project.github;
               return (
                 // Framer owns this wrapper's transform (layout + filter animation),
                 // so the hover lift lives on the inner card where CSS can move it.
@@ -262,7 +262,7 @@ export default function Projects() {
                       >
                         {live ? "View live" : project.github === "https://github.com/vranasinghe" ? "GitHub profile" : "View code"} <span className="arrow-nudge">↗</span>
                       </a>}
-                      {project.live && project.liveStatus !== "unavailable" && project.sourceStatus !== "unavailable" && (
+                      {project.live && project.liveStatus !== "unavailable" && (
                         <a
                           href={project.github}
                           target="_blank"
@@ -271,6 +271,13 @@ export default function Projects() {
                           className="inline-flex min-h-11 items-center font-label text-[0.85rem] font-bold text-[var(--accent-color)] hover:text-[var(--text-primary)] transition-colors"
                         >
                           {project.github.replace(/\/$/, "") === "https://github.com/vranasinghe" ? "GitHub profile" : "GitHub"} <span className="arrow-nudge">↗</span>
+                        </a>
+                      )}
+                      {project.demoVideo && (
+                        <a href={project.demoVideo} target="_blank" rel="noopener noreferrer"
+                          aria-label={`Watch ${project.title} video walkthrough`}
+                          className="inline-flex min-h-11 items-center font-label text-[0.85rem] font-bold text-[var(--accent-color)] hover:text-[var(--text-primary)] transition-colors">
+                          Watch walkthrough <span className="arrow-nudge">↗</span>
                         </a>
                       )}
                     </div>
