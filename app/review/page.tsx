@@ -5,6 +5,8 @@ import NetworkBackground from "@/components/NetworkBackground";
 
 export const metadata: Metadata = {
   title: "Submit a Review | Venuja Ranasinghe",
+  robots: { index: false, follow: false },
+  alternates: { canonical: "/review" },
   description:
     "Share your client review and feedback for Venuja Ranasinghe's Data Science and Full-Stack development services.",
 };
@@ -98,7 +100,7 @@ export default function ReviewPage() {
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--accent-color)]/40 to-transparent" />
 
           <div className="p-7 sm:p-10">
-            <ReviewForm />
+            {process.env.NODE_ENV === "production" ? <p role="status">Review submissions are unavailable until durable storage is configured. Please contact me directly.</p> : <ReviewForm />}
           </div>
         </div>
 

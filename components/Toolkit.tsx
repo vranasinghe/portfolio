@@ -5,26 +5,29 @@ import { motion, AnimatePresence } from "framer-motion";
 import { skills } from "@/data/portfolio";
 import SectionHeader from "@/components/SectionHeader";
 
+const categories = [...skills].sort((a, b) => Number(b.category === "AI & DATA") - Number(a.category === "AI & DATA"));
+
 export default function Toolkit() {
   const [activeCategory, setActiveCategory] = useState(0);
 
   return (
     <div className="band-dark">
-    <section className="wrap py-[88px] md:py-[120px] bg-transparent">
+    <section className="wrap py-14 md:py-[72px] bg-transparent">
       <SectionHeader
-        title="Tech Stack"
+        compact
+        title="Tech Stack & Technical Expertise"
         subtitle="Languages, frameworks, and tools I build with — mapped directly from my skill set."
       />
 
       {/* Category tabs: one swipeable line on phones instead of five wrapped rows */}
       <motion.div
-        className="scroll-strip gap-2 mb-6 md:mb-8"
+        className="scroll-strip gap-2 mb-5 md:mb-6"
         role="group"
         aria-label="Skill categories"
         initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }} transition={{ delay: 0.2 }}
       >
-        {skills.map((cat, i) => (
+        {categories.map((cat, i) => (
           <button
             key={cat.category}
             onClick={(e) => {
@@ -34,14 +37,14 @@ export default function Toolkit() {
             }}
             aria-pressed={activeCategory === i}
             className={`relative flex min-h-11 md:min-h-0 items-center gap-1.5 whitespace-nowrap px-4 py-2 text-sm font-medium border overflow-hidden transition-colors duration-200 ${activeCategory === i
-                ? "text-white border-indigo-600"
+                ? "text-white border-[#1f56f0]"
                 : "bg-[var(--card-bg)] text-[var(--text-muted)] border-[var(--border-color)] hover:border-[var(--accent-color)] hover:text-[var(--accent-color)]"
               }`}
           >
             {activeCategory === i && (
               <motion.span
                 layoutId="toolkit-tab-pill"
-                className="absolute inset-0 bg-indigo-600 shadow-md shadow-indigo-950/50"
+                className="absolute inset-0 bg-[#1f56f0]"
                 transition={{ type: "spring", stiffness: 380, damping: 32 }}
               />
             )}
@@ -60,7 +63,7 @@ export default function Toolkit() {
           transition={{ duration: 0.3 }}
           className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-2.5 sm:gap-4"
         >
-          {skills[activeCategory].items.map((skill, i) => {
+          {categories[activeCategory].items.map((skill, i) => {
             // Skills sit on the black band: use the light variant of dark brand colours when defined
             const activeColor = skill.darkBrandColor ?? skill.brandColor;
 
@@ -90,7 +93,7 @@ export default function Toolkit() {
                   />
                 ) : skill.iconUrl ? (
                   <img
-                    src={skill.iconUrl}
+                    src={skill.iconUrl} loading="lazy" width={36} height={36}
                     alt={skill.name}
                     className="relative w-[36px] h-[36px] transition-all duration-300 opacity-80 group-hover:opacity-100 group-hover:scale-110 object-contain"
                   />

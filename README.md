@@ -60,7 +60,7 @@ The site is built for performance and impact, combining immersive **3D interacti
 | 💬 **Reviews & Testimonials** | Live review submission at `/review`, star-rating breakdown, slider/grid toggle, persisted via API |
 | ⚡ **High Performance** | Next.js 15 App Router + React 19 Server Components for fast TTI and optimal Core Web Vitals |
 | 💫 **Micro-Animations** | Framer Motion scroll transitions, animated node-network hero background, preloader, and typewriter dynamics |
-| 📬 **Functional Contact Form** | Serverless email delivery via **Web3Forms API** + WhatsApp direct-link integration |
+| 📬 **Functional Contact Form** | Serverless email delivery via **Resend server API** + WhatsApp direct-link integration |
 | 📱 **Fully Responsive** | Mobile-first layouts optimized across all screen sizes |
 | ⚙️ **Centralized Data Layer** | All content (projects, skills, experience) managed from a single `data/portfolio.ts` file |
 
@@ -92,7 +92,7 @@ The site is built for performance and impact, combining immersive **3D interacti
 | Service | Purpose |
 |---|---|
 | Next.js API Routes | Review storage (`GET /api/reviews`, `POST /api/reviews`) |
-| [Web3Forms](https://web3forms.com/) | Serverless contact form email delivery |
+| [Resend](https://resend.com/) | Server-only contact email to the configured owner |
 
 ---
 
@@ -113,7 +113,7 @@ portfolio/
 ├── components/                   # Feature UI components
 │   ├── About.tsx                 # Bio & academic overview
 │   ├── Certifications.tsx        # Professional credentials grid
-│   ├── Contact.tsx               # Web3Forms contact form & social links
+│   ├── Contact.tsx               # Resend contact form & social links
 │   ├── Experience.tsx            # Work experience & education timeline
 │   ├── Hero.tsx                  # Hero section — 3D robot, typewriter, stats
 │   ├── Nav.tsx                   # Sticky navbar with numbered scroll links
@@ -177,15 +177,21 @@ Open `.env.local` and set the following variables:
 
 ```env
 # ── Contact Form ─────────────────────────────────────────────
-# Get your free Access Key at https://web3forms.com
-NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=your_access_key_here
+# Server-only Resend; never use NEXT_PUBLIC_ for these values
+RESEND_API_KEY=your_resend_key
+CONTACT_TO_EMAIL=your_owner_inbox
+CONTACT_FROM_EMAIL=Portfolio <contact@your-verified-domain>
+
+# Server-only GitHub GraphQL
+GITHUB_TOKEN=your_authorized_token
+GITHUB_USERNAME=vranasinghe
 
 # ── WhatsApp Integration ─────────────────────────────────────
 # International format, no spaces (e.g. +94706827870)
 NEXT_PUBLIC_WHATSAPP_NUMBER=+94706827870
 
 # ── Feature Flags ────────────────────────────────────────────
-# Set to 'true' to display the Reviews & Testimonials section
+# Development preview only; production reviews stay disabled
 NEXT_PUBLIC_SHOW_REVIEWS=false
 ```
 
@@ -278,3 +284,14 @@ This project is open-source and available under the [MIT License](LICENSE).
   <br /><br />
 
 </div>
+
+
+## Phase 01 configuration and validation
+
+See [implementation progress](docs/PHASE_01_IMPLEMENTATION.md) for verified changes, checks, evidence gaps and hosting constraints. Run `npm test`, `npm run typecheck` and `npm run build` before release. Development uses `.next-dev`; production uses `.next`, preventing chunk collisions.
+
+Contact requires server-only `RESEND_API_KEY` and `CONTACT_TO_EMAIL`; use a verified `CONTACT_FROM_EMAIL` sender in production. Only the configured owner receives messages; visitor confirmation emails are disabled. The five-per-minute process-local throttle is not distributed protection: configure hosting controls and provider quotas.
+
+GitHub activity requires server-only `GITHUB_TOKEN` authorized for GraphQL contribution reads and `GITHUB_USERNAME=vranasinghe`. Missing credentials produce an honest unavailable state. Results are cached in process for one hour by username and year; cache lifetime is not durable across server restarts. UTC calendar-year summaries disclose stale results.
+
+Reviews are always disabled in production because local JSON files cannot guarantee durable persistence on serverless hosting. `NEXT_PUBLIC_SHOW_REVIEWS=true` enables development previews only. The production review page explains the limitation; production writes return 503. Re-enabling production requires a separately approved durable-storage solution. Development saves remain unverified and unfeatured. Do not commit review submissions or credentials.

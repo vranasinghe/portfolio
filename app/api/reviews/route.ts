@@ -1,106 +1,37 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
-import { INITIAL_REVIEWS, Review } from "@/data/reviews";
-
-const reviewsFilePath = path.join(process.cwd(), "data", "user_reviews.json");
-
-function readReviewsFromFile(): Review[] {
-  try {
-    if (fs.existsSync(reviewsFilePath)) {
-      const data = fs.readFileSync(reviewsFilePath, "utf8");
-      const parsed = JSON.parse(data);
-      if (Array.isArray(parsed)) {
-        return parsed;
-      }
-    }
-  } catch (error) {
-    console.error("Failed to read user_reviews.json", error);
-  }
-  return [];
+import fs from "node:fs";
+import path from "node:path";
+import { randomUUID } from "node:crypto";
+import type { Review } from "@/data/reviews";
+import { createThrottle, readSubmission, RequestError, textField, publicUrl } from "@/lib/requestSafety";
+export const runtime = "nodejs";
+const file = path.join(process.cwd(), "data", "user_reviews.json");
+const throttle = createThrottle(5);
+function read(): Review[] {
+  if (!fs.existsSync(file)) return [];
+  const data = JSON.parse(fs.readFileSync(file, "utf8"));
+  if (!Array.isArray(data)) throw new Error("Invalid review storage");
+  return data;
 }
-
-function writeReviewsToFile(reviews: Review[]): boolean {
-  try {
-    const dirPath = path.dirname(reviewsFilePath);
-    if (!fs.existsSync(dirPath)) {
-      fs.mkdirSync(dirPath, { recursive: true });
-    }
-    fs.writeFileSync(reviewsFilePath, JSON.stringify(reviews, null, 2), "utf8");
-    return true;
-  } catch (error) {
-    console.error("Failed to write to user_reviews.json", error);
-    return false;
-  }
-}
-
 export async function GET() {
-  const reviews = readReviewsFromFile();
-  return NextResponse.json({ success: true, reviews });
+  if (process.env.NODE_ENV === "production") return NextResponse.json({ success: true, reviews: [], unavailable: true });
+  try { return NextResponse.json({ success: true, reviews: read() }); }
+  catch { return NextResponse.json({ success: false, error: "Reviews are temporarily unavailable." }, { status: 503 }); }
 }
-
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { name, role, company, rating, comment, service, avatarUrl, linkedinUrl, projectUrl } = body;
-
-    if (!name || typeof name !== "string" || name.trim() === "") {
-      return NextResponse.json(
-        { success: false, error: "Client name is required." },
-        { status: 400 }
-      );
-    }
-
-    if (!comment || typeof comment !== "string" || comment.trim() === "") {
-      return NextResponse.json(
-        { success: false, error: "Review comment is required." },
-        { status: 400 }
-      );
-    }
-
-    const numericRating = Number(rating);
-    if (isNaN(numericRating) || numericRating < 1 || numericRating > 5) {
-      return NextResponse.json(
-        { success: false, error: "Rating must be a number between 1 and 5." },
-        { status: 400 }
-      );
-    }
-
-    const dateFormatted = new Date().toLocaleDateString("en-US", {
-      month: "long",
-      year: "numeric",
-    });
-
-    const newReview: Review = {
-      id: `rev-${Date.now()}`,
-      name: name.trim(),
-      role: role?.trim() || "Client",
-      company: company?.trim() || "Independent Client",
-      rating: numericRating,
-      comment: comment.trim(),
-      service: service?.trim() || "Software Development",
-      date: dateFormatted,
-      verified: true,
-      avatarUrl: avatarUrl?.trim() || undefined,
-      linkedinUrl: linkedinUrl?.trim() || undefined,
-      projectUrl: projectUrl?.trim() || undefined,
-      featured: true,
-    };
-
-    const currentReviews = readReviewsFromFile();
-    const updatedReviews = [newReview, ...currentReviews];
-    writeReviewsToFile(updatedReviews);
-
-    return NextResponse.json({
-      success: true,
-      review: newReview,
-      reviews: updatedReviews,
-    });
-  } catch (error) {
-    console.error("API POST review error:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal server error submitting review." },
-      { status: 500 }
-    );
-  }
+    const body = await readSubmission(request);
+    const name = textField(body, "name", 100, true), comment = textField(body, "comment", 3000, true);
+    const role = textField(body, "role", 120), company = textField(body, "company", 120), service = textField(body, "service", 120);
+    const avatarUrl = publicUrl(textField(body, "avatarUrl", 2048)), linkedinUrl = publicUrl(textField(body, "linkedinUrl", 2048)), projectUrl = publicUrl(textField(body, "projectUrl", 2048));
+    if (typeof body.rating !== "number" || !Number.isInteger(body.rating) || body.rating < 1 || body.rating > 5) throw new RequestError("Rating must be an integer from 1 to 5.", 400);
+    if (process.env.NODE_ENV === "production") throw new RequestError("Review submissions are unavailable until durable storage is configured.", 503);
+    throttle();
+    const review: Review = { id: randomUUID(), name, comment, role: role || "Visitor", company: company || "", service: service || "Software Development", rating: body.rating, date: new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" }), verified: false, featured: false, avatarUrl, linkedinUrl, projectUrl };
+    const reviews = [review, ...read()];
+    const temporary = file + ".tmp";
+    try { fs.writeFileSync(temporary, JSON.stringify(reviews, null, 2), "utf8"); fs.renameSync(temporary, file); }
+    catch { throw new RequestError("Your review could not be saved. Please try again later.", 503); }
+    return NextResponse.json({ success: true, review, reviews });
+  } catch (error) { return NextResponse.json({ success: false, error: error instanceof RequestError ? error.message : "Review storage is temporarily unavailable." }, { status: error instanceof RequestError ? error.status : 503 }); }
 }

@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 
 import { motion } from "framer-motion";
 import { personalInfo, heroStats } from "@/data/portfolio";
@@ -33,8 +34,8 @@ export default function About() {
           custom={0} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
         >
           <div className="relative flex-1 min-h-[360px] group">
-            <img
-              src="/venuja.png"
+            <Image
+              src="/venuja.png" fill quality={85} sizes="(max-width: 1023px) 92vw, 400px"
               alt={personalInfo.name}
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />

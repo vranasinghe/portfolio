@@ -1,0 +1,46 @@
+import assert from 'node:assert/strict';
+import { readFileSync, existsSync } from 'node:fs';
+import ts from 'typescript';
+import vm from 'node:vm';
+const trackingModule = { exports: {} };
+const trackingCode = ts.transpileModule(readFileSync(new URL('../lib/sectionTracking.ts', import.meta.url), 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS } }).outputText;
+vm.runInNewContext(trackingCode, { exports: trackingModule.exports });
+const { activeSectionAt } = trackingModule.exports;
+
+const read = path => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
+const page = read('app/page.tsx');
+const sectionIds = [...page.matchAll(/<section id="([^"]+)"/g)].map(match => match[1]);
+const expected = ['home','about','skills','projects','experience','achievements','certifications','reviews','contact'];
+assert.deepEqual(sectionIds, expected, 'Main sections retain their IDs and requested order');
+assert.ok(page.indexOf('<GitHubActivitySection />') > page.indexOf('<Projects />'));
+assert.ok(page.indexOf('<GitHubActivitySection />') < page.indexOf('<Experience />'));
+assert.equal((page.match(/<GitHubActivitySection \/>/g) || []).length, 1);
+const registry = read('lib/sections.ts');
+const navIds = [...registry.matchAll(/id: "([^"]+)"/g)].map(match => match[1]);
+assert.deepEqual(navIds, ['about','skills','projects','github-activity','experience','achievements','certifications','reviews','contact']);
+assert.equal(new Set(navIds).size, navIds.length);
+for (const id of navIds) assert.ok(sectionIds.includes(id) || id === 'github-activity', `Navigation destination ${id} exists`);
+assert.match(read('components/github/GitHubActivitySection.tsx'), /id="github-activity"/);
+assert.equal(activeSectionAt([{id:'about',top:-200},{id:'skills',top:250},{id:'projects',top:700}],150),'about');
+assert.equal(activeSectionAt([{id:'about',top:-600},{id:'skills',top:-50},{id:'projects',top:200}],150),'skills');
+assert.equal(activeSectionAt([{id:'about',top:300}],150),'home');
+assert.equal(activeSectionAt([{id:'about',top:-400},{id:'github-activity',top:110},{id:'experience',top:900}],150),'github-activity');
+const projects = read('components/Projects.tsx');
+assert.match(projects, /featuredProjects\.map/);
+assert.match(projects, /minorProjects\]\.sort/);
+assert.match(projects, /remaining/);
+assert.match(projects, /project\.github/);
+assert.match(projects, /project\.live/);
+const nav = read('components/Nav.tsx');
+assert.equal((nav.match(/aria-current=\{isActive \? "location"/g) || []).length,2);
+assert.match(nav,/aria-label="Main navigation"/);
+assert.match(nav,/prefers-reduced-motion/);
+const data=read('data/portfolio.ts');
+for(const match of data.matchAll(/(?:imageUrl|resumeLink): "(\/[^"\n]+)"/g)) {
+  assert.ok(existsSync(new URL('../public'+match[1], import.meta.url)), `Local asset exists: ${match[1]}`);
+}
+const githubCSS=read('components/github/GitHubActivity.module.css');
+assert.match(githubCSS,/background: #ffffff/);
+assert.match(githubCSS,/--accent-color: #7ee787/);
+assert.match(githubCSS,/data-theme="dark"/);
+console.log('Passed: section order, unique destinations, GitHub placement, reading-line tracking, navigation accessibility, project controls, local content assets, and scoped GitHub theme.');

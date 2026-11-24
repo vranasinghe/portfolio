@@ -54,6 +54,8 @@ type AnyProject = {
   tags: string[];
   github: string;
   live?: string;
+  liveStatus?: "unavailable";
+  sourceStatus?: "unavailable";
 };
 const allProjects: AnyProject[] = [...featuredProjects, ...minorProjects];
 
@@ -94,6 +96,7 @@ const allSkills = skills
 const SECTION = (id: string, label: string): VeeAction => ({ label, href: `#${id}` });
 
 const intents: { words: string[]; reply: () => VeeReply }[] = [
+  { words: ["contributions", "activity", "skyline", "streak", "github activity"], reply: () => ({ text: "The GitHub activity section shows server-fetched contributions by year. Please use its year controls for current figures; I do not have live statistics in chat.", actions: [SECTION("github-activity", "See GitHub activity")] }) },
   {
     words: ["projects", "project", "built", "build", "made", "portfolio", "apps", "showcase", "works"],
     reply: () => ({
@@ -128,7 +131,7 @@ const intents: { words: string[]; reply: () => VeeReply }[] = [
     words: ["intern", "internship", "internships", "job", "jobs", "hire", "hiring", "available", "availability", "experience", "recruit", "position", "opportunity"],
     reply: () => ({
       text:
-        `Yes, ${firstName} is available for 2026 internships in Data Science, AI / ML or full-stack development.` +
+        `${firstName}'s portfolio lists an interest in Data Science, AI / ML and software engineering internships. Please contact him to confirm current availability.` +
         (experience[0]?.bullets.length ? `\n\n${experience[0].bullets.map((b) => `• ${b}`).join("\n")}` : ""),
       actions: [SECTION("contact", "Get in touch"), { label: "Resume", href: personalInfo.resumeLink }],
     }),
@@ -168,7 +171,7 @@ const intents: { words: string[]; reply: () => VeeReply }[] = [
   },
   {
     words: ["where", "location", "based", "country", "remote", "relocate"],
-    reply: () => ({ text: `${firstName} is based in ${personalInfo.location} and is happy to work remotely.` }),
+    reply: () => ({ text: `${firstName} is based in ${personalInfo.location} ; please contact him to confirm work arrangements.` }),
   },
   {
     words: ["who", "about", "introduce", "bio", "background", "venuja"],
@@ -249,8 +252,8 @@ export function veeReply(raw: string): VeeReply {
   const project = findProject(q);
   if (project) {
     const links: VeeAction[] = [];
-    if (project.live) links.push({ label: "Live site", href: project.live });
-    links.push({ label: "Code", href: project.github });
+    if (project.live && project.liveStatus !== "unavailable") links.push({ label: "Live site", href: project.live });
+    if (project.sourceStatus !== "unavailable") links.push({ label: project.github === personalInfo.github ? "GitHub profile" : "Code", href: project.github });
     return {
       text: `${shortTitle(project.title)}: ${project.description}\n\nBuilt with ${project.tags.slice(0, 6).join(", ")}.`,
       actions: links,

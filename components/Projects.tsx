@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 
 import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -26,6 +27,9 @@ const filters: Filter[] = ["All", ...categories];
 
 // Other projects reveal one desktop row at a time
 const PAGE_SIZE = 3;
+// Keep all projects; present AI, data, then software engineering evidence first.
+const projectPriority = ["AI / ML", "Data & BI", "Fullstack", "Web Development", "Mobile App", "Design"];
+const prioritizedProjects = [...minorProjects].sort((a, b) => projectPriority.indexOf(a.category) - projectPriority.indexOf(b.category));
 
 export default function Projects() {
   const [activeFilter, setActiveFilter] = useState<Filter>("All");
@@ -34,8 +38,8 @@ export default function Projects() {
 
   const filteredProjects =
     activeFilter === "All"
-      ? minorProjects
-      : minorProjects.filter((p) => p.category === activeFilter);
+      ? prioritizedProjects
+      : prioritizedProjects.filter((p) => p.category === activeFilter);
   const shownProjects = filteredProjects.slice(0, visibleCount);
   const remaining = filteredProjects.length - shownProjects.length;
 
@@ -54,7 +58,7 @@ export default function Projects() {
     <div className="band-dark pt-[88px] pb-[40px] md:pt-[120px] md:pb-[60px]">
       <div className="wrap">
         <SectionHeader
-          title="Projects"
+          title="Featured Projects"
           subtitle="A curated selection of end-to-end projects spanning AI, data science, and full-stack development."
         />
 
@@ -83,8 +87,8 @@ export default function Projects() {
                   className="pointer-events-none absolute -inset-2 bg-[#1f56f0]/30 blur-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 motion-reduce:transition-none"
                 />
                 <div className="spotlight relative overflow-hidden shadow-xl aspect-video bg-indigo-950/30 ring-1 ring-white/10 transition-shadow duration-500 group-hover:ring-[#6b93ff]/70">
-                  <img
-                    src={project.imageUrl}
+                  <Image
+                    src={project.imageUrl} fill quality={90} sizes="(max-width: 1023px) 92vw, 680px"
                     alt={project.title}
                     className="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-700 ease-out motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                   />
@@ -94,7 +98,7 @@ export default function Projects() {
                     aria-hidden="true"
                     className="touch-show pointer-events-none absolute bottom-3 left-3 md:bottom-4 md:left-4 z-[3] translate-y-2 bg-[#04060b]/90 px-3 py-1.5 font-label text-[0.75rem] font-bold uppercase tracking-[0.08em] text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 motion-reduce:transition-none"
                   >
-                    {project.live ? "View live" : "View code"} <span className="arrow-nudge">↗</span>
+                    {project.live ? "View live" : project.github === "https://github.com/vranasinghe" ? "GitHub profile" : "View code"} <span className="arrow-nudge">↗</span>
                   </span>
                 </div>
               </a>
@@ -123,10 +127,10 @@ export default function Projects() {
                 {/* Links: labelled 44px targets (icon-only links were 18px, too small for a thumb) */}
                 <div className={`flex flex-wrap gap-2 ${project.reversed ? "lg:justify-end" : ""}`}>
                   <a href={project.github} target="_blank" rel="noopener noreferrer"
-                    aria-label={`${project.title} source code on GitHub`}
+                    aria-label={`${project.title} on GitHub`}
                     className="press inline-flex min-h-11 items-center gap-2 border border-[var(--border-color)] px-3.5 font-label text-[0.82rem] font-semibold text-[var(--text-secondary)] hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] transition-colors duration-200">
                     <GitHubIcon />
-                    Code
+                    {project.github.replace(/\/$/, "") === "https://github.com/vranasinghe" ? "GitHub profile" : "Code"}
                   </a>
                   {project.live && (
                     <a href={project.live} target="_blank" rel="noopener noreferrer"
@@ -152,7 +156,7 @@ export default function Projects() {
             <h3 className="text-[1.6rem] tracking-[-0.02em] font-bold text-[var(--text-primary)]">
               Other Noteworthy Projects
             </h3>
-            <p className="mt-2 text-sm text-[var(--text-muted)]">Smaller experiments, tools, and side projects.</p>
+            <p className="mt-2 text-sm text-[var(--text-muted)]">More work across data, web, and mobile development.</p>
           </div>
 
           {/* Category tabs with a sliding active pill (one swipeable line on phones) */}
@@ -195,7 +199,8 @@ export default function Projects() {
         <motion.div layout layoutScroll className="scroll-strip gap-3 pb-2 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-4 md:pb-0">
           <AnimatePresence mode="popLayout">
             {shownProjects.map((project) => {
-              const primary = project.live ?? project.github;
+              const live = project.liveStatus !== "unavailable" ? project.live : undefined;
+              const primary = live ?? (project.sourceStatus !== "unavailable" ? project.github : undefined);
               return (
                 // Framer owns this wrapper's transform (layout + filter animation),
                 // so the hover lift lives on the inner card where CSS can move it.
@@ -219,9 +224,9 @@ export default function Projects() {
                         aria-hidden="true"
                         className="relative block aspect-video overflow-hidden bg-[var(--bg-tertiary)]"
                       >
-                        <img
-                          src={project.imageUrl}
-                          alt=""
+                        <Image
+                          src={project.imageUrl} fill quality={90} sizes="(max-width: 767px) 84vw, (max-width: 1023px) 46vw, 400px"
+                          alt={project.title}
                           className="w-full h-full object-cover object-top group-hover:scale-[1.05] transition-transform duration-700 ease-out"
                         />
                         <span aria-hidden="true" className="shine-sweep" />
@@ -244,26 +249,28 @@ export default function Projects() {
                     </p>
 
                     <p className="mt-4 text-[0.95rem] leading-relaxed text-[var(--text-secondary)]">{project.description}</p>
+                    {project.liveStatus === "unavailable" && <p className="mt-3 text-sm text-[var(--text-muted)]">Live demo unavailable · deployment returned 404 on {project.linksCheckedAt}.</p>}
+                    {project.sourceStatus === "unavailable" && <p className="mt-3 text-sm text-[var(--text-muted)]">Source not publicly accessible · checked {project.linksCheckedAt}.</p>}
 
                     {/* Links */}
                     <div className="mt-auto pt-4 md:pt-6 flex flex-wrap items-center justify-between gap-x-4">
-                      <a
+                      {primary && <a
                         href={primary}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex min-h-11 items-center font-label text-[0.85rem] font-bold text-[var(--accent-color)] hover:text-[var(--text-primary)] transition-colors"
                       >
-                        {project.live ? "View live" : "View code"} <span className="arrow-nudge">↗</span>
-                      </a>
-                      {project.live && (
+                        {live ? "View live" : project.github === "https://github.com/vranasinghe" ? "GitHub profile" : "View code"} <span className="arrow-nudge">↗</span>
+                      </a>}
+                      {project.live && project.liveStatus !== "unavailable" && project.sourceStatus !== "unavailable" && (
                         <a
                           href={project.github}
                           target="_blank"
                           rel="noopener noreferrer"
-                          aria-label={`${project.title} source code on GitHub`}
+                          aria-label={`${project.title} on GitHub`}
                           className="inline-flex min-h-11 items-center font-label text-[0.85rem] font-bold text-[var(--accent-color)] hover:text-[var(--text-primary)] transition-colors"
                         >
-                          GitHub <span className="arrow-nudge">↗</span>
+                          {project.github.replace(/\/$/, "") === "https://github.com/vranasinghe" ? "GitHub profile" : "GitHub"} <span className="arrow-nudge">↗</span>
                         </a>
                       )}
                     </div>

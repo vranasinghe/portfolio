@@ -1,0 +1,146 @@
+[
+  {
+    "url": "https://chest-ai-diagnostics.vercel.app",
+    "status": 200,
+    "finalUrl": "https://chest-ai-diagnostics.vercel.app/",
+    "deploymentFailure": false
+  },
+  {
+    "url": "https://github.com/vranasinghe",
+    "status": 200,
+    "finalUrl": "https://github.com/vranasinghe",
+    "deploymentFailure": false
+  },
+  {
+    "url": "https://github.com/vranasinghe/ChestAI_Diagnostics",
+    "status": 200,
+    "finalUrl": "https://github.com/vranasinghe/ChestAI_Diagnostics",
+    "deploymentFailure": false
+  },
+  {
+    "url": "https://www.linkedin.com/in/venuja-ranasinghe-522a63423/",
+    "status": 999,
+    "finalUrl": "https://www.linkedin.com/in/venuja-ranasinghe-522a63423",
+    "deploymentFailure": false
+  },
+  {
+    "url": "https://instagram.com/venujaranasinghe",
+    "status": 200,
+    "finalUrl": "https://www.instagram.com/venujaranasinghe",
+    "deploymentFailure": false
+  },
+  {
+    "url": "https://github.com/vranasinghe/web-voting-system",
+    "status": 200,
+    "finalUrl": "https://github.com/vranasinghe/web-voting-system",
+    "deploymentFailure": false
+  },
+  {
+    "url": "https://real-state-project-gamma.vercel.app",
+    "status": 200,
+    "finalUrl": "https://real-state-project-gamma.vercel.app/",
+    "deploymentFailure": false
+  },
+  {
+    "url": "https://github.com/vranasinghe/Real-state-project",
+    "status": 200,
+    "finalUrl": "https://github.com/vranasinghe/Real-state-project",
+    "deploymentFailure": false
+  },
+  {
+    "url": "https://web-voting-system.vercel.app/",
+    "status": 200,
+    "finalUrl": "https://web-voting-system.vercel.app/",
+    "deploymentFailure": false
+  },
+  {
+    "url": "https://github.com/vranasinghe/Dengue-Outbreak-Prediction-Model",
+    "status": 404,
+    "finalUrl": "https://github.com/vranasinghe/Dengue-Outbreak-Prediction-Model",
+    "deploymentFailure": false
+  },
+  {
+    "url": "https://macromaster101.github.io/DengueRisk/dashboard/",
+    "status": 200,
+    "finalUrl": "https://macromaster101.github.io/DengueRisk/dashboard/",
+    "deploymentFailure": false
+  },
+  {
+    "url": "https://github.com/vranasinghe/Commerce_Lense",
+    "status": 404,
+    "finalUrl": "https://github.com/vranasinghe/Commerce_Lense",
+    "deploymentFailure": false
+  },
+  {
+    "url": "https://vranasinghe.github.io/Second-Hand-Car-Sales-and-Purchase-Platform-/",
+    "status": 200,
+    "finalUrl": "https://vranasinghe.github.io/Second-Hand-Car-Sales-and-Purchase-Platform-/",
+    "deploymentFailure": false
+  },
+  {
+    "url": "https://github.com/vranasinghe/portfolio-v2",
+    "status": 404,
+    "finalUrl": "https://github.com/vranasinghe/portfolio-v2",
+    "deploymentFailure": false
+  },
+  {
+    "url": "https://e-commerce-web-system-web.vercel.app/",
+    "status": 404,
+    "finalUrl": "https://e-commerce-web-system-web.vercel.app/",
+    "deploymentFailure": true
+  },
+  {
+    "url": "https://github.com/vranasinghe/Second-Hand-Car-Sales-and-Purchase-Platform-",
+    "status": 200,
+    "finalUrl": "https://github.com/vranasinghe/Second-Hand-Car-Sales-and-Purchase-Platform-",
+    "deploymentFailure": false
+  },
+  {
+    "url": "https://portfolio-v2-lac-eight.vercel.app/",
+    "status": 200,
+    "finalUrl": "https://portfolio-v2-lac-eight.vercel.app/",
+    "deploymentFailure": false
+  },
+  {
+    "url": "https://github.com/vranasinghe/Expense_Tracking_Mobile_App",
+    "status": 200,
+    "finalUrl": "https://github.com/vranasinghe/Expense_Tracking_Mobile_App",
+    "deploymentFailure": false
+  },
+  {
+    "url": "https://real-time-chat-app-tau-six.vercel.app/",
+    "status": 404,
+    "finalUrl": "https://real-time-chat-app-tau-six.vercel.app/",
+    "deploymentFailure": true
+  },
+  {
+    "url": "https://github.com/vranasinghe/Real-Time-Chat-App",
+    "status": 200,
+    "finalUrl": "https://github.com/vranasinghe/Real-Time-Chat-App",
+    "deploymentFailure": false
+  },
+  {
+    "url": "https://github.com/vranasinghe/E-Commerce-web-system",
+    "status": 200,
+    "finalUrl": "https://github.com/vranasinghe/E-Commerce-web-system",
+    "deploymentFailure": false
+  },
+  {
+    "url": "https://coursera.org/verify/FNBNBNCG0SL8",
+    "status": 200,
+    "finalUrl": "https://www.coursera.org/account/accomplishments/verify/FNBNBNCG0SL8",
+    "deploymentFailure": false
+  },
+  {
+    "url": "https://coursera.org/verify/Z4G0EEWHYWDS",
+    "status": 200,
+    "finalUrl": "https://www.coursera.org/account/accomplishments/verify/Z4G0EEWHYWDS",
+    "deploymentFailure": false
+  },
+  {
+    "url": "https://coursera.org/verify/GV4S2WMWT1BU",
+    "status": 200,
+    "finalUrl": "https://www.coursera.org/account/accomplishments/verify/GV4S2WMWT1BU",
+    "deploymentFailure": false
+  }
+]
