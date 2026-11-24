@@ -121,7 +121,7 @@ export default function Contact() {
               <p className="text-[1.1rem] lg:text-[clamp(0.95rem,1.9vh,1.1rem)] mb-8 lg:mb-[clamp(16px,3vh,32px)] max-w-[460px] lg:max-w-[520px]">
                 I&apos;m actively looking for internship roles in{" "}
                 <strong>Data Science</strong>, <strong>AI / ML</strong>, or <strong>Full-Stack Development</strong>.{" "}
-                Drop me a line — I respond within 24 hours.
+                Drop me a line to discuss an opportunity.
               </p>
 
               <div className="border-t-2 border-white">
@@ -184,7 +184,7 @@ export default function Contact() {
                 <input
                   type="text"
                   id="name"
-                  name="name"
+                  name="name" maxLength={100}
                   autoComplete="name"
                   value={formState.name}
                   onChange={handleInputChange}
@@ -198,7 +198,7 @@ export default function Contact() {
                 <input
                   type="email"
                   id="email"
-                  name="email"
+                  name="email" maxLength={200}
                   autoComplete="email"
                   inputMode="email"
                   value={formState.email}
@@ -212,7 +212,7 @@ export default function Contact() {
                 Message
                 <textarea
                   id="message"
-                  name="message"
+                  name="message" maxLength={5000}
                   value={formState.message}
                   onChange={handleInputChange}
                   required

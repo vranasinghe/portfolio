@@ -1,5 +1,6 @@
 "use client";
 
+import { useFocusTrap } from "@/lib/useFocusTrap";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Review, SERVICE_CATEGORIES, getStoredReviews } from "@/data/reviews";
@@ -181,6 +182,7 @@ export default function Reviews() {
   const [copiedLink, setCopiedLink] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(modalRef, isModalOpen);
 
   useEffect(() => {
     // Clear any stale cached reviews from localStorage so removed samples don't reappear
@@ -224,10 +226,10 @@ export default function Reviews() {
 
   const avgRating = reviews.length
     ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1)
-    : "5.0";
+    : "—";
 
   return (
-    <section className="w-full bg-transparent py-24 relative overflow-hidden" id="reviews">
+    <section className="w-full bg-transparent py-24 relative overflow-hidden">
 
       {/* Background blur accent */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-blue-950/20 blur-[110px] rounded-full pointer-events-none" />
@@ -407,6 +409,7 @@ export default function Reviews() {
             <motion.div
               key="modal"
               ref={modalRef}
+              role="dialog" aria-modal="true" aria-label="Write a review" tabIndex={-1}
               initial={{ opacity: 0, scale: 0.95, y: 24 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 24 }}

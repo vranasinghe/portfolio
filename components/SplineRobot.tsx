@@ -84,6 +84,20 @@ const disableRuntimeLogo = (spline: SplineApp) => {
 export default function SplineRobot() {
   const containerRef = useRef<HTMLDivElement>(null);
   const splineRef = useRef<SplineApp | null>(null);
+  const visibleRef = useRef(true);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const sync = () => {
+      if (!visibleRef.current || document.hidden || window.matchMedia("(prefers-reduced-motion: reduce)").matches) splineRef.current?.stop();
+      else splineRef.current?.play();
+    };
+    const observer = new IntersectionObserver(([entry]) => { visibleRef.current = entry.isIntersecting; sync(); });
+    observer.observe(container);
+    document.addEventListener("visibilitychange", sync);
+    return () => { observer.disconnect(); document.removeEventListener("visibilitychange", sync); };
+  }, []);
 
   const makeSceneTransparent = useCallback(() => {
     if (containerRef.current) {
@@ -140,6 +154,7 @@ export default function SplineRobot() {
   const handleLoad = (spline: Application) => {
     splineRef.current = spline as SplineApp;
     cleanSplineChrome();
+    if (!visibleRef.current || document.hidden || window.matchMedia("(prefers-reduced-motion: reduce)").matches) spline.stop();
   };
 
   return (

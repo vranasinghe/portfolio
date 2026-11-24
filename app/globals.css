@@ -239,6 +239,7 @@ button:hover .arrow-nudge,
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
   .marquee-track { animation: none; }
   .lift:hover, .lift:active { transform: none; }
   .seal-spin { animation: none; }

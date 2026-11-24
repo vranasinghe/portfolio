@@ -49,7 +49,9 @@ export default function NetworkBackground({ className = "" }: { className?: stri
       }));
     };
 
+    let visible = true;
     const draw = () => {
+      if (!visible || document.hidden) return;
       ctx.clearRect(0, 0, width, height);
 
       for (const n of nodes) {
@@ -84,11 +86,17 @@ export default function NetworkBackground({ className = "" }: { className?: stri
       if (!reduceMotion) raf = requestAnimationFrame(draw);
     };
 
+    const resume = () => { cancelAnimationFrame(raf); draw(); };
+    const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; resume(); });
+    observer.observe(canvas);
+    document.addEventListener("visibilitychange", resume);
     resize();
     draw();
     window.addEventListener("resize", resize);
 
     return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", resume);
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
     };

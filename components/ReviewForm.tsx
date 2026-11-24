@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Review, SERVICE_CATEGORIES, saveReviewToLocalStorage } from "@/data/reviews";
+import { Review, SERVICE_CATEGORIES } from "@/data/reviews";
 import Link from "next/link";
 
 interface ReviewFormProps {
@@ -103,38 +103,14 @@ export default function ReviewForm({ onReviewSubmitted, isModal = false }: Revie
       projectUrl: projectUrl.trim() || undefined,
     };
 
-    const makeReview = (id: string): Review => ({
-      id,
-      name: payload.name,
-      role: payload.role,
-      company: payload.company,
-      rating: payload.rating,
-      comment: payload.comment,
-      service: payload.service,
-      date: new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" }),
-      verified: true,
-      avatarUrl: payload.avatarUrl,
-      linkedinUrl: payload.linkedinUrl,
-      projectUrl: payload.projectUrl,
-      featured: true,
-    });
-
     try {
-      const res = await fetch("/api/reviews", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const res = await fetch("/api/reviews", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
       const data = await res.json();
-      const review = (res.ok && data.success && data.review) ? data.review : makeReview(`rev-${Date.now()}`);
-      saveReviewToLocalStorage(review);
+      if (!res.ok || !data.success || !data.review) throw new Error(data.error || "Your review could not be saved.");
       setSubmitted(true);
-      onReviewSubmitted?.(review);
-    } catch {
-      const review = makeReview(`rev-${Date.now()}`);
-      saveReviewToLocalStorage(review);
-      setSubmitted(true);
-      onReviewSubmitted?.(review);
+      onReviewSubmitted?.(data.review);
+    } catch (error) {
+      setErrorMsg(error instanceof Error ? error.message : "Your review could not be saved. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -156,7 +132,7 @@ export default function ReviewForm({ onReviewSubmitted, isModal = false }: Revie
         </div>
         <h3 className="text-xl font-extrabold text-[var(--text-primary)]">Thank you for your review!</h3>
         <p className="text-sm text-[var(--text-muted)] max-w-xs">
-          Your testimonial has been published to the portfolio. Your support is truly appreciated.
+          Your review was saved in this local development instance. It has not been independently verified or published to production.
         </p>
         <div className="flex items-center gap-3 mt-2 flex-wrap justify-center">
           <Link

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { useFocusTrap } from "@/lib/useFocusTrap";
 import { personalInfo } from "@/data/portfolio";
 
 // ─── Timing ────────────────────────────────────────────────
@@ -74,10 +75,17 @@ function monogram(x: number, y: number, w: number, h: number): [number, number][
 }
 
 export default function Preloader() {
-  const [done, setDone] = useState(false);
+  const [done, setDone] = useState(true);
+  useEffect(() => {
+    const play = () => { setProgress(0); setDone(false); };
+    window.addEventListener("portfolio:play-intro", play);
+    return () => window.removeEventListener("portfolio:play-intro", play);
+  }, []);
   const [progress, setProgress] = useState(0); // 0–1
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reduce = useReducedMotion();
+  const overlay = useRef<HTMLDivElement>(null);
+  useFocusTrap(overlay, !done);
 
   const phrases = personalInfo.typewriterPhrases;
   const phrase = phrases[Math.min(phrases.length - 1, Math.floor(progress * phrases.length))];
@@ -93,12 +101,14 @@ export default function Preloader() {
   }, [done]);
 
   useEffect(() => {
+    if (done) return;
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const load = reduced ? 900 : LOAD;
+    if (reduced) { setDone(true); return; }
+    const load = LOAD;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     let W = 0;
     let H = 0;
@@ -262,20 +272,23 @@ export default function Preloader() {
       window.clearTimeout(fallback);
       window.removeEventListener("resize", build);
     };
-  }, []);
+  }, [done]);
 
   const [firstName, ...rest] = personalInfo.name.split(" ");
   const lastName = rest.join(" ");
 
   return (
+    <>
     <AnimatePresence>
       {!done && (
         <motion.div
+          ref={overlay} role="dialog" aria-modal="true" aria-label="Optional visual intro" tabIndex={-1}
           className="fixed inset-0 z-[9999] overflow-hidden bg-[#04060b] text-white"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, filter: "blur(8px)" }}
           transition={{ duration: 0.7, ease: EASE_OUT }}
         >
+          <button autoFocus type="button" onClick={() => setDone(true)} className="absolute top-6 right-6 z-10 min-h-11 border border-white px-4">Skip intro</button>
           {/* Faint blueprint grid, fading out toward the edges */}
           <div
             aria-hidden="true"
@@ -371,5 +384,6 @@ export default function Preloader() {
         </motion.div>
       )}
     </AnimatePresence>
+    </>
   );
 }

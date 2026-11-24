@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { veeChips, veeReply, type VeeAction } from "@/lib/veeBrain";
 import { SECTIONS } from "@/lib/sections";
+import { activeSectionAt } from "@/lib/sectionTracking";
 
 type Msg = { id: number; from: "vee" | "you"; text: string; actions?: VeeAction[] };
 
@@ -312,7 +313,7 @@ export default function VeeBot() {
 
   // Playful idle: every few seconds Vee winks, looks around, waves, dances or hops
   useEffect(() => {
-    if (!awake) return;
+    if (!awake || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let t = 0;
     const next = () => {
       t = window.setTimeout(() => {
@@ -375,11 +376,7 @@ export default function VeeBot() {
       setLift(Math.round(overlap));
       const bot = botRef.current?.getBoundingClientRect();
       if (bot) setTheme(pickTheme(backgroundAt(bot.left + bot.width * 0.5, bot.top + bot.height * 0.45, rootRef.current)));
-      let current = "home";
-      for (const s of SECTIONS) {
-        const node = document.getElementById(s.id);
-        if (node && node.getBoundingClientRect().top < window.innerHeight * 0.45) current = s.id;
-      }
+      const current = activeSectionAt(SECTIONS.map(s => ({ id: s.id, top: document.getElementById(s.id)?.getBoundingClientRect().top ?? Infinity })), Math.min(180, window.innerHeight * 0.25));
       setSection(current);
     };
     const onScroll = () => {
