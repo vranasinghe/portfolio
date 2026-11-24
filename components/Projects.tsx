@@ -273,6 +273,13 @@ export default function Projects() {
                           {project.github.replace(/\/$/, "") === "https://github.com/vranasinghe" ? "GitHub profile" : "GitHub"} <span className="arrow-nudge">↗</span>
                         </a>
                       )}
+                      {project.demoVideo && (
+                        <a href={project.demoVideo} target="_blank" rel="noopener noreferrer"
+                          aria-label={`Watch ${project.title} video walkthrough`}
+                          className="inline-flex min-h-11 items-center font-label text-[0.85rem] font-bold text-[var(--accent-color)] hover:text-[var(--text-primary)] transition-colors">
+                          Watch walkthrough <span className="arrow-nudge">↗</span>
+                        </a>
+                      )}
                     </div>
                     </div>
                   </article>
