@@ -93,7 +93,7 @@ export default function Toolkit() {
                   />
                 ) : skill.iconUrl ? (
                   <img
-                    src={skill.iconUrl}
+                    src={skill.iconUrl} loading="lazy" width={36} height={36}
                     alt={skill.name}
                     className="relative w-[36px] h-[36px] transition-all duration-300 opacity-80 group-hover:opacity-100 group-hover:scale-110 object-contain"
                   />

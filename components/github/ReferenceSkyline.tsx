@@ -74,7 +74,7 @@ export const dayMs = (v: string | number | Date): number => {
  * Levels 1–4 split the non-zero days by their share of a busy day — the 95th
  * percentile, so one freak day can't wash every other day out to level 1.
  */
-export const buildGrid = (data: ContributionDay[], endMs: number, weekStart = 0) => {
+export const buildGrid = (data: ContributionDay[], endMs: number, weekStart = 0, startMs?: number) => {
   const counts = new Map<string, number>()
   for (const d of data) {
     if (!d || typeof d.date !== "string") continue
@@ -84,7 +84,7 @@ export const buildGrid = (data: ContributionDay[], endMs: number, weekStart = 0)
     const k = toKey(ms)
     counts.set(k, (counts.get(k) ?? 0) + c)
   }
-  let start = endMs - 364 * DAY_MS
+  let start = startMs ?? endMs - 364 * DAY_MS
   start -= ((new Date(start).getUTCDay() - weekStart + 7) % 7) * DAY_MS
   const cells: Cell[] = []
   for (let ms = start, i = 0; ms <= endMs; ms += DAY_MS, i++) {
@@ -223,6 +223,7 @@ export interface ContributionSkylineProps {
   data?: ContributionDay[]
   /** Last day shown. Defaults to the latest date in `data`, or today. */
   endDate?: string | Date
+  startDate?: string | Date
   /** Controlled view. */
   view?: View
   /** Uncontrolled starting view. The 3D view rises out of the flat one when it first scrolls into sight. */
@@ -403,6 +404,7 @@ function Stat({
 export default function ContributionSkyline({
   data,
   endDate,
+  startDate,
   view: viewProp,
   defaultView = "3d",
   onViewChange,
@@ -425,13 +427,14 @@ export default function ContributionSkyline({
   bordered = true,
 }: ContributionSkylineProps) {
   const endKey = endDate == null ? null : dayMs(endDate)
+  const startKey = startDate == null ? undefined : dayMs(startDate)
   const model = React.useMemo(() => {
     const dates = (data ?? []).map((d) => dayMs(d.date)).filter(Number.isFinite)
     const end = endKey ?? (dates.length ? Math.max(...dates) : dayMs(new Date()))
     const days = data ?? []
-    const grid = buildGrid(days, end, weekStart)
+    const grid = buildGrid(days, end, weekStart, startKey)
     return { ...grid, stats: computeStats(grid.cells), months: monthLabels(grid.cells, grid.weeks, locale) }
-  }, [data, endKey, seed, weekStart, locale])
+  }, [data, endKey, startKey, seed, weekStart, locale])
 
   const [innerView, setInnerView] = React.useState<View>(defaultView)
   const view = viewProp ?? innerView
@@ -464,6 +467,7 @@ export default function ContributionSkyline({
   const describe = (i: number) => {
     const c = model.cells[i]
     if (!c) return ""
+    if (startKey !== undefined && dayMs(c.date) < startKey) return "Outside the selected year"
     return (c.count ? nf.format(c.count) + " " + noun(c.count) : "No " + plural) + " on " + dfl.format(dayMs(c.date))
   }
 
@@ -1170,7 +1174,7 @@ export default function ContributionSkyline({
           >
             <span
               aria-hidden="true"
-              className="absolute top-0.5 bottom-0.5 left-0.5 w-8 rounded transition-transform duration-500 motion-reduce:transition-none"
+              className="absolute top-0.5 bottom-0.5 left-0.5 w-11 rounded transition-transform duration-500 motion-reduce:transition-none"
               style={{
                 background: "var(--color-foreground, #171717)",
                 transform: is3d ? "translateX(100%)" : "translateX(0)",
@@ -1185,7 +1189,7 @@ export default function ContributionSkyline({
                 aria-label={v === "2d" ? "Flat heat map" : "3D skyline"}
                 title={v === "2d" ? "Flat heat map" : "3D skyline"}
                 onClick={() => setView(v)}
-                className="relative z-10 grid h-7 w-8 cursor-pointer place-items-center rounded border-0 bg-transparent p-0 transition-colors duration-500 focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none"
+                className="relative z-10 grid h-11 w-11 cursor-pointer place-items-center rounded border-0 bg-transparent p-0 transition-colors duration-500 focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none"
                 style={{
                   color: view === v ? "var(--color-background, #ffffff)" : MUTED,
                   outlineColor: "var(--color-foreground, #171717)",

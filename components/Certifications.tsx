@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 
 import { motion } from "framer-motion";
 import { certifications } from "@/data/portfolio";
@@ -25,8 +26,8 @@ export default function Certifications() {
                 {/* Certificate image */}
                 <div className="relative w-full aspect-[1.414/1] mt-5 overflow-hidden bg-[var(--bg-tertiary)] border border-[var(--line-soft)] flex-shrink-0">
                   {cert.image ? (
-                    <img
-                      src={cert.image}
+                    <Image
+                      src={cert.image} quality={95} fill sizes="(max-width: 767px) 92vw, 380px"
                       alt={cert.title}
                       className="w-full h-full object-contain p-2"
                     />

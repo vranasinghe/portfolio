@@ -4,7 +4,7 @@ import { featuredProjects, minorProjects, skills } from "@/data/portfolio";
 
 export const runtime = "nodejs";
 const queries = [...new Set([
-  "about", "projects", "skills", "education", "experience", "achievements",
+  "github activity", "about", "projects", "skills", "education", "experience", "achievements",
   "certifications", "contact", "resume", "location", "hello", "thanks", "bye",
   ...[...featuredProjects, ...minorProjects].map(p => p.title.split(" — ")[0]),
   ...skills.flatMap(group => group.items.map(item => item.name)),

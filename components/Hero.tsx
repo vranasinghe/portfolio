@@ -1,9 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 import { personalInfo } from "@/data/portfolio";
-import SplineRobot from "@/components/SplineRobot";
+import SplineRobot from "@/components/DeferredScene";
 import NetworkBackground from "@/components/NetworkBackground";
 
 // Build the typewriter sequence: [phrase, pause, ...]
@@ -16,6 +16,7 @@ const buildSequence = (phrases: string[]) => {
 const TECH = ["Python", "PyTorch", "React", "Node.js", "R"];
 
 export default function Hero() {
+  const reduce = useReducedMotion();
   const [firstName, ...rest] = personalInfo.name.split(" ");
   const lastName = rest.join(" ");
 
@@ -102,7 +103,7 @@ export default function Hero() {
         {/* Status chip, then where and what: two clear rows in one typeface instead of three mismatched items */}
         <motion.div
           className="mb-[clamp(20px,3.6vh,36px)] flex flex-col items-start gap-[clamp(10px,1.6vh,16px)]"
-          initial={{ opacity: 0, y: -10 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
@@ -131,13 +132,13 @@ export default function Hero() {
         {/* Greeting + giant name */}
         <motion.p
           className="mb-3 text-[1.2rem] font-medium leading-none text-[var(--text-secondary)]"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35 }}
+          initial={false} animate={{ opacity: 1 }} transition={{ delay: 0.35 }}
         >
           Hi, my name is
         </motion.p>
         <motion.h1
           className="font-black uppercase leading-[0.9] tracking-[-0.03em] text-[clamp(2.4rem,12vw,4.5rem)] lg:text-[clamp(3.4rem,min(6.5vw,10.2vh),6.3rem)] text-[var(--text-primary)]"
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }}
+          initial={false} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }}
         >
           {firstName}
           <span
@@ -160,19 +161,19 @@ export default function Hero() {
           <div>
             <motion.div
               className="text-xl lg:text-2xl font-medium min-h-[2rem] mb-4"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
+              initial={false} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
             >
-              <TypeAnimation
+              {reduce ? <span className="text-[var(--accent-color)]">Data Science & AI Undergraduate</span> : <TypeAnimation
                 sequence={buildSequence(personalInfo.typewriterPhrases)}
                 repeat={Infinity}
                 speed={60}
                 deletionSpeed={70}
                 className="text-[var(--accent-color)]"
-              />
+              />}
             </motion.div>
             <motion.p
               className="text-base sm:text-lg leading-relaxed max-w-[540px] text-[var(--text-secondary)]"
-              initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
+              initial={false} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
             >
               {personalInfo.heroBio}
             </motion.p>
@@ -180,17 +181,17 @@ export default function Hero() {
 
           <motion.div
             className="flex flex-wrap gap-3"
-            initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.85 }}
+            initial={false} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.85 }}
           >
             <a
               href="#projects"
               onClick={(e) => {
                 e.preventDefault();
-                document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+                document.getElementById("projects")?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
               }}
               className="lift pointer-events-auto inline-flex items-center gap-2.5 px-[26px] py-[15px] border-2 border-[#1f56f0] bg-[#1f56f0] text-white text-[0.95rem] font-bold hover:bg-[var(--text-primary)] hover:border-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors duration-200"
             >
-              Check out my work <span className="arrow-nudge">↗</span>
+              View Projects <span className="arrow-nudge">↗</span>
             </a>
             <a
               href={personalInfo.resumeLink}
@@ -200,9 +201,10 @@ export default function Hero() {
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
               </svg>
-              Download Resume
+              Download CV
             </a>
           </motion.div>
+          <div className="flex flex-wrap gap-x-5 pointer-events-auto text-sm"><a className="inline-flex items-center min-h-11 underline underline-offset-4" href={personalInfo.github} target="_blank" rel="noopener noreferrer">GitHub</a><a className="inline-flex items-center min-h-11 underline underline-offset-4" href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a><button type="button" className="min-h-11 underline underline-offset-4 motion-reduce:hidden" onClick={() => window.dispatchEvent(new Event("portfolio:play-intro"))}>Play visual intro</button></div>
         </div>
       </div>
       </div>
@@ -211,7 +213,7 @@ export default function Hero() {
       <motion.div
         className="relative z-10 order-3 overflow-hidden whitespace-nowrap py-4 bg-[#1f56f0] text-white font-label font-bold text-[0.95rem] tracking-[0.04em]"
         aria-hidden="true"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.0 }}
+        initial={false} animate={{ opacity: 1 }} transition={{ delay: 1.0 }}
       >
         <div className="marquee-track">
           {Array.from({ length: 2 }).flatMap((_, rep) =>

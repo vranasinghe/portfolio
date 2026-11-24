@@ -9,12 +9,12 @@ import Achievements from "@/components/Achievements";
 import Certifications from "@/components/Certifications";
 import Reviews from "@/components/Reviews";
 import Contact from "@/components/Contact";
-import VeeBot from "@/components/VeeBot";
+import VeeBot from "@/components/DeferredVee";
 import { SHOW_ACHIEVEMENTS, SHOW_REVIEWS } from "@/lib/sections";
 
 export default function Home() {
   return (
-    <main className="bg-[var(--bg-primary)] text-[var(--text-primary)] overflow-x-hidden relative min-h-screen transition-colors duration-300">
+    <main id="main-content" tabIndex={-1} className="bg-[var(--bg-primary)] text-[var(--text-primary)] overflow-x-hidden relative min-h-screen transition-colors duration-300">
       <div className="relative z-10">
         <Nav />
         <section id="home" tabIndex={-1}>

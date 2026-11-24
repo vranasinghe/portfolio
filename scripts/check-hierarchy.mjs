@@ -1,6 +1,11 @@
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
-import { activeSectionAt } from '../lib/sectionTracking.ts';
+import ts from 'typescript';
+import vm from 'node:vm';
+const trackingModule = { exports: {} };
+const trackingCode = ts.transpileModule(readFileSync(new URL('../lib/sectionTracking.ts', import.meta.url), 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS } }).outputText;
+vm.runInNewContext(trackingCode, { exports: trackingModule.exports });
+const { activeSectionAt } = trackingModule.exports;
 
 const read = path => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
 const page = read('app/page.tsx');
@@ -35,6 +40,7 @@ for(const match of data.matchAll(/(?:imageUrl|resumeLink): "(\/[^"\n]+)"/g)) {
   assert.ok(existsSync(new URL('../public'+match[1], import.meta.url)), `Local asset exists: ${match[1]}`);
 }
 const githubCSS=read('components/github/GitHubActivity.module.css');
-assert.match(githubCSS,/background: #050505/);
+assert.match(githubCSS,/background: #ffffff/);
 assert.match(githubCSS,/--accent-color: #7ee787/);
+assert.match(githubCSS,/data-theme="dark"/);
 console.log('Passed: section order, unique destinations, GitHub placement, reading-line tracking, navigation accessibility, project controls, local content assets, and scoped GitHub theme.');

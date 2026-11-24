@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
+import { useFocusTrap } from "@/lib/useFocusTrap";
 import { personalInfo } from "@/data/portfolio";
 import { SECTIONS } from "@/lib/sections";
 import { activeSectionAt } from "@/lib/sectionTracking";
@@ -11,10 +12,12 @@ const NAV_ITEMS = SECTIONS;
 
 
 export default function Nav() {
+  const navRef = useRef<HTMLElement>(null);
   const [active,    setActive]    = useState("home");
   const [scrolled,  setScrolled]  = useState(false);
   const [menuOpen,  setMenuOpen]  = useState(false);
 
+  useFocusTrap(navRef, menuOpen, false);
   const { scrollYProgress } = useScroll();
   const scrollProgress = useSpring(scrollYProgress, { stiffness: 200, damping: 30, restDelta: 0.001 });
 
@@ -87,7 +90,7 @@ export default function Nav() {
 
   return (
     <>
-      <nav
+      <nav ref={navRef}
         aria-label="Main navigation"
         className={`theme-dark fixed top-0 left-0 w-full z-50 pt-[env(safe-area-inset-top)] transition-all duration-300 border-b
           ${scrolled || menuOpen

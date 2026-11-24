@@ -1,12 +1,16 @@
 "use client";
+import Image from "next/image";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useFocusTrap } from "@/lib/useFocusTrap";
 import { achievements, type Achievement } from "@/data/portfolio";
 import SectionHeader from "@/components/SectionHeader";
 
 /** Full-screen certificate viewer: closes on Esc, the close button, or a click outside the image. */
 function CertificateViewer({ item, onClose }: { item: Achievement; onClose: () => void }) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(dialogRef, true);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", onKey);
@@ -20,6 +24,8 @@ function CertificateViewer({ item, onClose }: { item: Achievement; onClose: () =
 
   return (
     <motion.div
+      ref={dialogRef}
+      tabIndex={-1}
       role="dialog"
       aria-modal="true"
       aria-label={`${item.title} certificate`}
@@ -43,8 +49,8 @@ function CertificateViewer({ item, onClose }: { item: Achievement; onClose: () =
         exit={{ scale: 0.96, y: 10 }}
         onClick={(e) => e.stopPropagation()}
       >
-        <img
-          src={item.certificate}
+        <Image
+          src={item.certificate!} quality={95} width={1600} height={1131} sizes="(max-width: 767px) 92vw, 1024px"
           alt={`${item.title} certificate`}
           className="w-full max-h-[80vh] object-contain bg-white"
         />
@@ -104,8 +110,8 @@ export default function Achievements() {
                     aria-label={`View ${item.title} certificate`}
                   >
                     <span className="block w-24 aspect-[1.414/1] overflow-hidden border border-[var(--line-soft)] bg-[var(--bg-tertiary)]">
-                      <img
-                        src={item.certificate}
+                      <Image
+                        src={item.certificate!} quality={95} width={1600} height={1131} sizes="96px"
                         alt=""
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />

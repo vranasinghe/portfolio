@@ -313,7 +313,7 @@ export default function VeeBot() {
 
   // Playful idle: every few seconds Vee winks, looks around, waves, dances or hops
   useEffect(() => {
-    if (!awake) return;
+    if (!awake || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let t = 0;
     const next = () => {
       t = window.setTimeout(() => {

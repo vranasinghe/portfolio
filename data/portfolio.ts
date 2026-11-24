@@ -29,7 +29,7 @@ export const personalInfo = {
 };
 
 export const heroStats = [
-  { value: "11+", label: "Projects Shipped" },
+  { value: "11", label: "Portfolio Projects" },
   { value: "3rd", label: "Year @ SLIIT" },
   { value: "Data Science", label: "Specialization" },
   { value: "LK", label: "Based in Sri Lanka" },
@@ -216,7 +216,30 @@ export const skills: SkillCategory[] = [
 ];
 
 // ─── FEATURED PROJECTS ────────────────────────────────────
-export interface FeaturedProject {
+export interface ProjectMetadata {
+  slug?: string;
+  sourceStatus?: "unavailable";
+  liveStatus?: "unavailable";
+  linksCheckedAt?: string;
+  projectType?: "individual" | "team";
+  developmentStatus?: "in-development" | "prototype" | "maintained" | "completed" | "archived";
+  projectRole?: string;
+  personalContributions?: string[];
+  problemStatement?: string;
+  solutionSummary?: string;
+  technicalHighlights?: string[];
+  architectureImage?: { src: string; alt: string };
+  screenshots?: { src: string; alt: string; caption?: string }[];
+  demoVideo?: string;
+  verifiedMetrics?: { name: string; value: string; method: string; evidence: string }[];
+  evidence?: { url: string; supports: string; verifiedAt?: string }[];
+  challenges?: string[];
+  limitations?: string[];
+  futureImprovements?: string[];
+  caseStudyStatus?: "draft" | "published";
+}
+
+export interface FeaturedProject extends ProjectMetadata {
   id: number;
   title: string;
   description: string;
@@ -225,23 +248,25 @@ export interface FeaturedProject {
   tags: string[];
   github: string;
   live?: string;
-  role: string;
+  role?: string;
   reversed?: boolean;
 }
 
 export const featuredProjects: FeaturedProject[] = [
   {
     id: 1,
-    title: "X-ray Diagnostic AI",
+    title: "ChestAI Diagnostics",
     description:
-      "Deep learning models trained on 100K+ medical X-ray images to detect pulmonary abnormalities including pneumonia, cardiomegaly, and pleural effusion. Implements ResNet-50 and DenseNet-121 architectures.",
+      "An educational chest X-ray analysis project exploring disease classification through a machine learning service and web interface.",
     longDescription:
-      "Built with PyTorch and optimized for GPU training using mixed-precision (FP16) and gradient checkpointing, reducing training time by 40% and memory usage by 55%. Achieved 94.7% validation accuracy on the NIH Chest X-ray Dataset.",
+      "The repository documents a PyTorch and FastAPI pipeline with a React/Vite frontend. Model evaluation and personal responsibilities have not yet been independently verified.",
     imageUrl: "/Chest X ray Diagnosis system.png",
-    tags: ["PyTorch", "ResNet-50", "DenseNet-121", "Python", "OpenCV", "Medical AI"],
+    tags: ["PyTorch", "Python", "FastAPI", "React", "Research AI"],
     github: "https://github.com/vranasinghe/ChestAI_Diagnostics.git",
     live: "https://chest-ai-diagnostics.vercel.app",
-    role: "Lead ML Engineer",
+    caseStudyStatus: "draft",
+    projectType: "team",
+    evidence: [{ url: "https://github.com/vranasinghe/ChestAI_Diagnostics", supports: "Documented architecture; execution and personal role unverified" }],
     reversed: false,
   },
   {
@@ -250,45 +275,42 @@ export const featuredProjects: FeaturedProject[] = [
     description:
       "A premium, modern real estate marketplace platform built with React, Vite, Tailwind CSS, and a Supabase (PostgreSQL) backend.",
     longDescription:
-      "Features dynamic property browsing with multi-parameter filtering, interactive property listings, user sessions, role-based controls, row-level security (RLS) policies, and database persistence.",
+      "Designed around property discovery and listing management. Authentication, database policies and deployment behavior still require source verification.",
     imageUrl: "/Real State Application.png",
-    tags: ["React", "Vite", "Tailwind CSS", "Supabase", "PostgreSQL", "RLS Security"],
+    tags: ["React", "Vite", "Tailwind CSS", "Supabase", "PostgreSQL", "Property Listings"],
     github: "https://github.com/vranasinghe/Real-state-project.git",
     live: "https://real-state-project-gamma.vercel.app",
-    role: "Full-Stack Developer",
     reversed: true,
   },
   {
     id: 3,
-    title: "Bright Future — Secure Student Awards Voting Platform",
+    title: "Bright Future — Student Awards Voting Platform",
+    projectType: "team",
     description:
       "A full-stack student awards voting platform with events, nominees, dashboards, notifications, and results reports.",
     longDescription:
-      "Built with Spring Boot backend API and React/Vite UI frontend. Implements role-based dashboard access, automated notification triggers, student registration, and secure award voting mechanism.",
+      "Built with Spring Boot backend API and React/Vite UI frontend. Implements role-based dashboard access, automated notification triggers, student registration, and award voting workflows.",
     imageUrl: "/Bright Vote.png",
     tags: ["Spring Boot", "React", "Vite", "Java", "H2 Database", "REST APIs", "Docker"],
     github: "https://github.com/vranasinghe/web-voting-system",
     live: "https://web-voting-system.vercel.app/",
-    role: "Full-Stack Developer",
     reversed: false,
   },
   {
     id: 4,
     title: "Poth Library App",
-    description:
-      "A mobile reading & book marketplace platform for Sri Lanka, enabling readers to explore curated books and shop owners to manage listings and grow their library business.",
-    longDescription:
-      "Built with React Native and Expo (SDK 54) using Expo Router on the frontend. The backend is powered by Node.js, Express, and MongoDB with Mongoose. Features secure JWT authentication, encrypted passwords, and Cloudinary media storage.",
-    imageUrl: "/Libaray App.png",
-    tags: ["React Native", "Expo SDK 54", "Node.js", "Express.js", "MongoDB", "JWT Auth", "Cloudinary"],
+    description: "A reading and book marketplace application for Sri Lanka.",
+    longDescription: "Repository access and individual contribution details are not yet available for verification.",
+    tags: ["React Native", "Expo", "Node.js", "MongoDB"],
     github: "https://github.com/vranasinghe",
-    role: "Full-Stack Developer",
+    imageUrl: "/Libaray App.png",
+    caseStudyStatus: "draft",
     reversed: true,
   },
 ];
 
 // ─── MINOR PROJECTS ───────────────────────────────────────
-export interface MinorProject {
+export interface MinorProject extends ProjectMetadata {
   title: string;
   description: string;
   tags: string[];
@@ -306,16 +328,20 @@ export const minorProjects: MinorProject[] = [
     tags: ["Python", "Scikit-learn", "GeoPandas", "Folium", "Machine Learning", "Spatial Data Science"],
     category: "AI / ML",
     github: "https://github.com/vranasinghe/Dengue-Outbreak-Prediction-Model",
+    sourceStatus: "unavailable",
+    linksCheckedAt: "2026-11-25",
     live: "https://macromaster101.github.io/DengueRisk/dashboard/",
     imageUrl: "/Dengu Risk.png",
   },
   {
     title: "CommerceLens — E-Commerce Data Intelligence",
     description:
-      "An end-to-end e-commerce data warehousing and business intelligence solution that turns historical Olist marketplace data into actionable insights, with automated ETL pipelines, a medallion architecture, a star-schema data model, sales analytics, customer insights, and interactive Power BI reporting.",
+      "An e-commerce analytics project organized around Olist marketplace data, Python, SQL, SSIS and Power BI. Pipeline execution, evaluation and individual contributions remain to be verified.",
     tags: ["Python", "Pandas", "SQL Server", "SSIS", "Power BI", "DAX", "Data Warehousing", "ETL"],
     category: "Data & BI",
     github: "https://github.com/vranasinghe/Commerce_Lense",
+    sourceStatus: "unavailable",
+    linksCheckedAt: "2026-11-25",
     imageUrl: "/CommerceLens.webp",
   },
   {
@@ -335,6 +361,8 @@ export const minorProjects: MinorProject[] = [
     tags: ["React", "Next.js", "Tailwind CSS", "Framer Motion", "UI/UX Design"],
     category: "Design",
     github: "https://github.com/vranasinghe/portfolio-v2",
+    sourceStatus: "unavailable",
+    linksCheckedAt: "2026-11-25",
     live: "https://portfolio-v2-lac-eight.vercel.app/",
     imageUrl: "/UI UX Portfolio.png",
   },
@@ -350,11 +378,13 @@ export const minorProjects: MinorProject[] = [
   {
     title: "E-Commerce Web System",
     description:
-      "AURA, a full-stack fashion e-commerce platform with curated collections, cart and wishlist, and secure user accounts, plus a Gemini-powered shopping assistant that suggests outfits and an AI virtual try-on (IDM-VTON) that previews garments on the shopper.",
+      "AURA is a fashion e-commerce project combining a web storefront and service backend. Shopping-assistant and virtual try-on workflows require further verification before being presented as working features.",
     tags: ["Next.js", "TypeScript", "Tailwind CSS", "Express", "PostgreSQL", "Prisma", "FastAPI", "Gemini"],
     category: "Fullstack",
     github: "https://github.com/vranasinghe/E-Commerce-web-system",
     live: "https://e-commerce-web-system-web.vercel.app/",
+    liveStatus: "unavailable",
+    linksCheckedAt: "2026-11-25",
     imageUrl: "/E-Commerce Web System.webp",
   },
   {
@@ -365,6 +395,8 @@ export const minorProjects: MinorProject[] = [
     category: "Mobile App",
     github: "https://github.com/vranasinghe/Real-Time-Chat-App",
     live: "https://real-time-chat-app-tau-six.vercel.app/",
+    liveStatus: "unavailable",
+    linksCheckedAt: "2026-11-25",
     imageUrl: "/Dateza.webp",
   },
 ];

@@ -1,56 +1,24 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import {
-  makeReferenceId,
-  ownerNotificationEmail,
-  visitorConfirmationEmail,
-  type ContactEmailData,
-} from "@/lib/emailTemplates";
-
+import { makeReferenceId, ownerNotificationEmail, type ContactEmailData } from "@/lib/emailTemplates";
+import { createThrottle, readSubmission, RequestError, textField } from "@/lib/requestSafety";
 export const runtime = "nodejs";
-
+const throttle = createThrottle(5);
 export async function POST(request: Request) {
-  const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.CONTACT_TO_EMAIL;
-  if (!apiKey || !to) {
-    return NextResponse.json({ error: "Email is not configured." }, { status: 500 });
-  }
-
-  let body: { name?: unknown; email?: unknown; message?: unknown };
   try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json({ error: "Invalid request." }, { status: 400 });
+    const body = await readSubmission(request);
+    const name = textField(body, "name", 100, true), email = textField(body, "email", 200, true), message = textField(body, "message", 5000, true);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new RequestError("Invalid email.", 400);
+    throttle();
+    const apiKey = process.env.RESEND_API_KEY, to = process.env.CONTACT_TO_EMAIL;
+    if (!apiKey || !to) return NextResponse.json({ error: "Email is not configured." }, { status: 503 });
+    const from = process.env.CONTACT_FROM_EMAIL || "Portfolio Contact <onboarding@resend.dev>";
+    const data: ContactEmailData = { name, email, message, referenceId: makeReferenceId(), receivedAt: new Date() };
+    const { error } = await new Resend(apiKey).emails.send({ from, to, replyTo: email, ...ownerNotificationEmail(data) });
+    if (error) return NextResponse.json({ error: "Email delivery is temporarily unavailable." }, { status: 502 });
+    // Only the configured owner receives mail. Arbitrary visitor addresses are never recipients.
+    return NextResponse.json({ ok: true, referenceId: data.referenceId, confirmationSent: false });
+  } catch (error) {
+    return NextResponse.json({ error: error instanceof RequestError ? error.message : "Email delivery is temporarily unavailable." }, { status: error instanceof RequestError ? error.status : 502 });
   }
-
-  const name = typeof body.name === "string" ? body.name.trim() : "";
-  const email = typeof body.email === "string" ? body.email.trim() : "";
-  const message = typeof body.message === "string" ? body.message.trim() : "";
-
-  if (!name || !email || !message) {
-    return NextResponse.json({ error: "All fields are required." }, { status: 400 });
-  }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || name.length > 100 || email.length > 200 || message.length > 5000) {
-    return NextResponse.json({ error: "Invalid input." }, { status: 400 });
-  }
-
-  const resend = new Resend(apiKey);
-  const from = process.env.CONTACT_FROM_EMAIL || "Portfolio Contact <onboarding@resend.dev>";
-  const data: ContactEmailData = { name, email, message, referenceId: makeReferenceId(), receivedAt: new Date() };
-
-  const owner = ownerNotificationEmail(data);
-  const { error } = await resend.emails.send({ from, to, replyTo: email, ...owner });
-
-  if (error) {
-    console.error("Resend error", error);
-    return NextResponse.json({ error: "Failed to send." }, { status: 502 });
-  }
-
-  // Confirmation copy to the address the visitor entered in the form.
-  // A failure here is logged but doesn't fail the request — the owner already has the message.
-  const confirmation = visitorConfirmationEmail(data);
-  const { error: confirmError } = await resend.emails.send({ from, to: email, replyTo: to, ...confirmation });
-  if (confirmError) console.error("Resend confirmation error", confirmError);
-
-  return NextResponse.json({ ok: true, referenceId: data.referenceId, confirmationSent: !confirmError });
 }

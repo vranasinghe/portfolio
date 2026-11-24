@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import type { ActivityData, ContributionDay } from "@/lib/githubActivity";
 
 export const dynamic = "force-dynamic";
-const cache = new Map<number, ActivityData>();
+const cache = new Map<string, ActivityData>();
 const HOUR = 60 * 60 * 1000;
 const levels: Record<string, number> = { NONE: 0, FIRST_QUARTILE: 1, SECOND_QUARTILE: 2, THIRD_QUARTILE: 3, FOURTH_QUARTILE: 4 };
 const query = `query($login:String!, $from:DateTime!, $to:DateTime!) { user(login:$login) { contributionsCollection(from:$from, to:$to) { contributionCalendar { totalContributions weeks { contributionDays { date contributionCount contributionLevel weekday } } } } } }`;
@@ -11,10 +11,11 @@ export async function GET(request: NextRequest) {
   const currentYear = new Date().getUTCFullYear();
   const year = Number(request.nextUrl.searchParams.get("year") || currentYear);
   if (!Number.isInteger(year) || year < 2008 || year > currentYear) return NextResponse.json({ error: "Choose a valid year." }, { status: 400 });
-  const previous = cache.get(year);
+  const username = process.env.GITHUB_USERNAME || "vranasinghe";
+  const cacheKey = `${username.toLowerCase()}:${year}`;
+  const previous = cache.get(cacheKey);
   if (previous && Date.now() - Date.parse(previous.updatedAt) < HOUR) return NextResponse.json(previous);
   const token = process.env.GITHUB_TOKEN;
-  const username = process.env.GITHUB_USERNAME || "vranasinghe";
   const fail = (message: string, status = 503) => previous
     ? NextResponse.json({ ...previous, stale: true })
     : NextResponse.json({ error: message }, { status });
@@ -43,7 +44,7 @@ export async function GET(request: NextRequest) {
     const continuous = days.every((day, i) => day.date === new Date(Date.UTC(year, 0, i + 1)).toISOString().slice(0, 10) && day.weekday === new Date(`${day.date}T00:00:00Z`).getUTCDay());
     if (days.length !== expectedDays || !continuous || days.reduce((sum, d) => sum + d.count, 0) !== calendar.totalContributions) return fail("GitHub returned an incomplete activity calendar.");
     const data: ActivityData = { year, username, days, updatedAt: new Date().toISOString(), stale: false };
-    cache.set(year, data);
+    cache.set(cacheKey, data);
     return NextResponse.json(data);
   } catch { return fail("Could not connect to GitHub. Please try again later."); }
 }

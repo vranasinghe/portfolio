@@ -6,7 +6,7 @@ import SectionHeader from "@/components/SectionHeader";
 
 export default function Experience() {
   return (
-    <section className="wrap py-[120px] bg-transparent">
+    <div className="band-dark"><section className="wrap py-[120px] bg-transparent">
       <SectionHeader title="Experience and Academic Journey" />
 
       <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-14">
@@ -111,6 +111,6 @@ export default function Experience() {
           </div>
         </div>
       </div>
-    </section>
+    </section></div>
   );
 }
