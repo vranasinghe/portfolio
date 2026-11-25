@@ -8,7 +8,7 @@ import { SECTIONS } from "@/lib/sections";
 import { activeSectionAt } from "@/lib/sectionTracking";
 
 // Nav order and numbering come from the shared section list, so they always match the page.
-const NAV_ITEMS = SECTIONS;
+const NAV_ITEMS = SECTIONS.filter(section => section.id !== "github-activity");
 
 
 export default function Nav() {

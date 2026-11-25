@@ -59,7 +59,6 @@ export default function Projects() {
       <div className="wrap">
         <SectionHeader
           title="Featured Projects"
-          subtitle="A curated selection of end-to-end projects spanning AI, data science, and full-stack development."
         />
 
         {/* ── Featured Projects (alternating layout) ── */}
