@@ -332,6 +332,8 @@ export const minorProjects: MinorProject[] = [
     categoryLabel: "AI Engineering · Full-Stack Development",
     statusLabel: "Active Development | 2026",
     developmentStatus: "in-development",
+    github: "https://github.com/vranasinghe/Multi-Tenant-AI-Customer-Support-Platform-with-RAG.git",
+    demoVideo: "https://youtu.be/UW0GiOQAywc",
     imageUrl: "/ai-support-platform.png",
   },
   {
