@@ -236,10 +236,11 @@ export default function Projects() {
                     {/* Category badge */}
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <span className="px-3 py-1.5 bg-[#1f56f0] text-white font-label text-[0.78rem] font-bold uppercase tracking-[0.06em]">
-                        {project.category}
+                        {project.categoryLabel ?? project.category}
                       </span>
                     </div>
 
+                    {project.statusLabel && <p className="mt-3 font-label text-[0.8rem] font-semibold text-[var(--text-muted)]">{project.statusLabel}</p>}
                     <h4 className="mt-4 md:mt-5 text-[1.2rem] md:text-[1.3rem] text-balance tracking-[-0.02em] leading-[1.25] font-bold text-[var(--text-primary)]">
                       {project.title}
                     </h4>
@@ -261,7 +262,7 @@ export default function Projects() {
                       >
                         {live ? "View live" : project.github === "https://github.com/vranasinghe" ? "GitHub profile" : "View code"} <span className="arrow-nudge">↗</span>
                       </a>}
-                      {project.live && project.liveStatus !== "unavailable" && (
+                      {project.live && project.github && project.liveStatus !== "unavailable" && (
                         <a
                           href={project.github}
                           target="_blank"
