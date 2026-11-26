@@ -316,12 +316,24 @@ export interface MinorProject extends ProjectMetadata {
   description: string;
   tags: string[];
   category: "AI / ML" | "Data & BI" | "Web Development" | "Mobile App" | "Fullstack" | "Design";
-  github: string;
+  categoryLabel?: string;
+  statusLabel?: string;
+  github?: string;
   live?: string;
   imageUrl?: string;
 }
 
 export const minorProjects: MinorProject[] = [
+  {
+    title: "Multi-Tenant AI Customer Support Platform with RAG",
+    description: "A multi-tenant SaaS platform for creating customized AI support chatbots from business knowledge sources. It features document and website ingestion, hybrid search, real-time response streaming, and embeddable chat widgets with tenant isolation.",
+    tags: ["Next.js", "TypeScript", "FastAPI", "Python", "PostgreSQL", "pgvector", "Redis", "Celery", "Docker", "RAG"],
+    category: "AI / ML",
+    categoryLabel: "AI Engineering · Full-Stack Development",
+    statusLabel: "Active Development | 2026",
+    developmentStatus: "in-development",
+    imageUrl: "/ai-support-platform.png",
+  },
   {
     title: "DengueRisk — Outbreak Prediction Model",
     description:

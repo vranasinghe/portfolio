@@ -78,8 +78,8 @@ async function main() {
   check((await prod.POST(request(goodReview))).status === 503, 'Production review writes disabled');
   check((await (await prod.GET()).json()).reviews.length === 0, 'Production reviews unavailable');
   const data = load('data/portfolio.ts');
-  check(data.featuredProjects.length === 4 && data.minorProjects.length === 7, 'All eleven projects retained');
-  check(new Set([...data.featuredProjects, ...data.minorProjects].map(p => p.title)).size === 11, 'No duplicate projects');
+  check(data.featuredProjects.length === 4 && data.minorProjects.length === 8, 'All twelve projects retained');
+  check(new Set([...data.featuredProjects, ...data.minorProjects].map(p => p.title)).size === 12, 'No duplicate projects');
   check(!JSON.stringify(data.featuredProjects).match(/94\.7|40%|55%|100K|Lead ML Engineer/), 'Unsupported claims removed');
   const vee = load('lib/veeBrain.ts');
   check(vee.veeReply('github activity').actions.some(action => action.href === '#github-activity'), 'Vee activity navigation');
