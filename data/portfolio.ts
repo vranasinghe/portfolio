@@ -387,6 +387,7 @@ export const minorProjects: MinorProject[] = [
     tags: ["React Native", "Expo SDK 54", "TypeScript", "Zustand", "Expo Router", "Async Storage"],
     category: "Mobile App",
     github: "https://github.com/vranasinghe/Expense_Tracking_Mobile_App.git",
+    demoVideo: "https://youtube.com/shorts/Apv60kv37M8",
     imageUrl: "/Expense Trackin app.png",
   },
   {
