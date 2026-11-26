@@ -330,7 +330,6 @@ export const minorProjects: MinorProject[] = [
     tags: ["Next.js", "TypeScript", "FastAPI", "Python", "PostgreSQL", "pgvector", "Redis", "Celery", "Docker", "RAG"],
     category: "AI / ML",
     categoryLabel: "AI Engineering · Full-Stack Development",
-    statusLabel: "Active Development | 2026",
     developmentStatus: "in-development",
     imageUrl: "/ai-support-platform.png",
   },
