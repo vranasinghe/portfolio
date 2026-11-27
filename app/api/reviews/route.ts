@@ -3,6 +3,7 @@ import { Resend } from "resend";
 import { APPROVED_REVIEWS, type Review } from "@/data/reviews";
 import { reviewNotificationEmail } from "@/lib/emailTemplates";
 import { createThrottle, readSubmission, RequestError, textField, publicUrl } from "@/lib/requestSafety";
+import { verifyInvite } from "@/lib/reviewInvite";
 export const runtime = "nodejs";
 const throttle = createThrottle(5);
 
@@ -15,6 +16,8 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await readSubmission(request);
+    const invite = verifyInvite(body.inviteToken);
+    if (!invite.ok) return NextResponse.json({ success: false, error: "This review link is invalid or has expired." }, { status: 403 });
     const name = textField(body, "name", 100, true), comment = textField(body, "comment", 3000, true);
     const role = textField(body, "role", 120), company = textField(body, "company", 120), service = textField(body, "service", 120);
     const avatarUrl = publicUrl(textField(body, "avatarUrl", 2048)), linkedinUrl = publicUrl(textField(body, "linkedinUrl", 2048)), projectUrl = publicUrl(textField(body, "projectUrl", 2048));
@@ -31,7 +34,7 @@ export async function POST(request: Request) {
       verified: true,
       ...(avatarUrl && { avatarUrl }), ...(linkedinUrl && { linkedinUrl }), ...(projectUrl && { projectUrl }),
     };
-    const { error } = await new Resend(apiKey).emails.send({ from, to, ...reviewNotificationEmail(review) });
+    const { error } = await new Resend(apiKey).emails.send({ from, to, ...reviewNotificationEmail(review, invite.payload) });
     if (error) return NextResponse.json({ success: false, error: "Your review couldn't be sent. Please try again later." }, { status: 502 });
     return NextResponse.json({ success: true, pending: true });
   } catch (error) {

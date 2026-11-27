@@ -1,10 +1,8 @@
 "use client";
 
-import { useFocusTrap } from "@/lib/useFocusTrap";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { APPROVED_REVIEWS, Review, SERVICE_CATEGORIES } from "@/data/reviews";
-import ReviewForm from "@/components/ReviewForm";
 import SectionHeader from "@/components/SectionHeader";
 
 // ── Helpers ────────────────────────────────────────────────────────────────
@@ -179,25 +177,6 @@ function ReviewCard({ review, index }: { review: Review; index: number }) {
 export default function Reviews() {
   const reviews: Review[] = APPROVED_REVIEWS;
   const [activeCategory, setActiveCategory] = useState<string>("All Services");
-  const [copiedLink, setCopiedLink] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const modalRef = useRef<HTMLDivElement>(null);
-  useFocusTrap(modalRef, isModalOpen);
-
-  // Close modal on Escape
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setIsModalOpen(false); };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, []);
-
-
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(`${window.location.origin}/review`);
-    setCopiedLink(true);
-    setTimeout(() => setCopiedLink(false), 3000);
-  };
-
   const filtered = activeCategory === "All Services"
     ? reviews
     : reviews.filter((r) => r.service.toLowerCase() === activeCategory.toLowerCase());
@@ -287,45 +266,6 @@ export default function Reviews() {
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center gap-3 flex-wrap justify-center sm:justify-end">
-            {/* Copy link */}
-            <button
-              onClick={handleCopyLink}
-              className="flex items-center gap-2 px-4 py-2.5 text-sm font-semibold
-                         border border-[var(--border-color)] bg-[var(--bg-tertiary)]
-                         text-[var(--text-muted)] hover:text-[var(--accent-color)]
-                         hover:border-[color-mix(in_srgb,var(--accent-color)_40%,transparent)]
-                         transition-all duration-200"
-            >
-              {copiedLink ? (
-                <>
-                  <svg className="w-4 h-4 text-emerald-400" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                  <span className="text-emerald-400">Copied!</span>
-                </>
-              ) : (
-                <>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                  </svg>
-                  Copy Client Review Link
-                </>
-              )}
-            </button>
-
-            {/* Write a Review */}
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="btn-accent flex items-center gap-2 px-5 py-2.5 text-sm font-bold"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-              </svg>
-              Write a Review
-            </button>
-          </div>
         </motion.div>
 
         {/* ── Category Filter Tabs ── */}
@@ -372,74 +312,7 @@ export default function Reviews() {
 
       </div>
 
-      {/* ── Write a Review Modal ── */}
-      <AnimatePresence>
-        {isModalOpen && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              key="backdrop"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm"
-              onClick={() => setIsModalOpen(false)}
-            />
 
-            {/* Modal panel */}
-            <motion.div
-              key="modal"
-              ref={modalRef}
-              role="dialog" aria-modal="true" aria-label="Write a review" tabIndex={-1}
-              initial={{ opacity: 0, scale: 0.95, y: 24 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 24 }}
-              transition={{ duration: 0.28, ease: "easeOut" }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto pointer-events-none"
-            >
-              <div className="w-full max-w-xl pointer-events-auto my-8
-                              bg-[var(--card-bg)] border border-[var(--border-color)]
-                              shadow-[0_40px_80px_-20px_rgba(0,0,0,0.7)]
-                              relative overflow-hidden">
-
-                {/* Top gradient strip */}
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--accent-color)]/40 to-transparent" />
-
-                <div className="p-7 sm:p-8">
-                  {/* Header row */}
-                  <div className="flex items-start justify-between mb-6">
-                    <div>
-                      <h3 className="text-xl font-extrabold text-[var(--text-primary)] tracking-tight">
-                        Write a Client Review
-                      </h3>
-                      <p className="text-xs text-[var(--text-muted)] mt-1">
-                        Your review appears instantly on Venuja&apos;s portfolio.
-                      </p>
-                    </div>
-                    <button
-                      onClick={() => setIsModalOpen(false)}
-                      aria-label="Close"
-                      className="w-8 h-8 bg-[var(--bg-tertiary)] border border-[var(--border-color)]
-                                 text-[var(--text-muted)] hover:text-[var(--text-primary)]
-                                 flex items-center justify-center transition-colors duration-150 shrink-0"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  </div>
-
-                  <ReviewForm
-                    isModal={true}
-                    onReviewSubmitted={() => setTimeout(() => setIsModalOpen(false), 3000)}
-                  />
-                </div>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
     </section>
   );
 }

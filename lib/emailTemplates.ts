@@ -342,8 +342,9 @@ type ReviewEmailData = {
   projectUrl?: string;
 };
 
-export function reviewNotificationEmail(r: ReviewEmailData) {
+export function reviewNotificationEmail(r: ReviewEmailData, invite?: { id: string; name: string; exp: number }) {
   const name = escapeHtml(r.name);
+  const inviteDetail = invite ? invite.id + " · " + invite.name + " · Expires " + new Date(invite.exp * 1000).toISOString() : "";
   const stars = "★".repeat(r.rating) + "☆".repeat(5 - r.rating);
   const snippet = JSON.stringify(r, null, 2) + ",";
   const link = (url?: string) => (url ? `<a href="${escapeHtml(url)}" style="color:${C.blue};font-weight:600;">${escapeHtml(url)}</a>` : "&mdash;");
@@ -375,6 +376,7 @@ export function reviewNotificationEmail(r: ReviewEmailData) {
             ["Name", `<strong>${name}</strong>`],
             ["Role", escapeHtml([r.role, r.company].filter(Boolean).join(" · "))],
             ["Service", escapeHtml(r.service)],
+            ["Invite", escapeHtml(inviteDetail)],
             ["LinkedIn", link(r.linkedinUrl)],
             ["Project", link(r.projectUrl)],
           ])}
@@ -393,6 +395,7 @@ export function reviewNotificationEmail(r: ReviewEmailData) {
 
   const text = [
     `NEW CLIENT REVIEW — ${SITE_LABEL}`,
+    `Invite: ${inviteDetail}`,
     ``,
     `${r.name} (${[r.role, r.company].filter(Boolean).join(", ")}) rated you ${r.rating}/5 for ${r.service}.`,
     ``,
