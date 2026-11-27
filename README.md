@@ -222,8 +222,8 @@ The project ships two built-in API endpoints for the testimonials system:
 
 | Method | Endpoint | Description |
 |---|---|---|
-| `GET` | `/api/reviews` | Returns all curated + user-submitted reviews |
-| `POST` | `/api/reviews` | Emails a submitted review to the owner for approval (nothing is auto-published) |
+| `GET` | `/api/reviews` | Returns published reviews from Supabase plus any in `data/approvedReviews.json` |
+| `POST` | `/api/reviews` | Saves an invite-link review to Supabase and publishes it immediately (one review per link) |
 
 ---
 
@@ -293,26 +293,21 @@ Contact requires server-only `RESEND_API_KEY` and `CONTACT_TO_EMAIL`; use a veri
 
 GitHub activity requires server-only `GITHUB_TOKEN` authorized for GraphQL contribution reads and `GITHUB_USERNAME=vranasinghe`. Missing credentials produce an honest unavailable state. Results are cached in process for one hour by username and year; cache lifetime is not durable across server restarts. UTC calendar-year summaries disclose stale results.
 
-Client reviews are invite-only. Create personal links at /admin/review-link. Submitted reviews arrive by email and require manual approval before publication.
-
 ## Client reviews
 
-Set REVIEW_INVITE_SECRET (at least 32 characters) and a long ADMIN_PASSWORD in Vercel for both Production and Preview, then redeploy. Keep these values private. Existing Resend and CONTACT_TO_EMAIL configuration is required.
+Client reviews are invite-only and published automatically.
 
-Open /admin/review-link directly on your phone, log in, enter the client's name, optional project and deployed project URL, choose a validity period, and tap Create link. Copy, Share, or Send on WhatsApp sends the personal review URL. The name, project and project URL prefill editable fields. Existing invites without a project URL still work. Links created during the current browser session remain available until reload. Log out when finished.
+Setup:
+1. Create a Supabase project and run `supabase/reviews.sql` in its SQL Editor. Row Level Security stays on with no policies, so only the site's server can read or write reviews.
+2. In Vercel (Production and Preview) and in `.env.local`, set `SUPABASE_URL` (your project URL) and `SUPABASE_SECRET_KEY` (the `sb_secret_...` key from Project Settings → API). `SUPABASE_SERVICE_ROLE_KEY` is also accepted. Never prefix them with `NEXT_PUBLIC_`.
+3. Set `REVIEW_INVITE_SECRET` (at least 32 characters) and a long `ADMIN_PASSWORD`. Resend and `CONTACT_TO_EMAIL` are optional and only used for the notification email.
 
-The client's submission is emailed only to CONTACT_TO_EMAIL with its invite details and a paste-ready review. After approval, add the snippet as an object in the JSON array in data/approvedReviews.json (commas between objects, no trailing comma), commit, and deploy. Nothing is published automatically.
+Flow: open /admin/review-link, log in, enter the client's name, optional project and project URL, and create a link. When the client submits the form, the review is saved to Supabase and appears in Client Reviews right away. Each link can be used once. You get an email copy.
 
-Without a database, an invite can be reused until it expires, and admin sessions cannot be revoked individually. Every review still needs manual approval. Changing REVIEW_INVITE_SECRET cancels all invite links and logs out all admin sessions. Sessions last seven days. Login throttling is process-local, as with the other submission endpoints.
+Manage: open /admin/reviews to see every review and delete any of them; deletion takes effect immediately. To hide a review without deleting it, set its `status` to `hidden` in the Supabase table editor.
 
-Client Reviews appears between Certifications and Contact, with an empty state until reviews are approved. Set NEXT_PUBLIC_SHOW_REVIEWS=false to hide the section.
+Reviews added by hand to `data/approvedReviews.json` are still shown alongside the Supabase reviews.
 
-## Manage and delete client reviews
-
-Open /admin/reviews (or Manage reviews on the private link creator) and log in with ADMIN_PASSWORD. It reads the latest approved list from GitHub, rather than a stale deployed copy. Select Delete review, review the client name and text, and Confirm delete. Cancel leaves it unchanged. Removal creates a Git commit; the public site updates after the normal Vercel deployment succeeds. Refresh to see the latest list. Restore a deleted object from Git history if necessary. Pending submissions exist only in your email: discard unwanted submissions without publishing them.
-
-Approved review objects now live in data/approvedReviews.json. data/reviews.ts imports this array. To publish a review, add the email's JSON object to that array, validate the JSON (commas between entries, no trailing comma), commit and deploy. This migration must be present on the target branch before using the admin page. No database is used.
-
-Setup: create a fine-grained GitHub token scoped only to vranasinghe/portfolio with Contents: Read and write. Set REVIEW_GITHUB_TOKEN server-side, separately from the GitHub activity token. Set REVIEW_GITHUB_BRANCH explicitly to your deployment branch (main for Production). In Preview and local development use a separate test branch; do not point a test session at production. Never prefix either value with NEXT_PUBLIC_. Redeploy after setting them. Branch protection must permit the token to commit; if it requires pull requests, direct deletion reports an error and makes no change. Repository permissions cannot restrict this token to one file, so keep it private and rotate it if exposed. The app only edits data/approvedReviews.json in this fixed repository. GitHub Contents API documentation: https://docs.github.com/en/rest/repos/contents#create-or-update-file-contents
+Note: free Supabase projects pause after about a week without activity. Resume the project from the Supabase dashboard if reviews stop loading. If Supabase is unreachable, the section falls back to `data/approvedReviews.json`. Changing `REVIEW_INVITE_SECRET` cancels all invite links and logs out all admin sessions.
 
 Concurrent changes are rejected: refresh the list before trying again. Deletion is not immediate on the live site, does not revoke the client's reusable invite, and does not remove the notification email. No real deletion is performed by automated tests.

@@ -137,26 +137,18 @@ export default function ReviewForm({ inviteToken, invitedName, invitedProject, i
         </div>
         <h3 className="text-xl font-extrabold text-[var(--text-primary)]">Thank you for your review!</h3>
         <p className="text-sm text-[var(--text-muted)] max-w-xs">
-          It's on its way to me. Once I've read it, it'll appear on my portfolio.
+          It&apos;s now live in the Client Reviews section of my portfolio.
         </p>
         <div className="flex items-center gap-3 mt-2 flex-wrap justify-center">
           <Link
-            href="/"
+            href="/#reviews"
             className="btn-accent px-5 py-2.5 text-sm font-bold flex items-center gap-2"
           >
-            Back to Portfolio
+            See it on my portfolio
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
             </svg>
           </Link>
-          {!isModal && (
-            <button
-              onClick={() => { setSubmitted(false); setName(""); setRole(""); setCompany(""); setComment(""); setAvatarUrl(""); setLinkedinUrl(""); setProjectUrl(""); }}
-              className="btn-outline px-5 py-2.5 text-sm font-semibold"
-            >
-              Submit Another
-            </button>
-          )}
         </div>
       </motion.div>
     );

@@ -329,7 +329,7 @@ export function visitorConfirmationEmail(d: ContactEmailData) {
   return { subject: `Thanks for reaching out, ${d.name.split(/\s+/)[0] || d.name} · ${d.referenceId}`, html, text };
 }
 
-/* ── 3. New client review, awaiting approval ─────────────── */
+/* ── 3. New client review, published ─────────────────────── */
 
 type ReviewEmailData = {
   name: string;
@@ -346,7 +346,6 @@ export function reviewNotificationEmail(r: ReviewEmailData, invite?: { id: strin
   const name = escapeHtml(r.name);
   const inviteDetail = invite ? invite.id + " · " + invite.name + " · Expires " + new Date(invite.exp * 1000).toISOString() : "";
   const stars = "★".repeat(r.rating) + "☆".repeat(5 - r.rating);
-  const snippet = JSON.stringify(r, null, 2);
   const link = (url?: string) => (url ? `<a href="${escapeHtml(url)}" style="color:${C.blue};font-weight:600;">${escapeHtml(url)}</a>` : "&mdash;");
 
   const html = shell({
@@ -357,7 +356,7 @@ export function reviewNotificationEmail(r: ReviewEmailData, invite?: { id: strin
       eyebrow: `Portfolio &middot; Client review`,
       eyebrowColor: C.blueLight,
       headline: "New review",
-      accentWord: "to approve.",
+      accentWord: "published.",
       accentColor: C.blueLight,
     }),
     body: `
@@ -365,7 +364,7 @@ export function reviewNotificationEmail(r: ReviewEmailData, invite?: { id: strin
         ${name} left you a review
       </td></tr>
       ${spacer(18)}
-      <tr><td>${callout("Not published yet:", "to show it on your portfolio, add the object at the bottom to the JSON array (separate objects with commas, no trailing comma) in <code>data/approvedReviews.json</code>, then commit and push.")}</td></tr>
+      <tr><td>${callout("Now live:", "this review was added to the Client Reviews section of your portfolio. To take it down, open <code>/admin/reviews</code> and delete it.")}</td></tr>
       ${spacer(26)}
       <tr><td>${label("Details")}</td></tr>
       ${spacer(6)}
@@ -384,12 +383,6 @@ export function reviewNotificationEmail(r: ReviewEmailData, invite?: { id: strin
       </td></tr>
       ${spacer(26)}
       <tr><td>${messageBox("Review", r.comment)}</td></tr>
-      ${spacer(26)}
-      <tr><td>${label("Paste into data/approvedReviews.json")}</td></tr>
-      ${spacer(6)}
-      <tr><td style="background:${C.black};padding:16px 18px;font-family:Consolas,'Courier New',monospace;font-size:12px;line-height:18px;color:#e6eeff;white-space:pre-wrap;word-break:break-word;">${escapeHtml(snippet)}</td></tr>
-      ${spacer(26)}
-      <tr><td>${note(`Don&rsquo;t want to publish it? Just ignore this email &mdash; nothing appears on your site until you add it.`)}</td></tr>
     `,
   });
 
@@ -401,10 +394,8 @@ export function reviewNotificationEmail(r: ReviewEmailData, invite?: { id: strin
     ``,
     r.comment,
     ``,
-    `To publish, add this object to the APPROVED_REVIEWS JSON array in data/approvedReviews.json, then commit and push:`,
-    ``,
-    snippet,
+    `This review is now live on your portfolio. To take it down, open /admin/reviews and delete it.`,
   ].join("\n");
 
-  return { subject: `New ${r.rating}★ review from ${r.name} — approve to publish`, html, text };
+  return { subject: `New ${r.rating}★ review from ${r.name} — now live`, html, text };
 }

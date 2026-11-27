@@ -14,7 +14,7 @@ export interface Review {
   featured?: boolean;
 }
 
-/** Approved reviews live in the JSON array; admin deletion commits changes to GitHub. */
+/** Published reviews live in this JSON array. Invite-link submissions and admin deletions commit changes to it on GitHub. */
 import approvedReviews from "./approvedReviews.json";
 export const APPROVED_REVIEWS: Review[] = approvedReviews;
 

@@ -70,20 +70,72 @@ async function main() {
   check(result.status === 429, 'Contact throttle');
   const mails = [];
   const mailer = fail => ({ Resend: class { emails = { send: async payload => { if (fail) throw new Error(); mails.push(payload); return { error: null }; } }; } });
-  const reviewEnv = { REVIEW_INVITE_SECRET: 'a'.repeat(32), RESEND_API_KEY: 'test-only', CONTACT_TO_EMAIL: 'owner@example.com' };
-  const reviews = load('app/api/reviews/route.ts', { resend: mailer(false) }, reviewEnv);
+  const baseReviewEnv = { REVIEW_INVITE_SECRET: 'a'.repeat(32), RESEND_API_KEY: 'test-only', CONTACT_TO_EMAIL: 'owner@example.com' };
+  const reviewEnv = { ...baseReviewEnv, SUPABASE_URL: 'https://test-project.supabase.co/rest/v1/', SUPABASE_SECRET_KEY: 'sb_secret_mock' };
+  // In-memory stand-in for the Supabase REST API (PostgREST) reviews table.
+  const supabase = (rows = []) => {
+    const db = { rows, calls: [], down: false };
+    db.fetch = async (url, options = {}) => {
+      db.calls.push({ url, ...options });
+      if (db.down) return Response.json({ message: 'boom' }, { status: 500 });
+      const u = new URL(url), method = options.method || 'GET';
+      if (!u.pathname.startsWith('/rest/v1/reviews') || options.headers.apikey !== 'sb_secret_mock') return Response.json({ code: 'PGRST301' }, { status: 401 });
+      if (method === 'GET') {
+        const status = u.searchParams.get('status');
+        const list = db.rows.filter(r => !status || 'eq.' + r.status === status).sort((a, b) => b.created_at.localeCompare(a.created_at));
+        return Response.json(list);
+      }
+      if (method === 'POST') {
+        const row = JSON.parse(options.body);
+        if (db.rows.some(r => r.invite_id === row.invite_id)) return Response.json({ code: '23505', message: 'duplicate key' }, { status: 409 });
+        const saved = { id: require('node:crypto').randomUUID(), created_at: new Date().toISOString(), ...row };
+        db.rows.push(saved);
+        return Response.json([saved], { status: 201 });
+      }
+      if (method === 'DELETE') {
+        const id = (u.searchParams.get('id') || '').replace(/^eq\./, '');
+        const removed = db.rows.filter(r => r.id === id); db.rows = db.rows.filter(r => r.id !== id);
+        return Response.json(removed);
+      }
+      return Response.json({}, { status: 405 });
+    };
+    return db;
+  };
+  const store = supabase();
+  const reviews = load('app/api/reviews/route.ts', { resend: mailer(false) }, reviewEnv, store.fetch);
   const invites = load('lib/reviewInvite.ts', {}, reviewEnv);
   const token = invites.createInvite({ name: 'Client', project: 'Project' });
   const payload = invites.verifyInvite(token).payload;
   const goodReview = { inviteToken: token, name: 'Test <b>', comment: 'Test only', rating: 4 };
   for (const body of [{ ...goodReview, role: {} }, { ...goodReview, rating: 1.5 }, { ...goodReview, avatarUrl: 'javascript:x' }]) check((await reviews.POST(request(body))).status === 400, 'Review input rejection');
+  check(!store.calls.length, 'Rejected input never reaches Supabase');
   result = await reviews.POST(request(goodReview)); const sentReview = await result.json();
-  check(result.status === 200 && sentReview.pending && !sentReview.review, 'Review queued for approval, not published');
-  check(mails.length === 1 && mails[0].to === 'owner@example.com', 'Review emailed only to owner');
-  check(!mails[0].html.includes('Test <b>') && mails[0].text.includes('APPROVED_REVIEWS'), 'Review email escaped with paste instructions');
-  check((await (await reviews.GET()).json()).reviews.length === 0, 'Only approved reviews are listed');
-  check((await load('app/api/reviews/route.ts', { resend: mailer(false) }, { REVIEW_INVITE_SECRET: reviewEnv.REVIEW_INVITE_SECRET }).POST(request(goodReview))).status === 503, 'Missing email config honest');
-  check((await load('app/api/reviews/route.ts', { resend: mailer(true) }, reviewEnv).POST(request(goodReview))).status === 502, 'Review provider failure honest');
+  check(result.status === 200 && sentReview.published && typeof sentReview.review.id === 'string', 'Invited review published immediately');
+  check(store.rows.length === 1 && store.rows[0].invite_id === payload.id && store.rows[0].name === 'Test <b>' && store.rows[0].status === 'published' && store.rows[0].verified === true, 'Review saved to Supabase as submitted');
+  check(store.calls[0].url.startsWith('https://test-project.supabase.co/rest/v1/reviews') && !store.calls[0].headers.Authorization, 'URL with /rest/v1/ suffix normalized; secret key sent only as apikey');
+  check((await (await reviews.GET()).json()).reviews.some(r => r.id === store.rows[0].id && r.name === 'Test <b>'), 'Published review listed right away');
+  store.rows.push({ ...store.rows[0], id: '00000000-0000-4000-8000-000000000001', invite_id: 'hidden01', name: 'Hidden one', status: 'hidden' });
+  check(!(await (await reviews.GET()).json()).reviews.some(r => r.name === 'Hidden one'), 'Hidden reviews not listed publicly');
+  store.rows.pop();
+  result = await reviews.POST(request({ ...goodReview, comment: 'Second try' }));
+  check(result.status === 410 && store.rows.length === 1 && (await result.json()).error.includes('already been used'), 'Invite link works only once');
+  check(mails.length === 1 && mails[0].to === 'owner@example.com', 'Owner notified only');
+  check(!mails[0].html.includes('Test <b>') && mails[0].text.includes('/admin/reviews'), 'Notification escaped with removal instructions');
+  const freshInvite = () => ({ ...goodReview, inviteToken: invites.createInvite({ name: 'Client' }) });
+  const unconfigured = supabase();
+  result = await load('app/api/reviews/route.ts', { resend: mailer(false) }, baseReviewEnv, unconfigured.fetch).POST(request(freshInvite()));
+  check(result.status === 503 && !unconfigured.calls.length && !(await result.json()).error.includes('SUPABASE'), 'Missing storage config honest without leaking setup details');
+  check((await load('app/api/reviews/route.ts', { resend: mailer(false) }, { ...reviewEnv, SUPABASE_SECRET_KEY: undefined, SUPABASE_SERVICE_ROLE_KEY: 'sb_secret_mock' }, store.fetch).POST(request(freshInvite()))).status === 200, 'Key saved as SUPABASE_SERVICE_ROLE_KEY also accepted');
+  result = await load('app/api/reviews/route.ts', { resend: mailer(false) }, baseReviewEnv).GET();
+  check(result.status === 200 && Array.isArray((await result.json()).reviews), 'Listing falls back to bundled reviews without storage config');
+  const outage = supabase(); outage.down = true;
+  result = await load('app/api/reviews/route.ts', { resend: mailer(false) }, reviewEnv, outage.fetch).GET();
+  check(result.status === 200 && Array.isArray((await result.json()).reviews), 'Listing survives a Supabase outage');
+  check((await load('app/api/reviews/route.ts', { resend: mailer(false) }, reviewEnv, outage.fetch).POST(request(freshInvite()))).status === 502, 'Storage failure honest');
+  const rowsBefore = store.rows.length;
+  check((await load('app/api/reviews/route.ts', { resend: mailer(true) }, reviewEnv, store.fetch).POST(request(freshInvite()))).status === 200 && store.rows.length === rowsBefore + 1, 'Email failure does not block publishing');
+  check((await load('app/api/reviews/route.ts', { resend: mailer(false) }, reviewEnv, async () => Response.json({ code: 'PGRST205' }, { status: 404 })).POST(request(freshInvite()))).status === 503, 'Missing table reported as unavailable');
+  mails.length = 1;
   check(invites.verifyInvite(token).ok, 'Valid invite');
   const [part, signature] = token.split('.');
   const tampered = Buffer.from(JSON.stringify({ ...payload, name: 'Other' })).toString('base64url') + '.' + signature;
@@ -94,8 +146,7 @@ async function main() {
   for (const secret of [undefined, 'short']) check(!load('lib/reviewInvite.ts', {}, { REVIEW_INVITE_SECRET: secret }).verifyInvite(token).ok, 'Secret fails closed');
   for (const inviteToken of [undefined, 'bad', expired]) check((await reviews.POST(request({ ...goodReview, inviteToken }))).status === 403, 'Invite required before submission');
   check(mails[0].text.includes(payload.id) && mails[0].html.includes(payload.id), 'Invite id in email');
-  check(!mails[0].text.split('then commit and push:')[1].includes(payload.id), 'Invite excluded from snippet');
-  const adminEnv = { ...reviewEnv, ADMIN_PASSWORD: 'test-password-only' };
+  const adminEnv = { ...baseReviewEnv, ADMIN_PASSWORD: 'test-password-only' };
   const sessions = load('lib/adminSession.ts', {}, adminEnv);
   const login = load('app/api/admin/login/route.ts', {}, adminEnv);
   result = await login.POST(request({ password: 'wrong' })); check(result.status === 401, 'Wrong password');
@@ -116,49 +167,30 @@ async function main() {
   check(projectInvite.ok && projectInvite.payload.projectUrl === 'https://example.com/project', 'Project URL preserved in signed invite');
   for (const unsafe of ['javascript:alert(1)', 'https://user:password@example.com']) check((await create.POST(adminRequest(cookie, unsafe))).status === 400, 'Unsafe invite project URL rejected');
   check(!invites.verifyInvite(signed.signToken('invite:', { ...payload, projectUrl: 'javascript:alert(1)' })).ok, 'Unsafe signed project URL rejected');
-  const manageEnv = { ...adminEnv, REVIEW_GITHUB_TOKEN: 'mock-write-token', REVIEW_GITHUB_BRANCH: 'test-reviews' };
-  const sha = 'a'.repeat(40);
-  const managedReview = { id: 'approved-1', name: 'Client', role: 'Founder', company: 'Project', service: 'Full-Stack Web App', rating: 5, comment: 'Great work', date: 'November 2026', verified: true };
-  let githubCalls = [], githubStatus = 200, remoteReviews = [managedReview, { ...managedReview, id: 'approved-2', name: 'Keep me' }];
-  const githubMock = async (url, options) => {
-    githubCalls.push({ url, ...options });
-    if (githubStatus !== 200) return Response.json({}, { status: githubStatus });
-    if (options.method === 'GET') return Response.json({ type: 'file', encoding: 'base64', sha, content: Buffer.from(JSON.stringify(remoteReviews)).toString('base64') });
-    return Response.json({ commit: { sha: 'b'.repeat(40) } });
-  };
-  const managed = load('app/api/admin/reviews/route.ts', {}, manageEnv, githubMock);
+  const manageEnv = { ...adminEnv, SUPABASE_URL: 'https://test-project.supabase.co', SUPABASE_SECRET_KEY: 'sb_secret_mock' };
+  const keepId = '11111111-1111-4111-8111-111111111111', dropId = '22222222-2222-4222-8222-222222222222';
+  const baseRow = { invite_id: 'aaaa0001', name: 'Client', role: 'Founder', company: 'Project', service: 'Full-Stack Web App', rating: 5, comment: 'Great work', avatar_url: null, linkedin_url: null, project_url: null, verified: true, status: 'published', created_at: '2026-11-01T00:00:00Z' };
+  const adminStore = supabase([{ ...baseRow, id: dropId }, { ...baseRow, id: keepId, invite_id: 'aaaa0002', name: 'Keep me', status: 'hidden' }]);
+  const managed = load('app/api/admin/reviews/route.ts', {}, manageEnv, adminStore.fetch);
   const managedRequest = (method, body, adminCookie = cookie, origin = 'https://admin.example') => new (require('next/server').NextRequest)('https://admin.example/api/admin/reviews', { method, headers: { 'content-type': 'application/json', origin, ...(adminCookie && { cookie: 'vr_admin=' + adminCookie }) }, ...(method !== 'GET' && { body: JSON.stringify(body) }) });
   for (const badCookie of ['', 'forged']) {
     check((await managed.GET(managedRequest('GET', null, badCookie))).status === 401, 'Review list protected');
-    check((await managed.DELETE(managedRequest('DELETE', { id: 'approved-1', sha }, badCookie))).status === 401, 'Deletion protected');
+    check((await managed.DELETE(managedRequest('DELETE', { id: dropId }, badCookie))).status === 401, 'Deletion protected');
   }
-  check(!githubCalls.length, 'Unauthorized requests never reach GitHub');
-  check((await managed.DELETE(managedRequest('DELETE', { id: 'approved-1', sha }, cookie, 'https://evil.example'))).status === 403, 'Cross-origin deletion blocked');
-  check(!githubCalls.length, 'CSRF blocked before GitHub');
-  check((await load('app/api/admin/reviews/route.ts', {}, adminEnv, githubMock).GET(managedRequest('GET'))).status === 503, 'Management fails closed without token and branch');
+  check(!adminStore.calls.length, 'Unauthorized requests never reach Supabase');
+  check((await managed.DELETE(managedRequest('DELETE', { id: dropId }, cookie, 'https://evil.example'))).status === 403, 'Cross-origin deletion blocked');
+  check(!adminStore.calls.length, 'CSRF blocked before Supabase');
+  check((await load('app/api/admin/reviews/route.ts', {}, adminEnv, adminStore.fetch).GET(managedRequest('GET'))).status === 503, 'Management fails closed without Supabase config');
   result = await managed.GET(managedRequest('GET')); const listing = await result.json();
-  check(result.status === 200 && listing.reviews.length === 2 && listing.sha === sha && listing.branch === 'test-reviews' && result.headers.get('cache-control') === 'no-store', 'Latest GitHub snapshot listed without caching');
-  githubCalls = [];
-  check((await managed.DELETE(managedRequest('DELETE', { id: 'approved-1', sha: 'c'.repeat(40) }))).status === 409 && githubCalls.length === 1, 'Stale snapshot never writes');
-  githubCalls = [];
-  check((await managed.DELETE(managedRequest('DELETE', { id: 'missing', sha }))).status === 404 && githubCalls.length === 1, 'Missing review never writes');
-  githubCalls = [];
-  result = await managed.DELETE(managedRequest('DELETE', { id: 'approved-1', sha }));
-  check(result.status === 200 && githubCalls.length === 2, 'One read and one commit for deletion');
-  const mutation = JSON.parse(githubCalls[1].body);
-  const remainingReviews = JSON.parse(Buffer.from(mutation.content, 'base64').toString('utf8'));
-  check(remainingReviews.length === 1 && remainingReviews[0].id === 'approved-2' && mutation.sha === sha && mutation.branch === 'test-reviews', 'Only chosen review removed; branch and SHA protected');
-  check(githubCalls.every(call => call.url.startsWith('https://api.github.com/repos/vranasinghe/portfolio/contents/data/approvedReviews.json')), 'Only fixed review file editable');
-  remoteReviews = [{ ...managedReview, rating: 99 }]; githubCalls = [];
-  check((await managed.DELETE(managedRequest('DELETE', { id: 'approved-1', sha }))).status === 502 && githubCalls.length === 1, 'Malformed data never overwritten');
-  remoteReviews = [managedReview, managedReview];
-  check((await managed.GET(managedRequest('GET'))).status === 502, 'Duplicate IDs rejected');
-  remoteReviews = [managedReview];
-  for (const status of [403, 409, 404, 500]) { githubStatus = status; check((await managed.GET(managedRequest('GET'))).status === ({403:503,409:409,404:503,500:502})[status], 'Controlled GitHub error ' + status); }
-  const failingManagement = load('app/api/admin/reviews/route.ts', {}, manageEnv, async () => { throw new Error('network'); });
-  check((await failingManagement.GET(managedRequest('GET'))).status === 502, 'Network failure controlled');
-  const conflictManagement = load('app/api/admin/reviews/route.ts', {}, manageEnv, async (url, options) => options.method === 'PUT' ? Response.json({}, { status: 409 }) : Response.json({ type: 'file', encoding: 'base64', sha, content: Buffer.from(JSON.stringify([managedReview])).toString('base64') }));
-  check((await conflictManagement.DELETE(managedRequest('DELETE', { id: 'approved-1', sha }))).status === 409, 'Concurrent write conflict controlled');
+  check(result.status === 200 && listing.reviews.length === 2 && listing.reviews.some(r => r.status === 'hidden') && result.headers.get('cache-control') === 'no-store', 'Admin lists all reviews, including hidden, without caching');
+  check((await managed.DELETE(managedRequest('DELETE', { id: "x' or 1=1" }))).status === 400 && adminStore.rows.length === 2, 'Non-UUID id rejected before Supabase');
+  check((await managed.DELETE(managedRequest('DELETE', { id: '33333333-3333-4333-8333-333333333333' }))).status === 404, 'Missing review reported');
+  result = await managed.DELETE(managedRequest('DELETE', { id: dropId }));
+  check(result.status === 200 && adminStore.rows.length === 1 && adminStore.rows[0].id === keepId, 'Only chosen review deleted');
+  adminStore.down = true;
+  check((await managed.GET(managedRequest('GET'))).status === 502, 'Supabase failure controlled');
+  check((await load('app/api/admin/reviews/route.ts', {}, manageEnv, async () => { throw new Error('network'); }).GET(managedRequest('GET'))).status === 502, 'Network failure controlled');
+  check((await load('app/api/admin/reviews/route.ts', {}, manageEnv, async () => Response.json({}, { status: 401 })).GET(managedRequest('GET'))).status === 503, 'Rejected key reported as configuration problem');
   const data = load('data/portfolio.ts');
   check(data.featuredProjects.length === 4 && data.minorProjects.length === 8, 'All twelve projects retained');
   check(new Set([...data.featuredProjects, ...data.minorProjects].map(p => p.title)).size === 12, 'No duplicate projects');
@@ -167,6 +199,6 @@ async function main() {
   check(vee.veeReply('github activity').actions.some(action => action.href === '#github-activity'), 'Vee activity navigation');
   check(!vee.veeReply('internship').text.includes('available for 2026'), 'Vee confirms availability with owner');
   check(!fs.existsSync(path.join(root, 'app/projects/[slug]/page.tsx')), 'No case study routes');
-  console.log(`Passed ${checks} focused assertions. APIs/providers/storage mocked; no real email or GitHub request sent.`);
+  console.log(`Passed ${checks} focused assertions. APIs/providers/storage mocked; no real email, GitHub or Supabase request sent.`);
 }
 main().catch(error => { console.error(error); process.exitCode = 1; });

@@ -109,7 +109,7 @@ export default async function ReviewPage({ searchParams }: { searchParams: Promi
 
         {/* Footer */}
         <p className="mt-10 text-center text-[10px] text-[var(--text-muted)] font-label">
-          © {new Date().getFullYear()} Venuja Ranasinghe · Every review is read by me before it goes live.
+          © {new Date().getFullYear()} Venuja Ranasinghe · Reviews appear on my portfolio as soon as they’re submitted.
         </p>
       </div>
     </main>
