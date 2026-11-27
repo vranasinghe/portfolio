@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { APPROVED_REVIEWS, Review } from "@/data/reviews";
 
@@ -172,7 +173,20 @@ function ReviewCard({ review, index }: { review: Review; index: number }) {
 }
 
 // ── Main Section ─────────────────────────────────────────────────────────────
-export default function Reviews({ reviews = APPROVED_REVIEWS }: { reviews?: Review[] } = {}) {
+export default function Reviews({ reviews: provided }: { reviews?: Review[] } = {}) {
+  // Start from the reviews bundled at build time, then load the latest published list
+  // so a review submitted through an invite link shows up without waiting for a redeploy.
+  const [reviews, setReviews] = useState<Review[]>(provided ?? APPROVED_REVIEWS);
+  useEffect(() => {
+    if (provided) return;
+    let cancelled = false;
+    fetch("/api/reviews", { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => { if (!cancelled && data?.success && Array.isArray(data.reviews)) setReviews(data.reviews); })
+      .catch(() => { /* keep the bundled reviews */ });
+    return () => { cancelled = true; };
+  }, [provided]);
+
   if (reviews.length === 0) {
     return (
       <section className="band-dark reviews-band text-[var(--text-primary)] w-full bg-black py-20 sm:py-24">
@@ -182,7 +196,7 @@ export default function Reviews({ reviews = APPROVED_REVIEWS }: { reviews?: Revi
               Client Reviews
             </h2>
           </header>
-          <p className="mx-auto max-w-xl text-center text-[var(--text-muted)] leading-relaxed">Client reviews will appear here after approval.</p>
+          <p className="mx-auto max-w-xl text-center text-[var(--text-muted)] leading-relaxed">No client reviews yet.</p>
         </div>
       </section>
     );
