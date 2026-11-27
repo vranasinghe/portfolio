@@ -294,3 +294,13 @@ Contact requires server-only `RESEND_API_KEY` and `CONTACT_TO_EMAIL`; use a veri
 GitHub activity requires server-only `GITHUB_TOKEN` authorized for GraphQL contribution reads and `GITHUB_USERNAME=vranasinghe`. Missing credentials produce an honest unavailable state. Results are cached in process for one hour by username and year; cache lifetime is not durable across server restarts. UTC calendar-year summaries disclose stale results.
 
 Client reviews use an approval-by-email flow. Share `venuja.online/review` with a client (or use "Copy Client Review Link" in the Reviews section). Each submission is emailed to `CONTACT_TO_EMAIL` via Resend, with a ready-to-paste block. To publish, paste it into `APPROVED_REVIEWS` in `data/reviews.ts`, then commit and push. The Reviews section and nav link appear automatically once at least one review is approved. Nothing a visitor submits reaches the site without your approval.
+
+## Client reviews
+
+Set REVIEW_INVITE_SECRET (at least 32 characters) and a long ADMIN_PASSWORD in Vercel for both Production and Preview, then redeploy. Keep these values private. Existing Resend and CONTACT_TO_EMAIL configuration is required.
+
+Open /admin/review-link directly on your phone, log in, enter the client's name and optional project, choose a validity period, and tap Create link. Copy, Share, or Send on WhatsApp sends the personal review URL. The name and project prefill editable fields. Links created during the current browser session remain available until reload. Log out when finished.
+
+The client's submission is emailed only to CONTACT_TO_EMAIL with its invite details and a paste-ready review. After approval, paste the snippet into APPROVED_REVIEWS in data/reviews.ts, commit, and deploy. Nothing is published automatically.
+
+Without a database, an invite can be reused until it expires, and admin sessions cannot be revoked individually. Every review still needs manual approval. Changing REVIEW_INVITE_SECRET cancels all invite links and logs out all admin sessions. Sessions last seven days. Login throttling is process-local, as with the other submission endpoints.
