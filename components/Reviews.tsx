@@ -3,7 +3,7 @@
 import { useFocusTrap } from "@/lib/useFocusTrap";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Review, SERVICE_CATEGORIES, getStoredReviews } from "@/data/reviews";
+import { APPROVED_REVIEWS, Review, SERVICE_CATEGORIES } from "@/data/reviews";
 import ReviewForm from "@/components/ReviewForm";
 import SectionHeader from "@/components/SectionHeader";
 
@@ -78,7 +78,7 @@ function ReviewCard({ review, index }: { review: Review; index: number }) {
 
       {/* Quote mark watermark */}
       <svg
-        className="absolute top-5 right-5 w-14 h-14 text-[var(--text-primary)]/[0.05] group-hover:text-[var(--accent-color)]/[0.06] transition-colors duration-500 pointer-events-none"
+        className="absolute bottom-16 right-5 w-14 h-14 text-[var(--text-primary)] opacity-[0.05] group-hover:text-[var(--accent-color)] group-hover:opacity-[0.08] transition-all duration-500 pointer-events-none"
         viewBox="0 0 24 24" fill="currentColor"
       >
         <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
@@ -177,31 +177,12 @@ function ReviewCard({ review, index }: { review: Review; index: number }) {
 
 // ── Main Section ─────────────────────────────────────────────────────────────
 export default function Reviews() {
-  const [reviews, setReviews] = useState<Review[]>([]);
+  const reviews: Review[] = APPROVED_REVIEWS;
   const [activeCategory, setActiveCategory] = useState<string>("All Services");
   const [copiedLink, setCopiedLink] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   useFocusTrap(modalRef, isModalOpen);
-
-  useEffect(() => {
-    // Clear any stale cached reviews from localStorage so removed samples don't reappear
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("vr_portfolio_client_reviews");
-    }
-    async function fetchReviews() {
-      try {
-        const res = await fetch("/api/reviews");
-        const data = await res.json();
-        if (res.ok && data.success && Array.isArray(data.reviews)) {
-          setReviews(data.reviews);
-          return;
-        }
-      } catch { /* ignore, use local fallback */ }
-      setReviews(getStoredReviews());
-    }
-    fetchReviews();
-  }, []);
 
   // Close modal on Escape
   useEffect(() => {
@@ -210,9 +191,6 @@ export default function Reviews() {
     return () => window.removeEventListener("keydown", handler);
   }, []);
 
-  const handleReviewAdded = (newReview: Review) => {
-    setReviews((prev) => [newReview, ...prev]);
-  };
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(`${window.location.origin}/review`);
@@ -223,6 +201,10 @@ export default function Reviews() {
   const filtered = activeCategory === "All Services"
     ? reviews
     : reviews.filter((r) => r.service.toLowerCase() === activeCategory.toLowerCase());
+
+  const satisfaction = reviews.length
+    ? `${Math.round((reviews.filter((r) => r.rating >= 4).length / reviews.length) * 100)}%`
+    : "—";
 
   const avgRating = reviews.length
     ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1)
@@ -299,8 +281,8 @@ export default function Reviews() {
                 </svg>
               </div>
               <div>
-                <p className="text-lg font-extrabold text-[var(--text-primary)] leading-none">100%</p>
-                <p className="text-[11px] text-[var(--text-muted)] mt-0.5">Satisfaction Rate</p>
+                <p className="text-lg font-extrabold text-[var(--text-primary)] leading-none">{satisfaction}</p>
+                <p className="text-[11px] text-[var(--text-muted)] mt-0.5">Rated 4★ or higher</p>
               </div>
             </div>
           </div>
@@ -450,10 +432,7 @@ export default function Reviews() {
 
                   <ReviewForm
                     isModal={true}
-                    onReviewSubmitted={(newRev) => {
-                      handleReviewAdded(newRev);
-                      setTimeout(() => setIsModalOpen(false), 2500);
-                    }}
+                    onReviewSubmitted={() => setTimeout(() => setIsModalOpen(false), 3000)}
                   />
                 </div>
               </div>

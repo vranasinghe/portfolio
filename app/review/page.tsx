@@ -75,7 +75,7 @@ export default function ReviewPage() {
             <svg className="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            Instant Portfolio Publication
+            Featured on My Portfolio
           </span>
           <span className="text-[var(--border-color)]">·</span>
           <span className="flex items-center gap-2">
@@ -100,13 +100,13 @@ export default function ReviewPage() {
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--accent-color)]/40 to-transparent" />
 
           <div className="p-7 sm:p-10">
-            {process.env.NODE_ENV === "production" ? <p role="status">Review submissions are unavailable until durable storage is configured. Please contact me directly.</p> : <ReviewForm />}
+            <ReviewForm />
           </div>
         </div>
 
         {/* Footer */}
         <p className="mt-10 text-center text-[10px] text-[var(--text-muted)] font-label">
-          © {new Date().getFullYear()} Venuja Ranasinghe · All submissions are protected &amp; verified.
+          © {new Date().getFullYear()} Venuja Ranasinghe · Every review is read by me before it goes live.
         </p>
       </div>
     </main>

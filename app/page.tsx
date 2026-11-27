@@ -44,7 +44,7 @@ export default function Home() {
           <Certifications />
         </section>
 
-        {/* Reviews section — toggle via NEXT_PUBLIC_SHOW_REVIEWS in .env.local */}
+        {/* Reviews section — shown once data/reviews.ts has an approved review */}
         {SHOW_REVIEWS && (
           <section id="reviews" tabIndex={-1}>
             <Reviews />

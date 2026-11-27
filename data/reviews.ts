@@ -14,7 +14,20 @@ export interface Review {
   featured?: boolean;
 }
 
-export const INITIAL_REVIEWS: Review[] = [];
+/**
+ * Approved client reviews shown on the homepage.
+ *
+ * How to publish a review:
+ *   1. A client submits the form at venuja.online/review.
+ *   2. You get an email with the review and a ready-to-paste block.
+ *   3. Paste that block inside the array below, commit and push.
+ *
+ * The Reviews section and its nav link appear automatically once this
+ * list has at least one entry. Delete an entry to unpublish it.
+ */
+export const APPROVED_REVIEWS: Review[] = [
+  // Paste approved reviews here, newest first.
+];
 
 export const SERVICE_CATEGORIES = [
   "All Services",
@@ -24,31 +37,3 @@ export const SERVICE_CATEGORIES = [
   "Mobile Development",
   "Database & Cloud Setup",
 ] as const;
-
-const LOCAL_STORAGE_KEY = "vr_portfolio_client_reviews";
-
-export function getStoredReviews(): Review[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (e) {
-    console.error("Error reading reviews from localStorage", e);
-    return [];
-  }
-}
-
-export function saveReviewToLocalStorage(newReview: Review): Review[] {
-  const current = getStoredReviews();
-  const updated = [newReview, ...current];
-  if (typeof window !== "undefined") {
-    try {
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updated));
-    } catch (e) {
-      console.error("Error saving review to localStorage", e);
-    }
-  }
-  return updated;
-}

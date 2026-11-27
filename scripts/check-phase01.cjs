@@ -66,17 +66,19 @@ async function main() {
   check((await badProvider.POST(request(goodContact))).status === 502, 'Provider exception controlled');
   for (let i = 0; i < 5; i++) result = await contact.POST(request(goodContact));
   check(result.status === 429, 'Contact throttle');
-  const memory = new Map(); let broken = false;
-  const fakeFs = { existsSync: file => memory.has(file), readFileSync: file => memory.get(file), writeFileSync: (file, value) => { if (broken) throw new Error(); memory.set(file, value); }, renameSync: (a, b) => { memory.set(b, memory.get(a)); memory.delete(a); } };
-  const reviews = load('app/api/reviews/route.ts', { 'node:fs': fakeFs }, { NODE_ENV: 'development' });
-  const goodReview = { name: 'Test', comment: 'Test only', rating: 4 };
+  const mails = [];
+  const mailer = fail => ({ Resend: class { emails = { send: async payload => { if (fail) throw new Error(); mails.push(payload); return { error: null }; } }; } });
+  const reviewEnv = { RESEND_API_KEY: 'test-only', CONTACT_TO_EMAIL: 'owner@example.com' };
+  const reviews = load('app/api/reviews/route.ts', { resend: mailer(false) }, reviewEnv);
+  const goodReview = { name: 'Test <b>', comment: 'Test only', rating: 4 };
   for (const body of [{ ...goodReview, role: {} }, { ...goodReview, rating: 1.5 }, { ...goodReview, avatarUrl: 'javascript:x' }]) check((await reviews.POST(request(body))).status === 400, 'Review input rejection');
-  result = await reviews.POST(request(goodReview)); const saved = await result.json();
-  check(result.status === 200 && !saved.review.verified && !saved.review.featured, 'Unverified/unfeatured review');
-  broken = true; check((await reviews.POST(request(goodReview))).status === 503, 'Persistence failure honest');
-  const prod = load('app/api/reviews/route.ts', { 'node:fs': fakeFs }, { NODE_ENV: 'production' });
-  check((await prod.POST(request(goodReview))).status === 503, 'Production review writes disabled');
-  check((await (await prod.GET()).json()).reviews.length === 0, 'Production reviews unavailable');
+  result = await reviews.POST(request(goodReview)); const sentReview = await result.json();
+  check(result.status === 200 && sentReview.pending && !sentReview.review, 'Review queued for approval, not published');
+  check(mails.length === 1 && mails[0].to === 'owner@example.com', 'Review emailed only to owner');
+  check(!mails[0].html.includes('Test <b>') && mails[0].text.includes('APPROVED_REVIEWS'), 'Review email escaped with paste instructions');
+  check((await (await reviews.GET()).json()).reviews.length === 0, 'Only approved reviews are listed');
+  check((await load('app/api/reviews/route.ts', { resend: mailer(false) }, {}).POST(request(goodReview))).status === 503, 'Missing email config honest');
+  check((await load('app/api/reviews/route.ts', { resend: mailer(true) }, reviewEnv).POST(request(goodReview))).status === 502, 'Review provider failure honest');
   const data = load('data/portfolio.ts');
   check(data.featuredProjects.length === 4 && data.minorProjects.length === 8, 'All twelve projects retained');
   check(new Set([...data.featuredProjects, ...data.minorProjects].map(p => p.title)).size === 12, 'No duplicate projects');
@@ -85,6 +87,6 @@ async function main() {
   check(vee.veeReply('github activity').actions.some(action => action.href === '#github-activity'), 'Vee activity navigation');
   check(!vee.veeReply('internship').text.includes('available for 2026'), 'Vee confirms availability with owner');
   check(!fs.existsSync(path.join(root, 'app/projects/[slug]/page.tsx')), 'No case study routes');
-  console.log(`Passed ${checks} focused assertions. APIs/providers/storage mocked; no real email, review or GitHub request sent.`);
+  console.log(`Passed ${checks} focused assertions. APIs/providers/storage mocked; no real email or GitHub request sent.`);
 }
 main().catch(error => { console.error(error); process.exitCode = 1; });
