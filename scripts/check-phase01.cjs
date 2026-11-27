@@ -6,11 +6,13 @@ const ts = require('typescript');
 const root = path.resolve(__dirname, '..');
 let checks = 0;
 const check = (condition, label) => { assert.ok(condition, label); checks++; };
-function load(file, mocks = {}, env = {}, fetcher = global.fetch) {
+function load(file, mocks = {}, env = {}, fetcher = global.fetch, moduleCache = {}) {
+  if (moduleCache[file]) return moduleCache[file].exports;
   const source = fs.readFileSync(path.join(root, file), 'utf8');
   const code = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX, target: ts.ScriptTarget.ES2022, esModuleInterop: true } }).outputText;
   const mod = { exports: {} };
-  const req = name => name in mocks ? mocks[name] : name.startsWith('@/') ? load(name.slice(2) + '.ts', mocks, env, fetcher) : require(name);
+  moduleCache[file] = mod;
+  const req = name => name.endsWith('.json') && name.startsWith('.') ? JSON.parse(fs.readFileSync(path.resolve(root, path.dirname(file), name), 'utf8')) : name in mocks ? mocks[name] : name.startsWith('@/') ? load(name.slice(2) + '.ts', mocks, env, fetcher, moduleCache) : require(name);
   vm.runInNewContext('(function(require,module,exports,process,fetch){' + code + '\n})', { console, Buffer, Date: mocks.__Date || Date, Map, URL, TextDecoder, Uint8Array, AbortSignal, Request, Response, setTimeout, clearTimeout })(req, mod, mod.exports, { env, cwd: () => root }, fetcher);
   return mod.exports;
 }
@@ -114,6 +116,49 @@ async function main() {
   check(projectInvite.ok && projectInvite.payload.projectUrl === 'https://example.com/project', 'Project URL preserved in signed invite');
   for (const unsafe of ['javascript:alert(1)', 'https://user:password@example.com']) check((await create.POST(adminRequest(cookie, unsafe))).status === 400, 'Unsafe invite project URL rejected');
   check(!invites.verifyInvite(signed.signToken('invite:', { ...payload, projectUrl: 'javascript:alert(1)' })).ok, 'Unsafe signed project URL rejected');
+  const manageEnv = { ...adminEnv, REVIEW_GITHUB_TOKEN: 'mock-write-token', REVIEW_GITHUB_BRANCH: 'test-reviews' };
+  const sha = 'a'.repeat(40);
+  const managedReview = { id: 'approved-1', name: 'Client', role: 'Founder', company: 'Project', service: 'Full-Stack Web App', rating: 5, comment: 'Great work', date: 'November 2026', verified: true };
+  let githubCalls = [], githubStatus = 200, remoteReviews = [managedReview, { ...managedReview, id: 'approved-2', name: 'Keep me' }];
+  const githubMock = async (url, options) => {
+    githubCalls.push({ url, ...options });
+    if (githubStatus !== 200) return Response.json({}, { status: githubStatus });
+    if (options.method === 'GET') return Response.json({ type: 'file', encoding: 'base64', sha, content: Buffer.from(JSON.stringify(remoteReviews)).toString('base64') });
+    return Response.json({ commit: { sha: 'b'.repeat(40) } });
+  };
+  const managed = load('app/api/admin/reviews/route.ts', {}, manageEnv, githubMock);
+  const managedRequest = (method, body, adminCookie = cookie, origin = 'https://admin.example') => new (require('next/server').NextRequest)('https://admin.example/api/admin/reviews', { method, headers: { 'content-type': 'application/json', origin, ...(adminCookie && { cookie: 'vr_admin=' + adminCookie }) }, ...(method !== 'GET' && { body: JSON.stringify(body) }) });
+  for (const badCookie of ['', 'forged']) {
+    check((await managed.GET(managedRequest('GET', null, badCookie))).status === 401, 'Review list protected');
+    check((await managed.DELETE(managedRequest('DELETE', { id: 'approved-1', sha }, badCookie))).status === 401, 'Deletion protected');
+  }
+  check(!githubCalls.length, 'Unauthorized requests never reach GitHub');
+  check((await managed.DELETE(managedRequest('DELETE', { id: 'approved-1', sha }, cookie, 'https://evil.example'))).status === 403, 'Cross-origin deletion blocked');
+  check(!githubCalls.length, 'CSRF blocked before GitHub');
+  check((await load('app/api/admin/reviews/route.ts', {}, adminEnv, githubMock).GET(managedRequest('GET'))).status === 503, 'Management fails closed without token and branch');
+  result = await managed.GET(managedRequest('GET')); const listing = await result.json();
+  check(result.status === 200 && listing.reviews.length === 2 && listing.sha === sha && listing.branch === 'test-reviews' && result.headers.get('cache-control') === 'no-store', 'Latest GitHub snapshot listed without caching');
+  githubCalls = [];
+  check((await managed.DELETE(managedRequest('DELETE', { id: 'approved-1', sha: 'c'.repeat(40) }))).status === 409 && githubCalls.length === 1, 'Stale snapshot never writes');
+  githubCalls = [];
+  check((await managed.DELETE(managedRequest('DELETE', { id: 'missing', sha }))).status === 404 && githubCalls.length === 1, 'Missing review never writes');
+  githubCalls = [];
+  result = await managed.DELETE(managedRequest('DELETE', { id: 'approved-1', sha }));
+  check(result.status === 200 && githubCalls.length === 2, 'One read and one commit for deletion');
+  const mutation = JSON.parse(githubCalls[1].body);
+  const remainingReviews = JSON.parse(Buffer.from(mutation.content, 'base64').toString('utf8'));
+  check(remainingReviews.length === 1 && remainingReviews[0].id === 'approved-2' && mutation.sha === sha && mutation.branch === 'test-reviews', 'Only chosen review removed; branch and SHA protected');
+  check(githubCalls.every(call => call.url.startsWith('https://api.github.com/repos/vranasinghe/portfolio/contents/data/approvedReviews.json')), 'Only fixed review file editable');
+  remoteReviews = [{ ...managedReview, rating: 99 }]; githubCalls = [];
+  check((await managed.DELETE(managedRequest('DELETE', { id: 'approved-1', sha }))).status === 502 && githubCalls.length === 1, 'Malformed data never overwritten');
+  remoteReviews = [managedReview, managedReview];
+  check((await managed.GET(managedRequest('GET'))).status === 502, 'Duplicate IDs rejected');
+  remoteReviews = [managedReview];
+  for (const status of [403, 409, 404, 500]) { githubStatus = status; check((await managed.GET(managedRequest('GET'))).status === ({403:503,409:409,404:503,500:502})[status], 'Controlled GitHub error ' + status); }
+  const failingManagement = load('app/api/admin/reviews/route.ts', {}, manageEnv, async () => { throw new Error('network'); });
+  check((await failingManagement.GET(managedRequest('GET'))).status === 502, 'Network failure controlled');
+  const conflictManagement = load('app/api/admin/reviews/route.ts', {}, manageEnv, async (url, options) => options.method === 'PUT' ? Response.json({}, { status: 409 }) : Response.json({ type: 'file', encoding: 'base64', sha, content: Buffer.from(JSON.stringify([managedReview])).toString('base64') }));
+  check((await conflictManagement.DELETE(managedRequest('DELETE', { id: 'approved-1', sha }))).status === 409, 'Concurrent write conflict controlled');
   const data = load('data/portfolio.ts');
   check(data.featuredProjects.length === 4 && data.minorProjects.length === 8, 'All twelve projects retained');
   check(new Set([...data.featuredProjects, ...data.minorProjects].map(p => p.title)).size === 12, 'No duplicate projects');
