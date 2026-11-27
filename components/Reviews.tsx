@@ -2,7 +2,6 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { APPROVED_REVIEWS, Review } from "@/data/reviews";
-import SectionHeader from "@/components/SectionHeader";
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 function getInitials(str: string) {
@@ -176,9 +175,13 @@ function ReviewCard({ review, index }: { review: Review; index: number }) {
 export default function Reviews({ reviews = APPROVED_REVIEWS }: { reviews?: Review[] } = {}) {
   if (reviews.length === 0) {
     return (
-      <section className="band-dark reviews-band text-[var(--text-primary)] w-full py-20 sm:py-24 border-y border-[var(--border-color)]">
+      <section className="band-dark reviews-band text-[var(--text-primary)] w-full bg-black py-20 sm:py-24">
         <div className="wrap">
-          <SectionHeader title="Client Reviews" />
+          <header className="mb-12 border-b border-white/70 pb-5 sm:mb-16 sm:pb-7">
+            <h2 className="text-[clamp(2.75rem,6vw,6rem)] font-extrabold leading-[1.05] tracking-[-0.035em] text-white">
+              Client Reviews
+            </h2>
+          </header>
           <p className="mx-auto max-w-xl text-center text-[var(--text-muted)] leading-relaxed">Client reviews will appear here after approval.</p>
         </div>
       </section>
@@ -186,13 +189,17 @@ export default function Reviews({ reviews = APPROVED_REVIEWS }: { reviews?: Revi
   }
 
   return (
-    <section className="band-dark reviews-band text-[var(--text-primary)] w-full py-24 relative overflow-hidden">
+    <section className="band-dark reviews-band text-[var(--text-primary)] w-full bg-black py-20 sm:py-24 relative overflow-hidden">
 
 
       <div className="wrap relative z-10">
 
         {/* ── Section Header ── */}
-        <SectionHeader title="Client Reviews" />
+        <header className="mb-12 border-b border-white/70 pb-5 sm:mb-16 sm:pb-7">
+            <h2 className="text-[clamp(2.75rem,6vw,6rem)] font-extrabold leading-[1.05] tracking-[-0.035em] text-white">
+              Client Reviews
+            </h2>
+          </header>
 
         {/* ── Reviews Grid ── */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
