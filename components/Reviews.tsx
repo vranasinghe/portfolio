@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { APPROVED_REVIEWS, Review, SERVICE_CATEGORIES } from "@/data/reviews";
+import { APPROVED_REVIEWS, Review } from "@/data/reviews";
 import SectionHeader from "@/components/SectionHeader";
 
 // ── Helpers ────────────────────────────────────────────────────────────────
@@ -174,26 +173,12 @@ function ReviewCard({ review, index }: { review: Review; index: number }) {
 }
 
 // ── Main Section ─────────────────────────────────────────────────────────────
-export default function Reviews() {
-  const reviews: Review[] = APPROVED_REVIEWS;
-  const [activeCategory, setActiveCategory] = useState<string>("All Services");
-  const filtered = activeCategory === "All Services"
-    ? reviews
-    : reviews.filter((r) => r.service.toLowerCase() === activeCategory.toLowerCase());
-
-  const satisfaction = reviews.length
-    ? `${Math.round((reviews.filter((r) => r.rating >= 4).length / reviews.length) * 100)}%`
-    : "—";
-
-  const avgRating = reviews.length
-    ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1)
-    : "—";
-
+export default function Reviews({ reviews = APPROVED_REVIEWS }: { reviews?: Review[] } = {}) {
   if (reviews.length === 0) {
     return (
       <section className="band-dark reviews-band text-[var(--text-primary)] w-full py-20 sm:py-24 border-y border-[var(--border-color)]">
         <div className="wrap">
-          <SectionHeader title="Client Reviews" subtitle="Feedback from clients on the projects we built together." />
+          <SectionHeader title="Client Reviews" />
           <p className="mx-auto max-w-xl text-center text-[var(--text-muted)] leading-relaxed">Client reviews will appear here after approval.</p>
         </div>
       </section>
@@ -207,115 +192,17 @@ export default function Reviews() {
       <div className="wrap relative z-10">
 
         {/* ── Section Header ── */}
-        <SectionHeader
-          title="Client Reviews"
-          subtitle="Genuine testimonials from leaders and clients I've collaborated with on Data Science, Machine Learning, and Web projects."
-        />
-
-        {/* ── Stats & Actions Bar ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.15 }}
-          className="relative flex flex-col sm:flex-row items-center justify-between gap-6
-                     p-5 sm:p-6 mb-10
-                     bg-[var(--card-bg)] border border-[var(--border-color)]
-                     shadow-[0_15px_40px_-15px_var(--shadow-color)] overflow-hidden"
-        >
-          {/* Subtle gradient strip top */}
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--accent-color)]/30 to-transparent" />
-
-          {/* Stats */}
-          <div className="flex items-center gap-6 sm:gap-8 flex-wrap justify-center sm:justify-start">
-            {/* Avg Rating */}
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-amber-400/10 border border-amber-400/20 flex items-center justify-center">
-                <svg className="w-5 h-5 text-amber-400 fill-amber-400" viewBox="0 0 20 20">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-              </div>
-              <div>
-                <p className="text-lg font-extrabold text-[var(--text-primary)] leading-none">
-                  {avgRating} <span className="text-xs font-normal text-[var(--text-muted)]">/ 5.0</span>
-                </p>
-                <p className="text-[11px] text-[var(--text-muted)] mt-0.5">Average Client Rating</p>
-              </div>
-            </div>
-
-            <div className="hidden sm:block w-px h-9 bg-[var(--border-color)]" />
-
-            {/* Total reviews */}
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-[var(--accent-color)]/10 border border-[var(--accent-color)]/20 flex items-center justify-center">
-                <svg className="w-5 h-5 text-[var(--accent-color)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </div>
-              <div>
-                <p className="text-lg font-extrabold text-[var(--text-primary)] leading-none">{reviews.length}</p>
-                <p className="text-[11px] text-[var(--text-muted)] mt-0.5">Verified Reviews</p>
-              </div>
-            </div>
-
-            <div className="hidden sm:block w-px h-9 bg-[var(--border-color)]" />
-
-            {/* Satisfaction */}
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center">
-                <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                </svg>
-              </div>
-              <div>
-                <p className="text-lg font-extrabold text-[var(--text-primary)] leading-none">{satisfaction}</p>
-                <p className="text-[11px] text-[var(--text-muted)] mt-0.5">Rated 4★ or higher</p>
-              </div>
-            </div>
-          </div>
-
-        </motion.div>
-
-        {/* ── Category Filter Tabs ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.2 }}
-          className="flex flex-wrap items-center justify-center gap-2 mb-10"
-        >
-          {SERVICE_CATEGORIES.map((cat) => {
-            const isActive = activeCategory === cat;
-            return (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-4 py-1.5 text-xs sm:text-sm font-semibold transition-all duration-200
-                  ${isActive
-                    ? "btn-accent"
-                    : "btn-outline bg-transparent text-[var(--text-primary)] hover:bg-[color-mix(in_srgb,var(--accent-color)_8%,transparent)]"
-                  }`}
-              >
-                {cat}
-              </button>
-            );
-          })}
-        </motion.div>
+        <SectionHeader title="Client Reviews" />
 
         {/* ── Reviews Grid ── */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <AnimatePresence mode="popLayout">
-            {filtered.map((rev, i) => (
+            {reviews.map((rev, i) => (
               <ReviewCard key={rev.id} review={rev} index={i} />
             ))}
           </AnimatePresence>
         </div>
 
-        {filtered.length === 0 && (
-          <div className="text-center py-20 text-[var(--text-muted)]">
-            <p className="text-sm">No reviews found for this category yet.</p>
-          </div>
-        )}
 
 
       </div>
