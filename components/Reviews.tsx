@@ -191,7 +191,7 @@ export default function Reviews() {
 
   if (reviews.length === 0) {
     return (
-      <section className="band-dark !bg-black text-[var(--text-primary)] w-full py-20 sm:py-24 border-y border-[var(--border-color)]">
+      <section className="band-dark reviews-band text-[var(--text-primary)] w-full py-20 sm:py-24 border-y border-[var(--border-color)]">
         <div className="wrap">
           <SectionHeader title="Client Reviews" subtitle="Feedback from clients on the projects we built together." />
           <p className="mx-auto max-w-xl text-center text-[var(--text-muted)] leading-relaxed">Client reviews will appear here after approval.</p>
@@ -201,11 +201,8 @@ export default function Reviews() {
   }
 
   return (
-    <section className="band-dark !bg-black text-[var(--text-primary)] w-full py-24 relative overflow-hidden">
+    <section className="band-dark reviews-band text-[var(--text-primary)] w-full py-24 relative overflow-hidden">
 
-      {/* Background blur accent */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-blue-950/20 blur-[110px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-[500px] h-[400px] bg-indigo-950/15 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="wrap relative z-10">
 

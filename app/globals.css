@@ -584,3 +584,21 @@ html[data-menu="open"] .vee { display: none; } /* the mobile menu sheet owns the
 .pipeline-train:hover,
 .pipeline-train:hover * { animation-play-state: paused; }
 
+
+/* Client Reviews keeps a black surface in every site theme. */
+.band-dark.reviews-band {
+  background: #000;
+  --bg-primary: #000;
+  --bg-secondary: #0a0a0a;
+  --bg-tertiary: #181818;
+  --card-bg: #111;
+  --border-color: #333;
+  --text-primary: #fff;
+  --text-secondary: #e5e5e5;
+  --text-muted: #b3b3b3;
+  --rule: #d4d4d4;
+  --rule-card: #333;
+  --line-soft: #333;
+  --shadow-color: rgba(0, 0, 0, 0.35);
+  color: var(--text-primary);
+}
