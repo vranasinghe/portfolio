@@ -14,20 +14,9 @@ export interface Review {
   featured?: boolean;
 }
 
-/**
- * Approved client reviews shown on the homepage.
- *
- * How to publish a review:
- *   1. A client submits the form at venuja.online/review.
- *   2. You get an email with the review and a ready-to-paste block.
- *   3. Paste that block inside the array below, commit and push.
- *
- * Approved entries appear between Certifications and Contact.
- * Delete an entry to unpublish it.
- */
-export const APPROVED_REVIEWS: Review[] = [
-  // Paste approved reviews here, newest first.
-];
+/** Approved reviews live in the JSON array; admin deletion commits changes to GitHub. */
+import approvedReviews from "./approvedReviews.json";
+export const APPROVED_REVIEWS: Review[] = approvedReviews;
 
 export const SERVICE_CATEGORIES = [
   "All Services",

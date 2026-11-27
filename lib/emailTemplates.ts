@@ -346,7 +346,7 @@ export function reviewNotificationEmail(r: ReviewEmailData, invite?: { id: strin
   const name = escapeHtml(r.name);
   const inviteDetail = invite ? invite.id + " · " + invite.name + " · Expires " + new Date(invite.exp * 1000).toISOString() : "";
   const stars = "★".repeat(r.rating) + "☆".repeat(5 - r.rating);
-  const snippet = JSON.stringify(r, null, 2) + ",";
+  const snippet = JSON.stringify(r, null, 2);
   const link = (url?: string) => (url ? `<a href="${escapeHtml(url)}" style="color:${C.blue};font-weight:600;">${escapeHtml(url)}</a>` : "&mdash;");
 
   const html = shell({
@@ -365,7 +365,7 @@ export function reviewNotificationEmail(r: ReviewEmailData, invite?: { id: strin
         ${name} left you a review
       </td></tr>
       ${spacer(18)}
-      <tr><td>${callout("Not published yet:", "to show it on your portfolio, paste the block at the bottom into <code>APPROVED_REVIEWS</code> in <code>data/reviews.ts</code>, then commit and push.")}</td></tr>
+      <tr><td>${callout("Not published yet:", "to show it on your portfolio, add the object at the bottom to the JSON array (separate objects with commas, no trailing comma) in <code>data/approvedReviews.json</code>, then commit and push.")}</td></tr>
       ${spacer(26)}
       <tr><td>${label("Details")}</td></tr>
       ${spacer(6)}
@@ -385,7 +385,7 @@ export function reviewNotificationEmail(r: ReviewEmailData, invite?: { id: strin
       ${spacer(26)}
       <tr><td>${messageBox("Review", r.comment)}</td></tr>
       ${spacer(26)}
-      <tr><td>${label("Paste into data/reviews.ts")}</td></tr>
+      <tr><td>${label("Paste into data/approvedReviews.json")}</td></tr>
       ${spacer(6)}
       <tr><td style="background:${C.black};padding:16px 18px;font-family:Consolas,'Courier New',monospace;font-size:12px;line-height:18px;color:#e6eeff;white-space:pre-wrap;word-break:break-word;">${escapeHtml(snippet)}</td></tr>
       ${spacer(26)}
@@ -401,7 +401,7 @@ export function reviewNotificationEmail(r: ReviewEmailData, invite?: { id: strin
     ``,
     r.comment,
     ``,
-    `To publish, paste this into APPROVED_REVIEWS in data/reviews.ts, then commit and push:`,
+    `To publish, add this object to the APPROVED_REVIEWS JSON array in data/approvedReviews.json, then commit and push:`,
     ``,
     snippet,
   ].join("\n");
