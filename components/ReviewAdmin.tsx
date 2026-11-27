@@ -18,7 +18,7 @@ export function AdminLogin() {
 }
 type LinkRecord = { url: string; expiresAt: number; name: string; project: string; days: number };
 export function InviteCreator() {
-  const [name, setName] = useState(""); const [project, setProject] = useState(""); const [days, setDays] = useState(30);
+  const [name, setName] = useState(""); const [project, setProject] = useState(""); const [projectUrl, setProjectUrl] = useState(""); const [days, setDays] = useState(30);
   const [links, setLinks] = useState<LinkRecord[]>([]); const [current, setCurrent] = useState<LinkRecord | null>(null);
   const [error, setError] = useState(""); const [busy, setBusy] = useState(false); const [copied, setCopied] = useState(""); const [canShare, setCanShare] = useState(false);
   useEffect(() => setCanShare(typeof navigator.share === "function"), []);
@@ -26,9 +26,10 @@ export function InviteCreator() {
   const message = (link: LinkRecord) => "Hi " + link.name + ", thank you for working with me on " + (link.project || "your project") + "! I'd really appreciate a short review: " + link.url + " (link valid for " + link.days + " days)";
   return <div className="space-y-6">
     {error && <p role="alert">{error}</p>}
-    {!current ? <form className="space-y-5" onSubmit={async e => { e.preventDefault(); setBusy(true); setError(""); try { const data = await post("review-invite", { name, project, days }); const link = { ...data, name: name.trim(), project: project.trim(), days }; setCurrent(link); setLinks(previous => [link, ...previous]); } catch (e) { setError(e instanceof Error ? e.message : "Could not create link."); } finally { setBusy(false); } }}>
+    {!current ? <form className="space-y-5" onSubmit={async e => { e.preventDefault(); setBusy(true); setError(""); try { const data = await post("review-invite", { name, project, projectUrl, days }); const link = { ...data, name: name.trim(), project: project.trim(), days }; setCurrent(link); setLinks(previous => [link, ...previous]); } catch (e) { setError(e instanceof Error ? e.message : "Could not create link."); } finally { setBusy(false); } }}>
       <label className="block">Client name (required)<input required maxLength={100} autoComplete="name" className="input-neon w-full p-3 mt-2" value={name} onChange={e => setName(e.target.value)} /></label>
       <label className="block">Project (optional)<input maxLength={120} className="input-neon w-full p-3 mt-2" value={project} onChange={e => setProject(e.target.value)} /></label>
+      <label className="block">Project URL (optional)<input type="url" maxLength={2048} placeholder="https://your-project.vercel.app" className="input-neon w-full p-3 mt-2" value={projectUrl} onChange={e => setProjectUrl(e.target.value)} /><span className="block mt-2 text-sm text-[var(--text-muted)]">Prefills the deployed project URL in the client’s review form.</span></label>
       <label className="block">Valid for<select className="input-neon w-full p-3 mt-2" value={days} onChange={e => setDays(Number(e.target.value))}>{[7,14,30,60].map(d => <option key={d} value={d}>{d} days</option>)}</select></label>
       <button disabled={busy} className="btn-accent w-full min-h-12 p-3">{busy ? "Creating…" : "Create link"}</button>
     </form> : <div className="space-y-4">
@@ -37,7 +38,7 @@ export function InviteCreator() {
       <p className="text-sm text-[var(--text-muted)]">Expires {new Date(current.expiresAt * 1000).toLocaleDateString()}</p>
       <div className="flex flex-col gap-3"><button className={button} onClick={() => copy(current.url)}>{copied === current.url ? "Copied!" : "Copy"}</button><a className="btn-accent min-h-12 px-4 py-3 text-center" href={"https://wa.me/?text=" + encodeURIComponent(message(current))} target="_blank" rel="noopener noreferrer">Send on WhatsApp</a>
       {canShare && <button className={button} onClick={async () => { try { await navigator.share({ text: message(current) }); } catch (e) { if (!(e instanceof Error && e.name === "AbortError")) setError("Sharing failed. Try Copy or WhatsApp."); } }}>Share</button>}
-      <button className={button} onClick={() => { setCurrent(null); setName(""); setProject(""); setDays(30); setError(""); }}>Create another</button></div>
+      <button className={button} onClick={() => { setCurrent(null); setName(""); setProject(""); setProjectUrl(""); setDays(30); setError(""); }}>Create another</button></div>
     </div>}
     {!!links.length && <section className="border-t border-[var(--border-color)] pt-5"><h2 className="font-bold mb-2">Created this session</h2><p className="text-sm text-[var(--text-muted)] mb-3">This list clears when you reload or log out.</p><ul className="space-y-3">{links.map(link => <li key={link.url} className="flex items-center justify-between gap-3"><a href={link.url} target="_blank" rel="noopener noreferrer" className="min-w-0 break-words text-[var(--accent-color)] underline underline-offset-4 py-3" aria-label={"Open review link for " + link.name}>{link.name}{link.project && " · " + link.project}</a><button className={button + " shrink-0"} onClick={() => copy(link.url)}>{copied === link.url ? "Copied!" : "Copy"}</button></li>)}</ul></section>}
     <p className="sr-only" role="status">{copied ? "Copied!" : ""}</p><button className={button + " text-sm"} onClick={async () => { setError(""); try { await post("logout", {}); window.location.reload(); } catch { setError("Could not log out. Please try again."); } }}>Log out</button>

@@ -103,7 +103,7 @@ export default async function ReviewPage({ searchParams }: { searchParams: Promi
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--accent-color)]/40 to-transparent" />
 
           <div className="p-7 sm:p-10">
-            {invite.ok ? <ReviewForm inviteToken={token as string} invitedName={invite.payload.name} invitedProject={invite.payload.project} /> : <div className="space-y-6"><p role="status">{invite.reason === "expired" ? "This link has expired. Message me and I'll send a new one." : "This review page is invite-only. If we've worked together, ask me for your personal review link."}</p><div className="flex flex-wrap gap-3"><Link className="btn-outline px-5 py-3" href="/">Back to portfolio</Link><Link className="btn-accent px-5 py-3" href="/#contact">Contact me</Link></div></div>}
+            {invite.ok ? <ReviewForm inviteToken={token as string} invitedName={invite.payload.name} invitedProject={invite.payload.project} invitedProjectUrl={invite.payload.projectUrl} /> : <div className="space-y-6"><p role="status">{invite.reason === "expired" ? "This link has expired. Message me and I'll send a new one." : "This review page is invite-only. If we've worked together, ask me for your personal review link."}</p><div className="flex flex-wrap gap-3"><Link className="btn-outline px-5 py-3" href="/">Back to portfolio</Link><Link className="btn-accent px-5 py-3" href="/#contact">Contact me</Link></div></div>}
           </div>
         </div>
 

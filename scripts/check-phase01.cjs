@@ -103,13 +103,17 @@ async function main() {
   check(result.status === 429, 'Sixth failed login throttled');
   for (const env of [{}, { ADMIN_PASSWORD: 'x' }, { REVIEW_INVITE_SECRET: adminEnv.REVIEW_INVITE_SECRET }]) check((await load('app/api/admin/login/route.ts', {}, env).POST(request({ password: 'x' }))).status === 503, 'Missing admin config');
   const create = load('app/api/admin/review-invite/route.ts', {}, adminEnv);
-  const adminRequest = cookie => new (require('next/server').NextRequest)('https://preview.example/api/admin/review-invite', { method: 'POST', headers: { 'content-type': 'application/json', ...(cookie && { cookie: 'vr_admin=' + cookie }) }, body: JSON.stringify({ name: 'Client', project: 'Project', days: 14 }) });
+  const adminRequest = (cookie, projectUrl = "https://example.com/project") => new (require('next/server').NextRequest)('https://preview.example/api/admin/review-invite', { method: 'POST', headers: { 'content-type': 'application/json', ...(cookie && { cookie: 'vr_admin=' + cookie }) }, body: JSON.stringify({ name: 'Client', project: 'Project', projectUrl, days: 14 }) });
   for (const cookie of [undefined, 'forged', token]) check((await create.POST(adminRequest(cookie))).status === 401, 'Admin session required');
   const cookie = sessions.createSessionCookieValue();
   check(sessions.isAdmin(cookie) && !sessions.isAdmin(expired), 'Session purpose separated');
   result = await create.POST(adminRequest(cookie));
   const link = await result.json();
   check(result.status === 200 && new URL(link.url).origin === 'https://preview.example' && invites.verifyInvite(new URL(link.url).searchParams.get('invite')).ok, 'Admin creates working preview invite');
+  const projectInvite = invites.verifyInvite(new URL(link.url).searchParams.get('invite'));
+  check(projectInvite.ok && projectInvite.payload.projectUrl === 'https://example.com/project', 'Project URL preserved in signed invite');
+  for (const unsafe of ['javascript:alert(1)', 'https://user:password@example.com']) check((await create.POST(adminRequest(cookie, unsafe))).status === 400, 'Unsafe invite project URL rejected');
+  check(!invites.verifyInvite(signed.signToken('invite:', { ...payload, projectUrl: 'javascript:alert(1)' })).ok, 'Unsafe signed project URL rejected');
   const data = load('data/portfolio.ts');
   check(data.featuredProjects.length === 4 && data.minorProjects.length === 8, 'All twelve projects retained');
   check(new Set([...data.featuredProjects, ...data.minorProjects].map(p => p.title)).size === 12, 'No duplicate projects');

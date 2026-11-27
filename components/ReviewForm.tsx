@@ -9,6 +9,7 @@ interface ReviewFormProps {
   inviteToken: string;
   invitedName: string;
   invitedProject?: string;
+  invitedProjectUrl?: string;
   onReviewSubmitted?: () => void;
   isModal?: boolean;
 }
@@ -73,7 +74,7 @@ function Textarea({ ...props }: React.TextareaHTMLAttributes<HTMLTextAreaElement
   );
 }
 
-export default function ReviewForm({ inviteToken, invitedName, invitedProject, onReviewSubmitted, isModal = false }: ReviewFormProps) {
+export default function ReviewForm({ inviteToken, invitedName, invitedProject, invitedProjectUrl, onReviewSubmitted, isModal = false }: ReviewFormProps) {
   const [name, setName] = useState(invitedName);
   const [role, setRole] = useState("");
   const [company, setCompany] = useState(invitedProject || "");
@@ -82,7 +83,7 @@ export default function ReviewForm({ inviteToken, invitedName, invitedProject, o
   const [comment, setComment] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
   const [linkedinUrl, setLinkedinUrl] = useState("");
-  const [projectUrl, setProjectUrl] = useState("");
+  const [projectUrl, setProjectUrl] = useState(invitedProjectUrl || "");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");

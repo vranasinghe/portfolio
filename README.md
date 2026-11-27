@@ -299,7 +299,7 @@ Client reviews use an approval-by-email flow. Share `venuja.online/review` with 
 
 Set REVIEW_INVITE_SECRET (at least 32 characters) and a long ADMIN_PASSWORD in Vercel for both Production and Preview, then redeploy. Keep these values private. Existing Resend and CONTACT_TO_EMAIL configuration is required.
 
-Open /admin/review-link directly on your phone, log in, enter the client's name and optional project, choose a validity period, and tap Create link. Copy, Share, or Send on WhatsApp sends the personal review URL. The name and project prefill editable fields. Links created during the current browser session remain available until reload. Log out when finished.
+Open /admin/review-link directly on your phone, log in, enter the client's name, optional project and deployed project URL, choose a validity period, and tap Create link. Copy, Share, or Send on WhatsApp sends the personal review URL. The name, project and project URL prefill editable fields. Existing invites without a project URL still work. Links created during the current browser session remain available until reload. Log out when finished.
 
 The client's submission is emailed only to CONTACT_TO_EMAIL with its invite details and a paste-ready review. After approval, paste the snippet into APPROVED_REVIEWS in data/reviews.ts, commit, and deploy. Nothing is published automatically.
 
