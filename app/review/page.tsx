@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import { verifyInvite } from "@/lib/reviewInvite";
 import ReviewForm from "@/components/ReviewForm";
 import NetworkBackground from "@/components/NetworkBackground";
 
@@ -11,7 +12,9 @@ export const metadata: Metadata = {
     "Share your client review and feedback for Venuja Ranasinghe's Data Science and Full-Stack development services.",
 };
 
-export default function ReviewPage() {
+export default async function ReviewPage({ searchParams }: { searchParams: Promise<{ invite?: string | string[] }> }) {
+  const { invite: token } = await searchParams;
+  const invite = verifyInvite(token);
   return (
     <main className="band-dark min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] relative overflow-x-hidden transition-colors duration-300">
       <NetworkBackground />
@@ -75,7 +78,7 @@ export default function ReviewPage() {
             <svg className="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            Instant Portfolio Publication
+            Featured on My Portfolio
           </span>
           <span className="text-[var(--border-color)]">·</span>
           <span className="flex items-center gap-2">
@@ -100,13 +103,13 @@ export default function ReviewPage() {
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--accent-color)]/40 to-transparent" />
 
           <div className="p-7 sm:p-10">
-            {process.env.NODE_ENV === "production" ? <p role="status">Review submissions are unavailable until durable storage is configured. Please contact me directly.</p> : <ReviewForm />}
+            {invite.ok ? <ReviewForm inviteToken={token as string} invitedName={invite.payload.name} invitedProject={invite.payload.project} invitedProjectUrl={invite.payload.projectUrl} /> : <div className="space-y-6"><p role="status">{invite.reason === "expired" ? "This link has expired. Message me and I'll send a new one." : "This review page is invite-only. If we've worked together, ask me for your personal review link."}</p><div className="flex flex-wrap gap-3"><Link className="btn-outline px-5 py-3" href="/">Back to portfolio</Link><Link className="btn-accent px-5 py-3" href="/#contact">Contact me</Link></div></div>}
           </div>
         </div>
 
         {/* Footer */}
         <p className="mt-10 text-center text-[10px] text-[var(--text-muted)] font-label">
-          © {new Date().getFullYear()} Venuja Ranasinghe · All submissions are protected &amp; verified.
+          © {new Date().getFullYear()} Venuja Ranasinghe · Every review is read by me before it goes live.
         </p>
       </div>
     </main>

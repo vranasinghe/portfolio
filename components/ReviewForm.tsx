@@ -2,11 +2,15 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Review, SERVICE_CATEGORIES } from "@/data/reviews";
+import { SERVICE_CATEGORIES } from "@/data/reviews";
 import Link from "next/link";
 
 interface ReviewFormProps {
-  onReviewSubmitted?: (newReview: Review) => void;
+  inviteToken: string;
+  invitedName: string;
+  invitedProject?: string;
+  invitedProjectUrl?: string;
+  onReviewSubmitted?: () => void;
   isModal?: boolean;
 }
 
@@ -70,16 +74,16 @@ function Textarea({ ...props }: React.TextareaHTMLAttributes<HTMLTextAreaElement
   );
 }
 
-export default function ReviewForm({ onReviewSubmitted, isModal = false }: ReviewFormProps) {
-  const [name, setName] = useState("");
+export default function ReviewForm({ inviteToken, invitedName, invitedProject, invitedProjectUrl, onReviewSubmitted, isModal = false }: ReviewFormProps) {
+  const [name, setName] = useState(invitedName);
   const [role, setRole] = useState("");
-  const [company, setCompany] = useState("");
+  const [company, setCompany] = useState(invitedProject || "");
   const [service, setService] = useState<string>(SERVICE_CATEGORIES[1]);
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
   const [linkedinUrl, setLinkedinUrl] = useState("");
-  const [projectUrl, setProjectUrl] = useState("");
+  const [projectUrl, setProjectUrl] = useState(invitedProjectUrl || "");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -92,6 +96,7 @@ export default function ReviewForm({ onReviewSubmitted, isModal = false }: Revie
     setSubmitting(true);
 
     const payload = {
+      inviteToken,
       name: name.trim(),
       role: role.trim() || "Client",
       company: company.trim() || "Independent",
@@ -106,11 +111,11 @@ export default function ReviewForm({ onReviewSubmitted, isModal = false }: Revie
     try {
       const res = await fetch("/api/reviews", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
       const data = await res.json();
-      if (!res.ok || !data.success || !data.review) throw new Error(data.error || "Your review could not be saved.");
+      if (!res.ok || !data.success) throw new Error(data.error || "Your review couldn't be sent.");
       setSubmitted(true);
-      onReviewSubmitted?.(data.review);
+      onReviewSubmitted?.();
     } catch (error) {
-      setErrorMsg(error instanceof Error ? error.message : "Your review could not be saved. Please try again.");
+      setErrorMsg(error instanceof Error ? error.message : "Your review couldn't be sent. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -132,14 +137,14 @@ export default function ReviewForm({ onReviewSubmitted, isModal = false }: Revie
         </div>
         <h3 className="text-xl font-extrabold text-[var(--text-primary)]">Thank you for your review!</h3>
         <p className="text-sm text-[var(--text-muted)] max-w-xs">
-          Your review was saved in this local development instance. It has not been independently verified or published to production.
+          It's on its way to me. Once I've read it, it'll appear on my portfolio.
         </p>
         <div className="flex items-center gap-3 mt-2 flex-wrap justify-center">
           <Link
-            href="/#reviews"
+            href="/"
             className="btn-accent px-5 py-2.5 text-sm font-bold flex items-center gap-2"
           >
-            View on Portfolio
+            Back to Portfolio
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
             </svg>
@@ -278,14 +283,14 @@ export default function ReviewForm({ onReviewSubmitted, isModal = false }: Revie
         {submitting ? (
           <>
             <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
-            Publishing Review…
+            Sending Review…
           </>
         ) : (
           <>
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 rotate-90" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
             </svg>
-            Publish Review to Portfolio
+            Submit Review
           </>
         )}
       </button>

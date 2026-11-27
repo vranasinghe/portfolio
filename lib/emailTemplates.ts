@@ -328,3 +328,83 @@ export function visitorConfirmationEmail(d: ContactEmailData) {
 
   return { subject: `Thanks for reaching out, ${d.name.split(/\s+/)[0] || d.name} · ${d.referenceId}`, html, text };
 }
+
+/* ── 3. New client review, awaiting approval ─────────────── */
+
+type ReviewEmailData = {
+  name: string;
+  role: string;
+  company: string;
+  service: string;
+  rating: number;
+  comment: string;
+  linkedinUrl?: string;
+  projectUrl?: string;
+};
+
+export function reviewNotificationEmail(r: ReviewEmailData, invite?: { id: string; name: string; exp: number }) {
+  const name = escapeHtml(r.name);
+  const inviteDetail = invite ? invite.id + " · " + invite.name + " · Expires " + new Date(invite.exp * 1000).toISOString() : "";
+  const stars = "★".repeat(r.rating) + "☆".repeat(5 - r.rating);
+  const snippet = JSON.stringify(r, null, 2) + ",";
+  const link = (url?: string) => (url ? `<a href="${escapeHtml(url)}" style="color:${C.blue};font-weight:600;">${escapeHtml(url)}</a>` : "&mdash;");
+
+  const html = shell({
+    title: `New review from ${r.name}`,
+    preheader: `${r.name} left a ${r.rating}-star review: ${r.comment.slice(0, 90)}`,
+    header: header({
+      bg: C.black,
+      eyebrow: `Portfolio &middot; Client review`,
+      eyebrowColor: C.blueLight,
+      headline: "New review",
+      accentWord: "to approve.",
+      accentColor: C.blueLight,
+    }),
+    body: `
+      <tr><td style="font-family:${FONT};font-size:22px;line-height:28px;font-weight:800;letter-spacing:-0.4px;color:${C.ink};">
+        ${name} left you a review
+      </td></tr>
+      ${spacer(18)}
+      <tr><td>${callout("Not published yet:", "to show it on your portfolio, paste the block at the bottom into <code>APPROVED_REVIEWS</code> in <code>data/reviews.ts</code>, then commit and push.")}</td></tr>
+      ${spacer(26)}
+      <tr><td>${label("Details")}</td></tr>
+      ${spacer(6)}
+      <tr><td>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="stack">
+          ${detailRows([
+            ["Rating", `<span style="color:#f59e0b;font-size:16px;letter-spacing:2px;">${stars}</span> <strong>${r.rating}/5</strong>`],
+            ["Name", `<strong>${name}</strong>`],
+            ["Role", escapeHtml([r.role, r.company].filter(Boolean).join(" · "))],
+            ["Service", escapeHtml(r.service)],
+            ["Invite", escapeHtml(inviteDetail)],
+            ["LinkedIn", link(r.linkedinUrl)],
+            ["Project", link(r.projectUrl)],
+          ])}
+        </table>
+      </td></tr>
+      ${spacer(26)}
+      <tr><td>${messageBox("Review", r.comment)}</td></tr>
+      ${spacer(26)}
+      <tr><td>${label("Paste into data/reviews.ts")}</td></tr>
+      ${spacer(6)}
+      <tr><td style="background:${C.black};padding:16px 18px;font-family:Consolas,'Courier New',monospace;font-size:12px;line-height:18px;color:#e6eeff;white-space:pre-wrap;word-break:break-word;">${escapeHtml(snippet)}</td></tr>
+      ${spacer(26)}
+      <tr><td>${note(`Don&rsquo;t want to publish it? Just ignore this email &mdash; nothing appears on your site until you add it.`)}</td></tr>
+    `,
+  });
+
+  const text = [
+    `NEW CLIENT REVIEW — ${SITE_LABEL}`,
+    `Invite: ${inviteDetail}`,
+    ``,
+    `${r.name} (${[r.role, r.company].filter(Boolean).join(", ")}) rated you ${r.rating}/5 for ${r.service}.`,
+    ``,
+    r.comment,
+    ``,
+    `To publish, paste this into APPROVED_REVIEWS in data/reviews.ts, then commit and push:`,
+    ``,
+    snippet,
+  ].join("\n");
+
+  return { subject: `New ${r.rating}★ review from ${r.name} — approve to publish`, html, text };
+}
