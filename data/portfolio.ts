@@ -332,6 +332,8 @@ export const minorProjects: MinorProject[] = [
     categoryLabel: "AI Engineering · Full-Stack Development",
     statusLabel: "Active Development | 2026",
     developmentStatus: "in-development",
+    github: "https://github.com/vranasinghe/Multi-Tenant-AI-Customer-Support-Platform-with-RAG.git",
+    demoVideo: "https://youtu.be/UW0GiOQAywc",
     imageUrl: "/ai-support-platform.png",
   },
   {
@@ -387,6 +389,7 @@ export const minorProjects: MinorProject[] = [
     tags: ["React Native", "Expo SDK 54", "TypeScript", "Zustand", "Expo Router", "Async Storage"],
     category: "Mobile App",
     github: "https://github.com/vranasinghe/Expense_Tracking_Mobile_App.git",
+    demoVideo: "https://youtube.com/shorts/Apv60kv37M8",
     imageUrl: "/Expense Trackin app.png",
   },
   {

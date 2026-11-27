@@ -204,7 +204,6 @@ export default function Hero() {
               Download CV
             </a>
           </motion.div>
-          <div className="flex flex-wrap gap-x-5 pointer-events-auto text-sm"><a className="inline-flex items-center min-h-11 underline underline-offset-4" href={personalInfo.github} target="_blank" rel="noopener noreferrer">GitHub</a><a className="inline-flex items-center min-h-11 underline underline-offset-4" href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a><button type="button" className="min-h-11 underline underline-offset-4 motion-reduce:hidden" onClick={() => window.dispatchEvent(new Event("portfolio:play-intro"))}>Play visual intro</button></div>
         </div>
       </div>
       </div>
