@@ -22,8 +22,8 @@ export interface Review {
  *   2. You get an email with the review and a ready-to-paste block.
  *   3. Paste that block inside the array below, commit and push.
  *
- * The Reviews section and its nav link appear automatically once this
- * list has at least one entry. Delete an entry to unpublish it.
+ * Approved entries appear between Certifications and Contact.
+ * Delete an entry to unpublish it.
  */
 export const APPROVED_REVIEWS: Review[] = [
   // Paste approved reviews here, newest first.

@@ -189,6 +189,17 @@ export default function Reviews() {
     ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1)
     : "—";
 
+  if (reviews.length === 0) {
+    return (
+      <section className="w-full py-20 sm:py-24 bg-[var(--card-bg)] border-y border-[var(--border-color)]">
+        <div className="wrap">
+          <SectionHeader title="Client Reviews" subtitle="Feedback from clients on the projects we built together." />
+          <p className="mx-auto max-w-xl text-center text-[var(--text-muted)] leading-relaxed">Client reviews will appear here after approval.</p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="w-full bg-transparent py-24 relative overflow-hidden">
 
@@ -200,7 +211,7 @@ export default function Reviews() {
 
         {/* ── Section Header ── */}
         <SectionHeader
-          title="What My Clients Say"
+          title="Client Reviews"
           subtitle="Genuine testimonials from leaders and clients I've collaborated with on Data Science, Machine Learning, and Web projects."
         />
 

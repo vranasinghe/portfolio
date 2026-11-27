@@ -44,7 +44,7 @@ export default function Home() {
           <Certifications />
         </section>
 
-        {/* Reviews section — shown once data/reviews.ts has an approved review */}
+        {/* Client Reviews — between Certifications and Contact */}
         {SHOW_REVIEWS && (
           <section id="reviews" tabIndex={-1}>
             <Reviews />

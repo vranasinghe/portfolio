@@ -304,3 +304,5 @@ Open /admin/review-link directly on your phone, log in, enter the client's name,
 The client's submission is emailed only to CONTACT_TO_EMAIL with its invite details and a paste-ready review. After approval, paste the snippet into APPROVED_REVIEWS in data/reviews.ts, commit, and deploy. Nothing is published automatically.
 
 Without a database, an invite can be reused until it expires, and admin sessions cannot be revoked individually. Every review still needs manual approval. Changing REVIEW_INVITE_SECRET cancels all invite links and logs out all admin sessions. Sessions last seven days. Login throttling is process-local, as with the other submission endpoints.
+
+Client Reviews appears between Certifications and Contact, with an empty state until reviews are approved. Set NEXT_PUBLIC_SHOW_REVIEWS=false to hide the section.

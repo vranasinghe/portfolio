@@ -1,10 +1,8 @@
 import { achievements } from "@/data/portfolio";
-import { APPROVED_REVIEWS } from "@/data/reviews";
 
-// Reviews appears once data/reviews.ts has at least one approved review.
-// NEXT_PUBLIC_SHOW_REVIEWS=true forces it on (e.g. to preview it); =false forces it off.
+// Client Reviews is shown between Certifications and Contact unless explicitly hidden.
 const reviewsFlag = process.env.NEXT_PUBLIC_SHOW_REVIEWS;
-export const SHOW_REVIEWS = reviewsFlag === "false" ? false : reviewsFlag === "true" || APPROVED_REVIEWS.length > 0;
+export const SHOW_REVIEWS = reviewsFlag !== "false";
 // Achievements is only rendered once data/portfolio.ts has at least one entry.
 export const SHOW_ACHIEVEMENTS = achievements.length > 0;
 
