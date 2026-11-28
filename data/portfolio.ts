@@ -41,7 +41,6 @@ import {
   SiJavascript,
   SiTypescript,
   SiMysql,
-  SiPandas,
   SiNumpy,
   SiScikitlearn,
   SiJupyter,
@@ -90,6 +89,7 @@ export interface SkillCategory {
     iconUrl?: string;
     brandColor: string;
     darkBrandColor?: string;
+    lightPlate?: boolean;
     bgColor: string;
     hoverGlow: string;
   }[];
@@ -179,11 +179,12 @@ export const skills: SkillCategory[] = [
     items: [
       { name: "PyTorch", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg", brandColor: "#EE4C2C", bgColor: "rgba(238, 76, 44, 0.12)", hoverGlow: "rgba(238, 76, 44, 0.25)" },
       { name: "TensorFlow", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg", brandColor: "#FF6F00", bgColor: "rgba(255, 111, 0, 0.12)", hoverGlow: "rgba(255, 111, 0, 0.25)" },
-      { name: "Pandas", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg", brandColor: "#150E89", bgColor: "rgba(21, 17, 136, 0.12)", hoverGlow: "rgba(21, 17, 136, 0.25)" },
+      { name: "Pandas", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg", lightPlate: true, brandColor: "#150E89", darkBrandColor: "#ffffff", bgColor: "rgba(21, 17, 136, 0.12)", hoverGlow: "rgba(21, 17, 136, 0.25)" },
       { name: "NumPy", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg", brandColor: "#4D77CF", bgColor: "rgba(77, 119, 207, 0.12)", hoverGlow: "rgba(77, 119, 207, 0.25)" },
       { name: "Scikit-learn", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/scikitlearn/scikitlearn-original.svg", brandColor: "#F27F2C", bgColor: "rgba(242, 127, 44, 0.12)", hoverGlow: "rgba(242, 127, 44, 0.25)" },
       { name: "Matplotlib", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/matplotlib/matplotlib-original.svg", brandColor: "#1177BB", bgColor: "rgba(17, 119, 187, 0.12)", hoverGlow: "rgba(17, 119, 187, 0.25)" },
       { name: "Jupyter", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jupyter/jupyter-original.svg", brandColor: "#F07325", bgColor: "rgba(240, 115, 37, 0.12)", hoverGlow: "rgba(240, 115, 37, 0.25)" },
+      { name: "OpenCV", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/opencv/opencv-original.svg", brandColor: "#5C3EE8", bgColor: "rgba(92, 62, 232, 0.12)", hoverGlow: "rgba(92, 62, 232, 0.25)" },
     ],
   },
   {
