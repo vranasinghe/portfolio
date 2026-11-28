@@ -94,7 +94,10 @@ export default function Toolkit() {
                   <img
                     src={skill.iconUrl} loading="lazy" width={36} height={36}
                     alt={skill.name}
-                    className="relative w-[36px] h-[36px] transition-all duration-300 opacity-80 group-hover:opacity-100 group-hover:scale-110 object-contain"
+                    className={`relative w-[36px] h-[36px] transition-all duration-300 group-hover:scale-110 object-contain ${
+                      // Dark logos need a white plate to stay readable without recolouring them
+                      skill.lightPlate ? "bg-white rounded-md p-0.5" : "opacity-80 group-hover:opacity-100"
+                    }`}
                   />
                 ) : null}
                 <span
